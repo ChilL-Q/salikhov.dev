@@ -57,6 +57,7 @@ const GlassWindowComponent: React.FC<GlassWindowProps> = ({
             scale: 1,
             width: isMaximized ? '100vw' : width,
             height: isMaximized ? 'calc(100vh - 32px)' : height,
+            ...(!isMaximized && initialPosition ? initialPosition : {}),
             ...maximizeStyle
         },
         exit: (isMinimized: boolean) => {
@@ -104,7 +105,8 @@ const GlassWindowComponent: React.FC<GlassWindowProps> = ({
                 borderRadius: isMaximized ? 0 : '20px',
                 border: isMaximized ? 'none' : '1px solid rgba(255, 255, 255, 0.12)',
                 boxShadow: isMaximized ? 'none' : '0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05)',
-                ...(!isMaximized ? initialPosition : {}) // Apply initial pos if not maximized
+                // Crucial fix: Apply initialPosition directly to the style to ensure Framer Motion respects CSS calc() 
+                ...(isMaximized ? {} : initialPosition)
             }}
         >
             {/* Title Bar */}
