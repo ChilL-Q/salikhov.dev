@@ -20,7 +20,7 @@ export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, mes
                         exit={{ opacity: 0 }}
                         onClick={onClose}
                         style={{
-                            position: 'absolute',
+                            position: 'fixed',
                             top: 0,
                             left: 0,
                             right: 0,
@@ -36,7 +36,7 @@ export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, mes
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
                         style={{
-                            position: 'absolute',
+                            position: 'fixed',
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
@@ -54,7 +54,7 @@ export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, mes
                     >
                         <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>{title}</h3>
                         <p style={{ margin: '0 0 20px 0', fontSize: '13px', opacity: 0.8, lineHeight: 1.4 }}>{message}</p>
-                        
+
                         <button
                             onClick={onClose}
                             style={{
