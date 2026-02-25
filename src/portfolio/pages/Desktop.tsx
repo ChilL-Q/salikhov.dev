@@ -82,7 +82,7 @@ export const Desktop = () => {
             <Scene3D />
 
             {/* Top Status Bar */}
-            <TopBar onAboutClick={() => setIsAboutMacOpen(true)} />
+            <TopBar onAboutClick={() => setIsAboutMacOpen(true)} onToggleWindow={toggleWindow} />
 
             <div className="noise-overlay" style={{ opacity: 0.03 }} />
 

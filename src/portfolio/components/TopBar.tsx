@@ -58,11 +58,15 @@ const MenuDropdown = ({ items, setActiveMenu, onItemClick }: { items: string[], 
 
 interface TopBarProps {
     onAboutClick?: () => void;
+    onToggleWindow?: (key: string) => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ onAboutClick }) => {
+export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow }) => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [time, setTime] = useState(new Date());
+    const [wifiEnabled, setWifiEnabled] = useState(true);
+    const [volumeMuted, setVolumeMuted] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
@@ -70,13 +74,13 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick }) => {
     }, []);
 
     const menuItems = {
-        apple: ['About This Mac', 'System Settings...', 'App Store...', 'Sleep', 'Restart...', 'Shut Down...'],
-        app: ['About Finder', 'Settings...', 'Empty Trash', 'Hide Finder', 'Hide Others', 'Quit Finder'],
-        file: ['New Finder Window', 'New Folder', 'New Smart Folder', 'Close Window'],
-        edit: ['Undo', 'Redo', 'Cut', 'Copy', 'Paste', 'Select All'],
+        apple: ['About This Mac', '---', 'System Settings...', 'App Store...', '---', 'Sleep', 'Restart...', 'Shut Down...'],
+        app: ['About Finder', '---', 'Settings...', '---', 'Empty Trash', '---', 'Hide Finder', 'Hide Others', 'Quit Finder'],
+        file: ['New Finder Window', 'New Folder', 'New Smart Folder', '---', 'Close Window'],
+        edit: ['Undo', 'Redo', '---', 'Cut', 'Copy', 'Paste', 'Select All'],
         view: ['As Icons', 'As List', 'As Columns', 'As Gallery'],
-        go: ['Back', 'Forward', 'Enclosing Folder', 'Recents', 'Documents', 'Desktop', 'Downloads'],
-        window: ['Minimize', 'Zoom', 'Cycle Through Windows', 'Bring All to Front'],
+        go: ['Back', 'Forward', 'Enclosing Folder', '---', 'Projects', 'Contact', '---', 'Recents', 'Documents', 'Desktop', 'Downloads'],
+        window: ['Minimize', 'Zoom', '---', 'Cycle Through Windows', 'Bring All to Front'],
         help: ['macOS Help', "See What's New"]
     };
 
@@ -90,14 +94,42 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick }) => {
         }
     };
 
+
     const handleMenuClick = (item: string) => {
-        if (item === 'About This Mac') {
-            onAboutClick?.();
-        } else if (item === 'Restart...') {
-            window.location.reload();
-        } else {
-            console.log(`Menu action triggered: ${item}`);
-            // Other actions could trigger toasts or default behaviors
+        switch (item) {
+            case 'About This Mac':
+                onAboutClick?.();
+                break;
+            case 'Restart...':
+                window.location.reload();
+                break;
+            case 'About Finder':
+                onToggleWindow?.('about');
+                break;
+            case 'Projects': // Assuming you might add this to Go or somewhere
+                onToggleWindow?.('projects');
+                break;
+            case 'Contact':
+                onToggleWindow?.('contact');
+                break;
+            case 'Close Window':
+                // Ideally this would close the *active* window, but for simplicity we rely on the X buttons
+                console.log('Close Window triggered - use window X button');
+                break;
+            case 'Minimize':
+                console.log('Minimize triggered - use window - button');
+                break;
+            case 'Sleep':
+                // Fake sleep effect
+                document.body.style.filter = 'brightness(0)';
+                setTimeout(() => document.body.style.filter = 'brightness(1)', 2000);
+                break;
+            case 'macOS Help':
+                window.open('https://support.apple.com/macos', '_blank');
+                break;
+            default:
+                console.log(`Menu action triggered: ${item}`);
+                break;
         }
     };
 
@@ -193,21 +225,52 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick }) => {
 
             {/* Right Status Area */}
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', height: '100%' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Battery size={16} /> 100%
+                <div
+                    title="Battery: 100%"
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                    onClick={() => console.log('Battery stat clicked')}
+                >
+                    <Battery size={16} /> <span style={{ fontSize: '12px' }}>100%</span>
                 </div>
-                <Wifi size={16} />
-                <Search size={14} />
+
+                <div
+                    title={wifiEnabled ? "Wi-Fi: Connected" : "Wi-Fi: Off"}
+                    style={{ cursor: 'pointer', opacity: wifiEnabled ? 1 : 0.5, transition: 'opacity 0.2s' }}
+                    onClick={() => setWifiEnabled(!wifiEnabled)}
+                >
+                    <Wifi size={16} />
+                </div>
+
+                <div
+                    title="Spotlight Search"
+                    style={{ cursor: 'pointer', color: isSearching ? '#007AFF' : 'inherit', transition: 'color 0.2s' }}
+                    onClick={() => {
+                        setIsSearching(true);
+                        setTimeout(() => setIsSearching(false), 3000); // Mock search pulse
+                    }}
+                >
+                    <Search size={14} />
+                </div>
 
                 {/* Control Center Toggle */}
-                <Volume2 size={16} />
+                <div
+                    title={volumeMuted ? "Volume: Muted" : "Volume: On"}
+                    style={{ cursor: 'pointer', opacity: volumeMuted ? 0.5 : 1, transition: 'opacity 0.2s' }}
+                    onClick={() => setVolumeMuted(!volumeMuted)}
+                >
+                    <Volume2 size={16} />
+                </div>
 
                 {/* Date & Time */}
                 <div
                     style={{
-                        marginLeft: '8px', cursor: 'default', fontWeight: 500,
-                        display: 'flex', gap: '8px'
+                        marginLeft: '8px', cursor: 'pointer', fontWeight: 500,
+                        display: 'flex', gap: '8px', padding: '0 8px', borderRadius: '4px',
+                        transition: 'background 0.2s'
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    onClick={() => console.log('Open notification center')}
                 >
                     <span>{time.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
                     <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
