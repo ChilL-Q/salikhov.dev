@@ -72,21 +72,21 @@ const InteractiveScene = () => {
     return (
         <group ref={groupRef} scale={isMobile ? 0.95 : 1}>
             {/* Core - Dense & Bright */}
-            <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+            <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
                 <ParticleSphere
-                    count={isMobile ? 1200 : 2500}
+                    count={isMobile ? 600 : 1200}
                     radius={4}
                     color="#60a5fa"
                     size={0.03}
-                    speed={0.2}
-                    opacity={0.9}
+                    speed={0.15}
+                    opacity={0.8}
                 />
             </Float>
 
             {/* Middle Layer - Sparser & Larger */}
-            <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
+            <Float speed={1} rotationIntensity={0.2} floatIntensity={0.5}>
                 <ParticleSphere
-                    count={isMobile ? 500 : 1000}
+                    count={isMobile ? 250 : 500}
                     radius={6}
                     color="#a5f3fc"
                     size={0.05}
@@ -96,9 +96,9 @@ const InteractiveScene = () => {
             </Float>
 
             {/* Outer Layer - Dust/Atmosphere */}
-            <Float speed={1} rotationIntensity={0.2} floatIntensity={2}>
+            <Float speed={0.5} rotationIntensity={0.1} floatIntensity={1}>
                 <ParticleSphere
-                    count={isMobile ? 300 : 600}
+                    count={isMobile ? 150 : 300}
                     radius={9}
                     color="#e0f2fe"
                     size={0.08}
@@ -121,20 +121,19 @@ export const Scene3D = () => {
             width: '100vw',
             height: '100vh',
             zIndex: 0,
-            background: 'radial-gradient(circle at 50% 50%, #0f172a 0%, #000000 100%)', // Slightly richer background
-            overflow: 'hidden'
+            overflow: 'hidden',
+            pointerEvents: 'none' // Ensures background doesn't block interactions
         }}>
             <Canvas
                 camera={{ position: [0, 0, isMobile ? 30 : 16], fov: 45 }}
-                dpr={[1, 2]} // Performance: Limit DPR for high-density screens
-                gl={{ antialias: false, powerPreference: 'high-performance' }} // Efficiency
+                dpr={[1, 1.5]} // Strict limit on DPR to prevent lag on Retina/4K displays
+                gl={{ antialias: false, powerPreference: 'high-performance', alpha: false }} // alpha: false helps performance if bg is solid
                 performance={{ min: 0.5 }} // Dynamic quality scaling
             >
-                <Stars radius={300} depth={50} count={isMobile ? 3000 : 6000} factor={4} saturation={0} fade speed={1} />
+                <color attach="background" args={['#050811']} />
 
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={1.5} color="#3b82f6" />
-                <pointLight position={[-10, -10, -10]} intensity={0.5} color="#a5f3fc" />
+                {/* Reduced Stars count for performance */}
+                <Stars radius={300} depth={50} count={isMobile ? 1500 : 3000} factor={4} saturation={0} fade speed={1} />
 
                 <InteractiveScene />
             </Canvas>
