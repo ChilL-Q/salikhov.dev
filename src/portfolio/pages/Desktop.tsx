@@ -12,6 +12,7 @@ import { ProjectWindowContent } from '../components/ProjectWindowContent';
 import { AboutContent } from '../components/AboutContent';
 import { ProjectsContent } from '../components/ProjectsContent';
 import { ContactContent } from '../components/ContactContent';
+import { MacAlertModal } from '../components/MacAlertModal';
 
 export const Desktop = () => {
     type WindowState = {
@@ -69,6 +70,15 @@ export const Desktop = () => {
     const maximizeWindow = useCallback((key: string) => setWindowState(key, { isMaximized: !windowStates[key].isMaximized }), [windowStates, setWindowState]);
 
     const [isAboutMacOpen, setIsAboutMacOpen] = useState(false);
+    const [systemAlert, setSystemAlert] = useState<{ isOpen: boolean; title: string; message: string }>({
+        isOpen: false,
+        title: '',
+        message: ''
+    });
+
+    const triggerAlert = useCallback((title: string, message: string) => {
+        setSystemAlert({ isOpen: true, title, message });
+    }, []);
 
     return (
         <div style={{
@@ -82,7 +92,11 @@ export const Desktop = () => {
             <Scene3D />
 
             {/* Top Status Bar */}
-            <TopBar onAboutClick={() => setIsAboutMacOpen(true)} onToggleWindow={toggleWindow} />
+            <TopBar
+                onAboutClick={() => setIsAboutMacOpen(true)}
+                onToggleWindow={toggleWindow}
+                onSystemAlert={triggerAlert}
+            />
 
             <div className="noise-overlay" style={{ opacity: 0.03 }} />
 
@@ -293,6 +307,12 @@ export const Desktop = () => {
 
             {/* System Modals */}
             <AboutMacModal isOpen={isAboutMacOpen} onClose={() => setIsAboutMacOpen(false)} />
+            <MacAlertModal
+                isOpen={systemAlert.isOpen}
+                title={systemAlert.title}
+                message={systemAlert.message}
+                onClose={() => setSystemAlert(prev => ({ ...prev, isOpen: false }))}
+            />
         </div >
     );
 };

@@ -59,9 +59,10 @@ const MenuDropdown = ({ items, setActiveMenu, onItemClick }: { items: string[], 
 interface TopBarProps {
     onAboutClick?: () => void;
     onToggleWindow?: (key: string) => void;
+    onSystemAlert?: (title: string, message: string) => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow }) => {
+export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, onSystemAlert }) => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [time, setTime] = useState(new Date());
     const [wifiEnabled, setWifiEnabled] = useState(true);
@@ -113,11 +114,13 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow }) 
                 onToggleWindow?.('contact');
                 break;
             case 'Close Window':
-                // Ideally this would close the *active* window, but for simplicity we rely on the X buttons
-                console.log('Close Window triggered - use window X button');
+                onSystemAlert?.('Action Not Supported', 'Please use the red traffic light button on the window itself to close it.');
                 break;
             case 'Minimize':
-                console.log('Minimize triggered - use window - button');
+                onSystemAlert?.('Action Not Supported', 'Please use the yellow traffic light button on the window itself to minimize it.');
+                break;
+            case 'Zoom':
+                onSystemAlert?.('Action Not Supported', 'Please use the green traffic light button on the window itself to maximize it.');
                 break;
             case 'Sleep':
                 // Fake sleep effect
@@ -128,7 +131,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow }) 
                 window.open('https://support.apple.com/macos', '_blank');
                 break;
             default:
-                console.log(`Menu action triggered: ${item}`);
+                onSystemAlert?.('Feature Not Implemented', `The "${item}" action is a placeholder and not fully functional in this web simulation.`);
                 break;
         }
     };
