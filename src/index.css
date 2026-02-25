@@ -1,0 +1,162 @@
+/* Using System Fonts for Apple-like feel */
+:root {
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Dynamic Theme Variables - will be updated by JS */
+  --color-bg: #000000;
+  --color-text: #ffffff;
+  --color-accent: #ffffff;
+  --color-overlay: rgba(0, 0, 0, 0.4);
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Glass OS Tokens */
+  /* Glass OS Tokens - Premium Upgrade */
+  --glass-background: rgba(15, 23, 42, 0.6);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.3);
+  --glass-blur: blur(40px);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  --shadow-window: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+
+  --dock-bg: rgba(20, 20, 20, 0.4);
+  --dock-border: 1px solid rgba(255, 255, 255, 0.15);
+
+  --dock-bg: rgba(0, 0, 0, 0.2);
+  --dock-border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Liquid Glass Tokens */
+  --glass-liquid-bg: rgba(255, 255, 255, 0.01);
+  --glass-liquid-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-liquid-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+  --glass-liquid-backdrop: blur(30px) saturate(180%);
+}
+
+.glass-liquid {
+  background: var(--glass-liquid-bg);
+  backdrop-filter: var(--glass-liquid-backdrop);
+  -webkit-backdrop-filter: var(--glass-liquid-backdrop);
+  border: var(--glass-liquid-border);
+  box-shadow: var(--glass-liquid-shadow);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+code,
+pre {
+  font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #000000;
+  /* Deep black background */
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow: hidden;
+  /* App-like feel */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glass Utility Class */
+.glass-panel {
+  background: var(--glass-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+/* Cinematic Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
