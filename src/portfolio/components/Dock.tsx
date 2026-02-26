@@ -63,6 +63,17 @@ interface DockProps {
     onOpenApp: (appId: string) => void;
 }
 
+const Separator: React.FC = () => (
+    <div style={{
+        width: '1px',
+        height: '40px',
+        background: 'rgba(255, 255, 255, 0.15)',
+        alignSelf: 'center',
+        margin: '0 4px',
+        borderRadius: '1px'
+    }} />
+);
+
 export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
     const isMobile = useIsMobile();
     const { t } = useLanguage();
@@ -105,6 +116,7 @@ export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
                 onClick={() => onOpenApp('about')}
                 background="linear-gradient(135deg, #30D5C8, #0EA5E9)" // Cyan to Blue
             />
+            <Separator />
             <DockItem
                 icon={<img src={alanyaLogo} alt="Alanya" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px', borderRadius: '14px' }} />}
                 label="Alanya"
@@ -123,6 +135,7 @@ export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
                 onClick={() => onOpenApp('kassimova')}
                 background="white" // Text logo needs white background
             />
+            <Separator />
             <DockItem
                 icon={<Send size={28} strokeWidth={1.5} />}
                 label="Telegram"
@@ -147,6 +160,7 @@ export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
                 onClick={() => window.open('mailto:salikhovchingiz@gmail.com', '_blank')}
                 background="linear-gradient(135deg, #5AC8FA, #007AFF)" // Apple Mail Blue
             />
+            <Separator />
             <DockItem
                 icon={<Globe size={28} strokeWidth={1.5} />}
                 label={t('desktop.settings') || "Language"}
