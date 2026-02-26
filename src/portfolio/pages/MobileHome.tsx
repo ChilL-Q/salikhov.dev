@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Contact, Briefcase, User, Globe, Monitor, PenTool, Shield } from 'lucide-react';
 import { AppIcon } from '../components/AppIcon';
@@ -17,71 +17,11 @@ import { useLanguage } from '../../context/LanguageContext';
 export const MobileHome = () => {
     const { t } = useLanguage();
     const [openApp, setOpenApp] = useState<string | null>('about');
-    const [time, setTime] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    // Initial random battery level for browsers that don't support the API (like iOS Safari)
-    // We use a ref or local storage to keep it somewhat stable across quick reloads if desired, 
-    // but a random initial value between 45% and 89% is usually believable enough.
-    const [batteryLevel, setBatteryLevel] = useState<number>(() => {
-        const stored = sessionStorage.getItem('simulated_battery');
-        if (stored) return parseInt(stored, 10);
-        const randomInitial = Math.floor(Math.random() * (89 - 45 + 1)) + 45;
-        sessionStorage.setItem('simulated_battery', randomInitial.toString());
-        return randomInitial;
-    });
-    const [isCharging, setIsCharging] = useState<boolean>(false);
     const [systemAlert, setSystemAlert] = useState<{ isOpen: boolean; title: string; message: string }>({
         isOpen: false,
         title: '',
         message: ''
     });
-
-    useEffect(() => {
-        let batteryManager: any = null;
-        let simulatedDrainInterval: ReturnType<typeof setInterval> | null = null;
-        let isApiSupported = false;
-
-        const updateBattery = (b: any) => {
-            setBatteryLevel(Math.floor(b.level * 100));
-            setIsCharging(b.charging);
-        };
-
-        if ('getBattery' in navigator) {
-            (navigator as any).getBattery().then((b: any) => {
-                isApiSupported = true;
-                batteryManager = b;
-                updateBattery(b);
-                b.addEventListener('levelchange', () => updateBattery(b));
-                b.addEventListener('chargingchange', () => updateBattery(b));
-            }).catch(() => { isApiSupported = false; });
-        }
-
-        // Fallback for iOS Safari: Simulate battery drain
-        if (!isApiSupported) {
-            simulatedDrainInterval = setInterval(() => {
-                setBatteryLevel(prev => {
-                    const newLevel = Math.max(1, prev - 1);
-                    sessionStorage.setItem('simulated_battery', newLevel.toString());
-                    return newLevel;
-                });
-            }, 1000 * 60 * 3); // 1% drop every 3 minutes
-        }
-
-        return () => {
-            if (batteryManager) {
-                batteryManager.removeEventListener('levelchange', () => updateBattery(batteryManager));
-                batteryManager.removeEventListener('chargingchange', () => updateBattery(batteryManager));
-            }
-            if (simulatedDrainInterval) {
-                clearInterval(simulatedDrainInterval);
-            }
-        }
-    }, []);
 
     const apps = [
         { id: 'about', label: t('desktop.about'), icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
@@ -101,66 +41,49 @@ export const MobileHome = () => {
     return (
         <div style={{
             width: '100vw',
-            height: '100vh',
+            height: '100dvh', // Use dvh for stable height on mobile browsers
             overflow: 'hidden',
             position: 'relative',
             color: 'white',
-            fontFamily: 'var(--font-body)'
+            fontFamily: 'var(--font-body)',
+            display: 'flex', // Use flex to organize main areas
+            flexDirection: 'column'
         }}>
             <Scene3D />
 
-            {/* iOS Status Bar Placeholder */}
+            {/* Main Content Area */}
             <div style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: 'calc(14px + env(safe-area-inset-top, 0px)) 24px 10px',
-                alignItems: 'center',
-                fontSize: '14px',
-                fontWeight: 600,
-                position: 'fixed',
-                top: 0,
-                zIndex: 100
-            }}>
-                <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                <div style={{ display: 'flex', gap: '8px', cursor: 'pointer', color: 'white', alignItems: 'center' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
-                    <div className="signal" style={{ width: '18px', height: '12px', background: 'currentColor', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ width: '26px', height: '13px', border: '1px solid rgba(255,255,255,0.4)', borderRadius: '4px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <div style={{ position: 'absolute', left: '1px', top: '1px', bottom: '1px', width: `calc(${batteryLevel}% - 2px)`, background: isCharging ? '#4ade80' : 'white', borderRadius: '2px', transition: 'width 0.3s ease', zIndex: 1 }} />
-                            <span style={{ position: 'relative', zIndex: 2, fontSize: '10px', fontWeight: 800, color: batteryLevel > 50 ? 'black' : 'white', letterSpacing: '-0.5px' }}>
-                                {batteryLevel}
-                            </span>
-                        </div>
-                        <div style={{ width: '2px', height: '4px', background: 'rgba(255,255,255,0.4)', borderRadius: '0 2px 2px 0', marginLeft: '1px' }} />
-                    </div>
-                </div>
-            </div>
-
-
-
-            {/* Main Grid */}
-            <div style={{
+                flex: 1,
                 position: 'relative',
                 zIndex: 10,
-                padding: 'calc(58px + env(safe-area-inset-top, 0px)) 20px 20px', // Tighter spacing for Android devices
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                rowGap: '24px',
-                columnGap: '16px',
-                justifyItems: 'center',
-                maxWidth: '400px',
-                margin: '0 auto'
+                paddingTop: 'calc(20px + env(safe-area-inset-top, 0px))',
+                paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))', // Space for Dock
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
             }}>
-                {apps.map(app => (
-                    <AppIcon
-                        key={app.id}
-                        icon={app.icon}
-                        label={app.label}
-                        background={app.background}
-                        onClick={() => handleOpenApp(app.id)}
-                    />
-                ))}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    rowGap: '24px',
+                    columnGap: '12px',
+                    justifyItems: 'center',
+                    maxWidth: '360px',
+                    width: '100%'
+                }}>
+                    {apps.map(app => (
+                        <AppIcon
+                            key={app.id}
+                            icon={app.icon}
+                            label={app.label}
+                            background={app.background}
+                            onClick={() => handleOpenApp(app.id)}
+                        />
+                    ))}
+                </div>
             </div>
 
             {/* Dock */}
@@ -213,7 +136,12 @@ export const MobileHome = () => {
                         </div>
 
                         {/* Sheet Content */}
-                        <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
+                        <div style={{
+                            flex: 1,
+                            overflowY: 'auto',
+                            padding: '20px',
+                            paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))' // Handle iOS safe area
+                        }}>
                             {openApp === 'about' && (
                                 <AboutContent isMobile />
                             )}

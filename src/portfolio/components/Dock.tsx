@@ -84,7 +84,7 @@ export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
             animate={{ y: 0, x: "-50%" }}
             style={{
                 position: 'fixed',
-                bottom: isMobile ? '16px' : '20px',
+                bottom: isMobile ? 'calc(16px + env(safe-area-inset-bottom, 0px))' : '20px',
                 left: '50%',
                 display: 'flex',
                 gap: isMobile ? '16px' : '20px',

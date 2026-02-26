@@ -15,7 +15,7 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
             flexDirection: 'column',
             alignItems: 'center',
             gap: '8px',
-            width: '120px', // Fixed width ensures all icons align vertically in a column
+            width: 'clamp(80px, 22vw, 120px)', // Precise responsive width for desktop/mobile
         }}>
             <motion.button
                 whileHover={{ scale: 1.05 }}
