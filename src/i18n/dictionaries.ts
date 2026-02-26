@@ -113,7 +113,7 @@ export const translations = {
             about: 'Обо мне',
             projects: 'Проекты',
             contact: 'Контакты',
-            privacy: 'Конфиденциальность',
+            privacy: 'Приватность',
             settings: 'Язык',
             settingsSubtitle: 'Выберите предпочитаемый язык'
         },
@@ -210,7 +210,7 @@ export const translations = {
             about: 'Мен туралы',
             projects: 'Жобалар',
             contact: 'Байланыс',
-            privacy: 'Құпиялылық',
+            privacy: 'Құпиялық',
             settings: 'Тіл',
             settingsSubtitle: 'Қалаған тілді таңдаңыз'
         },

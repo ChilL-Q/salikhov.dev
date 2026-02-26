@@ -44,9 +44,9 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
             </motion.button>
             <span style={{
                 display: 'block',
-                marginTop: '4px',
-                opacity: 0.9,
-                fontSize: '11px',
+                marginTop: '6px',
+                opacity: 1,
+                fontSize: '13px',
                 color: '#ffffff',
                 textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                 fontWeight: 600,
