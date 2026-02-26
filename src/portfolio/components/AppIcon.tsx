@@ -10,7 +10,13 @@ interface AppIconProps {
 
 const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, background = 'linear-gradient(135deg, #1A1A1A, #2C3E50)' }) => {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '8px',
+            width: '120px', // Fixed width ensures all icons align vertically in a column
+        }}>
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -18,11 +24,10 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
                 style={{
                     width: '64px',
                     height: '64px',
-                    borderRadius: '22px', // Very round, like iOS/macOS
-                    // background: background, // We might want to keep the gradient but add glass over it? No, keeping background as is but adding effects.
+                    borderRadius: '22px',
                     background: background,
-                    border: '1px solid rgba(255,255,255,0.2)', // Brighter border
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)', // "Wet" top shine
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -30,28 +35,26 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
                     color: 'white',
                     padding: 0,
                     position: 'relative',
-                    backdropFilter: 'blur(4px)' // Subtle blur if background has transparency
+                    backdropFilter: 'blur(4px)'
                 }}
             >
-                {/* Icon Content */}
                 <div style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>
                     {icon}
                 </div>
             </motion.button>
             <span style={{
                 display: 'block',
-                marginTop: '6px',
+                marginTop: '4px',
                 opacity: 0.9,
-                fontSize: '12px',
+                fontSize: '11px',
                 color: '#ffffff',
                 textShadow: '0 1px 3px rgba(0,0,0,0.8)',
-                fontWeight: 500,
+                fontWeight: 600,
                 textAlign: 'center',
-                maxWidth: '150px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                padding: '0 4px'
+                maxWidth: '100px', // Restrict width so long words wrap nicely
+                lineHeight: '1.2',
+                overflowWrap: 'break-word',
+                hyphens: 'auto'
             }}>
                 {label}
             </span>
