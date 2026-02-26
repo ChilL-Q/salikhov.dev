@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Send, Briefcase, User, Globe, Monitor, PenTool } from 'lucide-react';
+import { Contact, Briefcase, User, Globe, Monitor, PenTool, Battery, BatteryCharging } from 'lucide-react';
 import { AppIcon } from '../components/AppIcon';
+import { MacAlertModal } from '../components/MacAlertModal';
 import { ProjectWindowContent } from '../components/ProjectWindowContent';
 import { Dock } from '../components/Dock';
 import { Scene3D } from '../components/Scene3D';
@@ -19,10 +20,43 @@ export const MobileHome = () => {
         return () => clearInterval(timer);
     }, []);
 
+    const [batteryLevel, setBatteryLevel] = useState<number>(100);
+    const [isCharging, setIsCharging] = useState<boolean>(false);
+    const [systemAlert, setSystemAlert] = useState<{ isOpen: boolean; title: string; message: string }>({
+        isOpen: false,
+        title: '',
+        message: ''
+    });
+
+    useEffect(() => {
+        let batteryManager: any = null;
+
+        const updateBattery = (b: any) => {
+            setBatteryLevel(Math.floor(b.level * 100));
+            setIsCharging(b.charging);
+        };
+
+        if ('getBattery' in navigator) {
+            (navigator as any).getBattery().then((b: any) => {
+                batteryManager = b;
+                updateBattery(b);
+                b.addEventListener('levelchange', () => updateBattery(b));
+                b.addEventListener('chargingchange', () => updateBattery(b));
+            }).catch(() => { });
+        }
+
+        return () => {
+            if (batteryManager) {
+                batteryManager.removeEventListener('levelchange', () => updateBattery(batteryManager));
+                batteryManager.removeEventListener('chargingchange', () => updateBattery(batteryManager));
+            }
+        }
+    }, []);
+
     const apps = [
         { id: 'about', label: 'About Me', icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
         { id: 'projects', label: 'Projects', icon: <Briefcase size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #F472B6, #9333EA)' },
-        { id: 'contact', label: 'Contact', icon: <Send size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #4ADE80, #16A34A)' },
+        { id: 'contact', label: 'Contact', icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #94A3B8, #475569)' },
     ];
 
     const handleOpenApp = useCallback((appId: string) => {
@@ -58,10 +92,11 @@ export const MobileHome = () => {
                 zIndex: 100
             }}>
                 <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                <div style={{ display: 'flex', gap: '6px' }}>
+                <div style={{ display: 'flex', gap: '6px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'white' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
                     <div className="signal" style={{ width: '18px', height: '12px', background: 'white', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
-                    <div className="battery" style={{ width: '24px', height: '12px', border: '1px solid white', borderRadius: '4px', position: 'relative' }}>
-                        <div style={{ width: '18px', height: '8px', background: 'white', position: 'absolute', top: '1px', left: '1px', borderRadius: '2px' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        {isCharging ? <BatteryCharging size={16} /> : <Battery size={16} />}
+                        <span style={{ fontSize: '12px' }}>{batteryLevel}%</span>
                     </div>
                 </div>
             </div>
@@ -188,6 +223,13 @@ export const MobileHome = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <MacAlertModal
+                isOpen={systemAlert.isOpen}
+                title={systemAlert.title}
+                message={systemAlert.message}
+                onClose={() => setSystemAlert(prev => ({ ...prev, isOpen: false }))}
+            />
         </div>
     );
 };
