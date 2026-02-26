@@ -21,7 +21,16 @@ export const MobileHome = () => {
         return () => clearInterval(timer);
     }, []);
 
-    const [batteryLevel, setBatteryLevel] = useState<number>(100);
+    // Initial random battery level for browsers that don't support the API (like iOS Safari)
+    // We use a ref or local storage to keep it somewhat stable across quick reloads if desired, 
+    // but a random initial value between 45% and 89% is usually believable enough.
+    const [batteryLevel, setBatteryLevel] = useState<number>(() => {
+        const stored = sessionStorage.getItem('simulated_battery');
+        if (stored) return parseInt(stored, 10);
+        const randomInitial = Math.floor(Math.random() * (89 - 45 + 1)) + 45;
+        sessionStorage.setItem('simulated_battery', randomInitial.toString());
+        return randomInitial;
+    });
     const [isCharging, setIsCharging] = useState<boolean>(false);
     const [systemAlert, setSystemAlert] = useState<{ isOpen: boolean; title: string; message: string }>({
         isOpen: false,
@@ -31,6 +40,8 @@ export const MobileHome = () => {
 
     useEffect(() => {
         let batteryManager: any = null;
+        let simulatedDrainInterval: ReturnType<typeof setInterval> | null = null;
+        let isApiSupported = false;
 
         const updateBattery = (b: any) => {
             setBatteryLevel(Math.floor(b.level * 100));
@@ -39,17 +50,32 @@ export const MobileHome = () => {
 
         if ('getBattery' in navigator) {
             (navigator as any).getBattery().then((b: any) => {
+                isApiSupported = true;
                 batteryManager = b;
                 updateBattery(b);
                 b.addEventListener('levelchange', () => updateBattery(b));
                 b.addEventListener('chargingchange', () => updateBattery(b));
-            }).catch(() => { });
+            }).catch(() => { isApiSupported = false; });
+        }
+
+        // Fallback for iOS Safari: Simulate battery drain
+        if (!isApiSupported) {
+            simulatedDrainInterval = setInterval(() => {
+                setBatteryLevel(prev => {
+                    const newLevel = Math.max(1, prev - 1);
+                    sessionStorage.setItem('simulated_battery', newLevel.toString());
+                    return newLevel;
+                });
+            }, 1000 * 60 * 3); // 1% drop every 3 minutes
         }
 
         return () => {
             if (batteryManager) {
                 batteryManager.removeEventListener('levelchange', () => updateBattery(batteryManager));
                 batteryManager.removeEventListener('chargingchange', () => updateBattery(batteryManager));
+            }
+            if (simulatedDrainInterval) {
+                clearInterval(simulatedDrainInterval);
             }
         }
     }, []);
