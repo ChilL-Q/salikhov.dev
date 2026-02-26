@@ -157,7 +157,7 @@ export const Desktop = () => {
                         onMaximize={() => maximizeWindow('about')}
                         zIndex={100 + windowOrder.indexOf('about')}
                         onClick={() => focusWindow('about')}
-                        initialPosition={{ top: 'calc(52% - 325px)', left: 'calc(50% - 500px)' }}
+                        initialPosition={{ top: 'calc(50% - 275px)', left: 'calc(50% - 500px)' }}
                         exitPosition={{ top: 60, left: 40, width: 90, height: 100, scale: 1, opacity: 0 }}
                         width={1000}
                         height={550}
@@ -180,7 +180,7 @@ export const Desktop = () => {
                         onMaximize={() => maximizeWindow('alanya')}
                         zIndex={100 + windowOrder.indexOf('alanya')}
                         onClick={() => focusWindow('alanya')}
-                        initialPosition={{ top: '15%', left: '20%' }}
+                        initialPosition={{ top: 'calc(50% - 160px)', left: 'calc(50% - 375px)' }}
                         exitPosition={{ top: '100%', left: '50%', scale: 0, opacity: 0 }}
                         width={750}
                         height={320}
@@ -210,7 +210,7 @@ export const Desktop = () => {
                         onMaximize={() => maximizeWindow('iffa')}
                         zIndex={100 + windowOrder.indexOf('iffa')}
                         onClick={() => focusWindow('iffa')}
-                        initialPosition={{ top: '20%', left: '25%' }}
+                        initialPosition={{ top: 'calc(50% - 160px)', left: 'calc(50% - 375px)' }}
                         exitPosition={{ top: '100%', left: '50%', scale: 0, opacity: 0 }}
                         width={750}
                         height={320}
@@ -240,7 +240,7 @@ export const Desktop = () => {
                         onMaximize={() => maximizeWindow('kassimova')}
                         zIndex={100 + windowOrder.indexOf('kassimova')}
                         onClick={() => focusWindow('kassimova')}
-                        initialPosition={{ top: '25%', left: '30%' }}
+                        initialPosition={{ top: 'calc(50% - 160px)', left: 'calc(50% - 375px)' }}
                         exitPosition={{ top: '100%', left: '50%', scale: 0, opacity: 0 }}
                         width={750}
                         height={320}
@@ -291,7 +291,7 @@ export const Desktop = () => {
                         onMaximize={() => maximizeWindow('contact')}
                         zIndex={100 + windowOrder.indexOf('contact')}
                         onClick={() => focusWindow('contact')}
-                        initialPosition={{ top: 'calc(50% - 200px)', left: 'calc(50% - 300px)' }}
+                        initialPosition={{ top: 'calc(50% - 250px)', left: 'calc(50% - 350px)' }}
                         exitPosition={{ top: 308, left: 40, width: 90, height: 100, scale: 1, opacity: 0 }}
                         width={700}
                         height={500}
