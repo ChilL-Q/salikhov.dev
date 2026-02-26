@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Contact, Briefcase, User, Globe, Monitor, PenTool, Battery, BatteryCharging } from 'lucide-react';
+import { Contact, Briefcase, User, Globe, Monitor, PenTool } from 'lucide-react';
 import { AppIcon } from '../components/AppIcon';
 import { MacAlertModal } from '../components/MacAlertModal';
 import { ProjectWindowContent } from '../components/ProjectWindowContent';
@@ -92,11 +92,14 @@ export const MobileHome = () => {
                 zIndex: 100
             }}>
                 <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                <div style={{ display: 'flex', gap: '6px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'white' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
-                    <div className="signal" style={{ width: '18px', height: '12px', background: 'white', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {isCharging ? <BatteryCharging size={16} /> : <Battery size={16} />}
-                        <span style={{ fontSize: '12px' }}>{batteryLevel}%</span>
+                <div style={{ display: 'flex', gap: '8px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'white', alignItems: 'center' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
+                    <div className="signal" style={{ width: '18px', height: '12px', background: 'currentColor', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
+                    <span style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.5px' }}>{batteryLevel}%</span>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="battery-body" style={{ width: '24px', height: '12px', border: '1px solid currentColor', borderRadius: '4px', position: 'relative', padding: '1px', boxSizing: 'border-box' }}>
+                            <div style={{ width: `${batteryLevel}%`, height: '100%', background: 'currentColor', borderRadius: '2px', maxWidth: '100%', transition: 'width 0.3s ease' }} />
+                        </div>
+                        <div className="battery-nub" style={{ width: '2px', height: '4px', background: 'currentColor', borderRadius: '0 2px 2px 0', opacity: 0.6 }} />
                     </div>
                 </div>
             </div>
