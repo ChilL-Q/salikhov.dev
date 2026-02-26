@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { ExternalLink, Globe, Monitor, PenTool } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Project {
     title: string;
@@ -15,32 +16,34 @@ interface ProjectsContentProps {
 }
 
 const ProjectsContentComponent: React.FC<ProjectsContentProps> = ({ isMobile }) => {
+    const { t } = useLanguage();
+
     const projects: Project[] = useMemo(() => [
         {
-            title: 'Alanya Holidays',
-            description: 'Premium rentals platform in Alanya, Turkey.',
+            title: t('projects.items.alanya.title'),
+            description: t('projects.items.alanya.desc'),
             tags: ['React', 'Next.js', 'PostgreSQL'],
             link: 'https://alanyaholidays.com',
             gradient: 'linear-gradient(135deg, #2dd4bf, #0ea5e9)',
             icon: <Globe size={24} />
         },
         {
-            title: 'Iffa Tech',
-            description: 'Enterprise technical solutions & software.',
+            title: t('projects.items.iffa.title'),
+            description: t('projects.items.iffa.desc'),
             tags: ['TypeScript', 'Cloud', 'Node.js'],
             link: 'https://iffatech.com',
             gradient: 'linear-gradient(135deg, #818cf8, #6366f1)',
             icon: <Monitor size={24} />
         },
         {
-            title: 'Kassimova Design',
-            description: 'Architecture and interior design portfolio.',
+            title: t('projects.items.kassimova.title'),
+            description: t('projects.items.kassimova.desc'),
             tags: ['UI/UX', 'Branding', 'Photography'],
             link: 'https://kassimova.design',
             gradient: 'linear-gradient(135deg, #fb7185, #f43f5e)',
             icon: <PenTool size={24} />
         }
-    ], []);
+    ], [t]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '16px' : '20px' }}>

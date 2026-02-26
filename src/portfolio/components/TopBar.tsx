@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Battery, BatteryCharging, Wifi, Search, Volume2 } from 'lucide-react'; // Using Lucide icons where possible, text for Apple logo if needed
+import { useLanguage } from '../../context/LanguageContext';
 
 const MenuDropdown = ({ items, setActiveMenu, onItemClick }: { items: string[], setActiveMenu: (menu: string | null) => void, onItemClick?: (item: string) => void }) => (
     <motion.div
@@ -63,6 +64,7 @@ interface TopBarProps {
 }
 
 export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, onSystemAlert }) => {
+    const { t } = useLanguage();
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const [time, setTime] = useState(new Date());
     const [wifiEnabled, setWifiEnabled] = useState(true);
@@ -106,11 +108,18 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
 
     const menuItems = {
         apple: ['About This Mac', '---', 'Restart...', 'Shut Down...'],
-        about: ['About Me', '---', 'View Resume'],
-        projects: ['All Projects', '---', 'Alanya Holidays', 'Iffa Tech', 'Kassimova Design'],
-        contact: ['Contact Form', '---', 'Copy Email', 'Copy Phone'],
+        about: [t('about.title'), '---', t('topbar.resume')],
+        projects: [t('projects.title'), '---', t('projects.items.alanya.title'), t('projects.items.iffa.title'), t('projects.items.kassimova.title')],
+        contact: [t('contact.title'), '---', t('topbar.email'), t('topbar.phone')],
         socials: ['Telegram', 'Instagram', 'WhatsApp']
     };
+
+    const topLevelMenus = [
+        { key: 'about', label: t('topbar.about') },
+        { key: 'projects', label: t('topbar.projects') },
+        { key: 'contact', label: t('topbar.contact') },
+        { key: 'socials', label: t('topbar.socials') }
+    ];
 
     const toggleMenu = (menu: string) => {
         setActiveMenu(activeMenu === menu ? null : menu);
@@ -122,60 +131,27 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
         }
     };
 
-
     const handleMenuClick = (item: string) => {
-        switch (item) {
-            case 'About This Mac':
-                onAboutClick?.();
-                break;
-            case 'Restart...':
-                window.location.reload();
-                break;
-            case 'Shut Down...':
-                document.body.style.filter = 'brightness(0)';
-                break;
-            case 'About Me':
-                onToggleWindow?.('about');
-                break;
-            case 'View Resume':
-                window.open('https://docs.google.com/document/d/your-resume-id/preview', '_blank'); // Update with actual link if needed
-                break;
-            case 'All Projects':
-                onToggleWindow?.('projects');
-                break;
-            case 'Alanya Holidays':
-                onToggleWindow?.('alanya');
-                break;
-            case 'Iffa Tech':
-                onToggleWindow?.('iffa');
-                break;
-            case 'Kassimova Design':
-                onToggleWindow?.('kassimova');
-                break;
-            case 'Contact Form':
-                onToggleWindow?.('contact');
-                break;
-            case 'Copy Email':
-                navigator.clipboard.writeText('salikhovchingiz@gmail.com');
-                onSystemAlert?.('Copied to Clipboard', 'Email address has been copied to your clipboard.');
-                break;
-            case 'Copy Phone':
-                navigator.clipboard.writeText('+7 701 981 37 21');
-                onSystemAlert?.('Copied to Clipboard', 'Phone number has been copied to your clipboard.');
-                break;
-            case 'Telegram':
-                window.open('https://t.me/salikhov_dev', '_blank');
-                break;
-            case 'Instagram':
-                window.open('https://instagram.com/salikhov.dev', '_blank');
-                break;
-            case 'WhatsApp':
-                window.open('https://wa.me/77019813721', '_blank');
-                break;
-            default:
-                onSystemAlert?.('Feature Not Implemented', `The "${item}" action is a placeholder and not fully functional in this web simulation.`);
-                break;
-        }
+        if (item === 'About This Mac') onAboutClick?.();
+        else if (item === 'Restart...') window.location.reload();
+        else if (item === 'Shut Down...') document.body.style.filter = 'brightness(0)';
+        else if (item === t('about.title')) onToggleWindow?.('about');
+        else if (item === t('topbar.resume')) window.open('https://docs.google.com/document/d/your-resume-id/preview', '_blank');
+        else if (item === t('projects.title')) onToggleWindow?.('projects');
+        else if (item === t('projects.items.alanya.title')) onToggleWindow?.('alanya');
+        else if (item === t('projects.items.iffa.title')) onToggleWindow?.('iffa');
+        else if (item === t('projects.items.kassimova.title')) onToggleWindow?.('kassimova');
+        else if (item === t('contact.title')) onToggleWindow?.('contact');
+        else if (item === t('topbar.email')) {
+            navigator.clipboard.writeText('salikhovchingiz@gmail.com');
+            onSystemAlert?.(t('topbar.copied'), 'Email address has been copied to your clipboard.');
+        } else if (item === t('topbar.phone')) {
+            navigator.clipboard.writeText('+7 701 981 37 21');
+            onSystemAlert?.(t('topbar.copied'), 'Phone number has been copied to your clipboard.');
+        } else if (item === 'Telegram') window.open('https://t.me/salikhov_dev', '_blank');
+        else if (item === 'Instagram') window.open('https://instagram.com/salikhov.dev', '_blank');
+        else if (item === 'WhatsApp') window.open('https://wa.me/77019813721', '_blank');
+        else onSystemAlert?.('Feature Not Implemented', `The "${item}" action is a placeholder and not fully functional in this web simulation.`);
     };
 
     // Close menu when clicking outside
@@ -230,21 +206,21 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
                 </div>
 
                 {/* New Useful Menus */}
-                {['About', 'Projects', 'Contact', 'Socials'].map(menu => (
-                    <div key={menu} style={{ position: 'relative', height: '100%' }}>
+                {topLevelMenus.map(menu => (
+                    <div key={menu.key} style={{ position: 'relative', height: '100%' }}>
                         <div
-                            onClick={(e) => { e.stopPropagation(); toggleMenu(menu.toLowerCase()); }}
-                            onMouseEnter={() => handleMouseEnter(menu.toLowerCase())}
+                            onClick={(e) => { e.stopPropagation(); toggleMenu(menu.key); }}
+                            onMouseEnter={() => handleMouseEnter(menu.key)}
                             style={{
                                 padding: '0 12px', height: '100%', display: 'flex', alignItems: 'center',
-                                cursor: 'pointer', background: activeMenu === menu.toLowerCase() ? 'rgba(255,255,255,0.1)' : 'transparent',
+                                cursor: 'pointer', background: activeMenu === menu.key ? 'rgba(255,255,255,0.1)' : 'transparent',
                                 borderRadius: '4px', opacity: 0.9, fontWeight: 500
                             }}
                         >
-                            {menu}
+                            {menu.label}
                         </div>
                         <AnimatePresence>
-                            {activeMenu === menu.toLowerCase() && <MenuDropdown items={menuItems[menu.toLowerCase() as keyof typeof menuItems]} setActiveMenu={setActiveMenu} onItemClick={handleMenuClick} />}
+                            {activeMenu === menu.key && <MenuDropdown items={menuItems[menu.key as keyof typeof menuItems]} setActiveMenu={setActiveMenu} onItemClick={handleMenuClick} />}
                         </AnimatePresence>
                     </div>
                 ))}

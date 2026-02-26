@@ -10,9 +10,12 @@ import { AboutContent } from '../components/AboutContent';
 import { ProjectsContent } from '../components/ProjectsContent';
 import { ContactContent } from '../components/ContactContent';
 import { PrivacyPolicyContent } from '../components/PrivacyPolicyContent';
+import { LanguageSelectorContent } from '../components/LanguageSelectorContent';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Reusing content logic but adapted for mobile
 export const MobileHome = () => {
+    const { t } = useLanguage();
     const [openApp, setOpenApp] = useState<string | null>('about');
     const [time, setTime] = useState(new Date());
 
@@ -81,10 +84,11 @@ export const MobileHome = () => {
     }, []);
 
     const apps = [
-        { id: 'about', label: 'About Me', icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
-        { id: 'projects', label: 'Projects', icon: <Briefcase size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #F472B6, #9333EA)' },
-        { id: 'contact', label: 'Contact', icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #94A3B8, #475569)' },
-        { id: 'privacy', label: 'Privacy', icon: <Shield size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #64748B, #475569)' },
+        { id: 'about', label: t('desktop.about'), icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
+        { id: 'projects', label: t('desktop.projects'), icon: <Briefcase size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #F472B6, #9333EA)' },
+        { id: 'contact', label: t('desktop.contact'), icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #94A3B8, #475569)' },
+        { id: 'privacy', label: t('desktop.privacy'), icon: <Shield size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #64748B, #475569)' },
+        { id: 'settings', label: t('desktop.settings'), icon: <Globe size={32} strokeWidth={1} />, background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' },
     ];
 
     const handleOpenApp = useCallback((appId: string) => {
@@ -221,6 +225,10 @@ export const MobileHome = () => {
 
                             {openApp === 'privacy' && (
                                 <PrivacyPolicyContent isMobile />
+                            )}
+
+                            {openApp === 'settings' && (
+                                <LanguageSelectorContent isMobile />
                             )}
 
                             {openApp === 'alanya' && (

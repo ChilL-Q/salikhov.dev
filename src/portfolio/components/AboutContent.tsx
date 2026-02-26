@@ -1,12 +1,14 @@
 import React from 'react';
 import { Send, Mail } from 'lucide-react';
 import avatar from '../../assets/avatar.webp';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface AboutContentProps {
     isMobile?: boolean;
 }
 
 const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
+    const { t } = useLanguage();
     const techStack = ['React', 'TypeScript', 'JavaScript', 'Python', 'Node.js', 'Docker', 'Three.js', 'Framer Motion', 'AI/LLM', 'Next.js', 'Tailwind', 'PostgreSQL'];
 
     if (isMobile) {
@@ -18,12 +20,11 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                     </div>
                 </div>
                 <h2 style={{ fontSize: '28px', marginBottom: '8px' }}>Chingiz Salikhov</h2>
-                <p style={{ opacity: 0.7, marginBottom: '24px' }}>Full Stack Developer & AI Enthusiast</p>
-                <p style={{ lineHeight: '1.6', opacity: 0.8 }}>
-                    Crafting digital experiences that merge aesthetics with functionality.
-                    Currently focused on building next-gen AI interfaces and immersive web applications.
-                    Exploring the boundaries of what's possible on the web with React, Three.js, and modern AI tools.
-                </p>
+                <p style={{ opacity: 0.7, marginBottom: '24px' }}>{t('about.role')}</p>
+                <div style={{ lineHeight: '1.6', opacity: 0.8, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <p style={{ margin: 0 }}>{t('about.bio1')}</p>
+                    <p style={{ margin: 0 }}>{t('about.bio2')}</p>
+                </div>
                 <div style={{ marginTop: '30px', display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
                     {techStack.map(tag => (
                         <span key={tag} style={{ background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '12px', fontSize: '13px' }}>{tag}</span>

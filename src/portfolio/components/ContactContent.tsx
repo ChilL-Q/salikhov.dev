@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import { Send, Mail, Instagram, MessageCircle } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ContactContentProps {
     isMobile?: boolean;
 }
 
 const ContactContentComponent: React.FC<ContactContentProps> = ({ isMobile }) => {
+    const { t } = useLanguage();
+
     const contactMethods = useMemo(() => [
         {
             name: 'Telegram',
@@ -35,7 +38,7 @@ const ContactContentComponent: React.FC<ContactContentProps> = ({ isMobile }) =>
             borderAlpha: 'rgba(221, 42, 123, 0.2)'
         },
         {
-            name: 'Email',
+            name: t('topbar.email'),
             value: 'salikhovchingiz@gmail.com',
             link: 'mailto:salikhovchingiz@gmail.com',
             icon: <Mail size={isMobile ? 24 : 28} strokeWidth={1.5} color="white" />,
@@ -43,7 +46,7 @@ const ContactContentComponent: React.FC<ContactContentProps> = ({ isMobile }) =>
             bgAlpha: 'rgba(0, 122, 255, 0.1)',
             borderAlpha: 'rgba(0, 122, 255, 0.2)'
         }
-    ], [isMobile]);
+    ], [isMobile, t]);
 
     return (
         <div style={{
