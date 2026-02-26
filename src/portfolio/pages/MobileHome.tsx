@@ -56,14 +56,16 @@ export const MobileHome = () => {
                 flex: 1,
                 position: 'relative',
                 zIndex: 10,
-                paddingTop: 'calc(20px + env(safe-area-inset-top, 0px))',
+                paddingTop: 'calc(70px + env(safe-area-inset-top, 0px))', // Move grid higher
                 paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))', // Space for Dock
-                paddingLeft: '20px',
-                paddingRight: '20px',
+                paddingLeft: '16px',
+                paddingRight: '16px',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden'
+                justifyContent: 'flex-start', // Apps at the top, like a real phone
+                overflow: 'hidden',
+                width: '100%'
             }}>
                 <div style={{
                     display: 'grid',
