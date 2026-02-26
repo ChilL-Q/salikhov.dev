@@ -94,16 +94,16 @@ export const MobileHome = () => {
                 zIndex: 100
             }}>
                 <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                <div style={{ display: 'flex', gap: '8px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'white', alignItems: 'center' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
+                <div style={{ display: 'flex', gap: '8px', cursor: 'pointer', color: 'white', alignItems: 'center' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
                     <div className="signal" style={{ width: '18px', height: '12px', background: 'currentColor', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div className="battery-body" style={{ width: '28px', height: '14px', border: '1px solid currentColor', borderRadius: '4px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <div style={{ position: 'absolute', left: '1px', top: '1px', bottom: '1px', width: `calc(${batteryLevel}% - 2px)`, background: 'currentColor', borderRadius: '2px', transition: 'width 0.3s ease' }} />
-                            <span style={{ position: 'relative', zIndex: 2, fontSize: '10px', fontWeight: 800, color: '#FFFFFF', mixBlendMode: 'difference' }}>
+                        <div style={{ width: '26px', height: '13px', border: '1px solid rgba(255,255,255,0.4)', borderRadius: '4px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ position: 'absolute', left: '1px', top: '1px', bottom: '1px', width: `calc(${batteryLevel}% - 2px)`, background: isCharging ? '#4ade80' : 'white', borderRadius: '2px', transition: 'width 0.3s ease', zIndex: 1 }} />
+                            <span style={{ position: 'relative', zIndex: 2, fontSize: '10px', fontWeight: 800, color: batteryLevel > 50 ? 'black' : 'white', letterSpacing: '-0.5px' }}>
                                 {batteryLevel}
                             </span>
                         </div>
-                        <div className="battery-nub" style={{ width: '2px', height: '5px', background: 'currentColor', borderRadius: '0 2px 2px 0', opacity: 0.6 }} />
+                        <div style={{ width: '2px', height: '4px', background: 'rgba(255,255,255,0.4)', borderRadius: '0 2px 2px 0', marginLeft: '1px' }} />
                     </div>
                 </div>
             </div>
