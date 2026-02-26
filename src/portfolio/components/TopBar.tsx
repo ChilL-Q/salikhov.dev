@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Battery, Wifi, Search, Volume2 } from 'lucide-react'; // Using Lucide icons where possible, text for Apple logo if needed
+import { Battery, BatteryCharging, Wifi, Search, Volume2 } from 'lucide-react'; // Using Lucide icons where possible, text for Apple logo if needed
 
 const MenuDropdown = ({ items, setActiveMenu, onItemClick }: { items: string[], setActiveMenu: (menu: string | null) => void, onItemClick?: (item: string) => void }) => (
     <motion.div
@@ -68,6 +68,36 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
     const [wifiEnabled, setWifiEnabled] = useState(true);
     const [volumeMuted, setVolumeMuted] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
+    const [batteryLevel, setBatteryLevel] = useState<number>(100);
+    const [isCharging, setIsCharging] = useState<boolean>(false);
+
+    useEffect(() => {
+        // Battery Status API (Only works on some browsers like Chrome)
+        let batteryManager: any = null;
+
+        const updateBattery = (b: any) => {
+            setBatteryLevel(Math.floor(b.level * 100));
+            setIsCharging(b.charging);
+        };
+
+        if ('getBattery' in navigator) {
+            (navigator as any).getBattery().then((b: any) => {
+                batteryManager = b;
+                updateBattery(b);
+                b.addEventListener('levelchange', () => updateBattery(b));
+                b.addEventListener('chargingchange', () => updateBattery(b));
+            }).catch(() => {
+                // Ignore errors, default to 100%
+            });
+        }
+
+        return () => {
+            if (batteryManager) {
+                batteryManager.removeEventListener('levelchange', () => updateBattery(batteryManager));
+                batteryManager.removeEventListener('chargingchange', () => updateBattery(batteryManager));
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
@@ -229,11 +259,12 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
             {/* Right Status Area */}
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', height: '100%' }}>
                 <div
-                    title="Battery: 100%"
-                    style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-                    onClick={() => console.log('Battery stat clicked')}
+                    title={`Battery: ${batteryLevel}%${isCharging ? ' (Charging)' : ''}`}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'inherit' }}
+                    onClick={() => onSystemAlert?.('Battery details', `${batteryLevel}% remaining. ${isCharging ? 'Power Source: Power Adapter' : 'Power Source: Battery'}`)}
                 >
-                    <Battery size={16} /> <span style={{ fontSize: '12px' }}>100%</span>
+                    {isCharging ? <BatteryCharging size={16} /> : <Battery size={16} />}
+                    <span style={{ fontSize: '12px' }}>{batteryLevel}%</span>
                 </div>
 
                 <div
