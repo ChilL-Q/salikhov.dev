@@ -107,11 +107,10 @@ export const MobileHome = () => {
 
             {/* iOS Status Bar Placeholder */}
             <div style={{
-                height: 'calc(54px + env(safe-area-inset-top, 0px))', // Increased base height a bit for safety
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
-                padding: 'env(safe-area-inset-top, 0px) 24px 0',
+                padding: 'calc(14px + env(safe-area-inset-top, 0px)) 24px 10px',
                 alignItems: 'center',
                 fontSize: '14px',
                 fontWeight: 600,
@@ -140,7 +139,7 @@ export const MobileHome = () => {
             <div style={{
                 position: 'relative',
                 zIndex: 10,
-                padding: 'calc(85px + env(safe-area-inset-top, 0px)) 32px 20px', // Increased padding to prevent overlap
+                padding: 'calc(58px + env(safe-area-inset-top, 0px)) 20px 20px', // Tighter spacing for Android devices
                 display: 'flex',
                 justifyContent: 'space-between',
                 maxWidth: '400px',
