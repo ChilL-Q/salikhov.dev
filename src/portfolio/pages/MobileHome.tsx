@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Contact, Briefcase, User, Globe, Monitor, PenTool } from 'lucide-react';
+import { Contact, Briefcase, User, Globe, Monitor, PenTool, Shield } from 'lucide-react';
 import { AppIcon } from '../components/AppIcon';
 import { MacAlertModal } from '../components/MacAlertModal';
 import { ProjectWindowContent } from '../components/ProjectWindowContent';
@@ -9,6 +9,7 @@ import { Scene3D } from '../components/Scene3D';
 import { AboutContent } from '../components/AboutContent';
 import { ProjectsContent } from '../components/ProjectsContent';
 import { ContactContent } from '../components/ContactContent';
+import { PrivacyPolicyContent } from '../components/PrivacyPolicyContent';
 
 // Reusing content logic but adapted for mobile
 export const MobileHome = () => {
@@ -57,6 +58,7 @@ export const MobileHome = () => {
         { id: 'about', label: 'About Me', icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
         { id: 'projects', label: 'Projects', icon: <Briefcase size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #F472B6, #9333EA)' },
         { id: 'contact', label: 'Contact', icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #94A3B8, #475569)' },
+        { id: 'privacy', label: 'Privacy', icon: <Shield size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #64748B, #475569)' },
     ];
 
     const handleOpenApp = useCallback((appId: string) => {
@@ -190,6 +192,10 @@ export const MobileHome = () => {
 
                             {openApp === 'contact' && (
                                 <ContactContent isMobile />
+                            )}
+
+                            {openApp === 'privacy' && (
+                                <PrivacyPolicyContent isMobile />
                             )}
 
                             {openApp === 'alanya' && (

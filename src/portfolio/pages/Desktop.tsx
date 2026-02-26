@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { User, Briefcase, Contact, Globe, Monitor, PenTool } from 'lucide-react';
+import { User, Briefcase, Contact, Globe, Monitor, PenTool, Shield } from 'lucide-react';
 import { Dock } from '../components/Dock';
 import { AppIcon } from '../components/AppIcon';
 import { GlassWindow } from '../components/GlassWindow';
@@ -13,6 +13,7 @@ import { AboutContent } from '../components/AboutContent';
 import { ProjectsContent } from '../components/ProjectsContent';
 import { ContactContent } from '../components/ContactContent';
 import { MacAlertModal } from '../components/MacAlertModal';
+import { PrivacyPolicyContent } from '../components/PrivacyPolicyContent';
 
 export const Desktop = () => {
     type WindowState = {
@@ -25,6 +26,7 @@ export const Desktop = () => {
         about: { isOpen: true, isMinimized: false, isMaximized: false },
         projects: { isOpen: false, isMinimized: false, isMaximized: false },
         contact: { isOpen: false, isMinimized: false, isMaximized: false },
+        privacy: { isOpen: false, isMinimized: false, isMaximized: false },
         terminal: { isOpen: false, isMinimized: false, isMaximized: false },
         alanya: { isOpen: false, isMinimized: false, isMaximized: false },
         iffa: { isOpen: false, isMinimized: false, isMaximized: false },
@@ -141,6 +143,12 @@ export const Desktop = () => {
                     label="Contact"
                     onClick={() => toggleWindow('contact')}
                     background="linear-gradient(180deg, #94A3B8, #475569)"
+                />
+                <AppIcon
+                    icon={<Shield size={32} strokeWidth={1} />}
+                    label="Privacy"
+                    onClick={() => toggleWindow('privacy')}
+                    background="linear-gradient(180deg, #64748B, #475569)"
                 />
             </div>
 
@@ -301,6 +309,27 @@ export const Desktop = () => {
                 )}
             </AnimatePresence>
 
+            <AnimatePresence custom={windowStates.privacy.isMinimized}>
+                {windowStates.privacy.isOpen && !windowStates.privacy.isMinimized && (
+                    <GlassWindow
+                        key="privacy-window-main"
+                        title="Privacy Policy"
+                        isOpen={true}
+                        isMaximized={windowStates.privacy.isMaximized}
+                        onClose={() => closeWindow('privacy')}
+                        onMinimize={() => minimizeWindow('privacy')}
+                        onMaximize={() => maximizeWindow('privacy')}
+                        zIndex={100 + windowOrder.indexOf('privacy')}
+                        onClick={() => focusWindow('privacy')}
+                        initialPosition={{ top: 'calc(50% - 250px)', left: 'calc(50% - 300px)' }}
+                        exitPosition={{ top: 370, left: 40, width: 90, height: 100, scale: 1, opacity: 0 }}
+                        width={600}
+                        height={500}
+                    >
+                        <PrivacyPolicyContent />
+                    </GlassWindow>
+                )}
+            </AnimatePresence>
 
             {/* Dock */}
             <Dock onOpenApp={toggleWindow} />
