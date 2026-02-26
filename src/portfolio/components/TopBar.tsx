@@ -108,7 +108,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
 
     const menuItems = {
         apple: ['About This Mac', '---', 'Restart...', 'Shut Down...'],
-        about: [t('about.title'), '---', t('topbar.resume')],
+        about: [t('about.title')],
         projects: [t('projects.title'), '---', t('projects.items.alanya.title'), t('projects.items.iffa.title'), t('projects.items.kassimova.title')],
         contact: [t('contact.title'), '---', t('topbar.email'), t('topbar.phone')],
         socials: ['Telegram', 'Instagram', 'WhatsApp']
@@ -136,7 +136,6 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
         else if (item === 'Restart...') window.location.reload();
         else if (item === 'Shut Down...') document.body.style.filter = 'brightness(0)';
         else if (item === t('about.title')) onToggleWindow?.('about');
-        else if (item === t('topbar.resume')) window.open('https://docs.google.com/document/d/your-resume-id/preview', '_blank');
         else if (item === t('projects.title')) onToggleWindow?.('projects');
         else if (item === t('projects.items.alanya.title')) onToggleWindow?.('alanya');
         else if (item === t('projects.items.iffa.title')) onToggleWindow?.('iffa');
