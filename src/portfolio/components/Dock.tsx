@@ -67,10 +67,11 @@ const Separator: React.FC = () => (
     <div style={{
         width: '1px',
         height: '40px',
-        background: 'rgba(255, 255, 255, 0.15)',
+        background: 'rgba(255, 255, 255, 0.25)', // Brighter for better visibility
         alignSelf: 'center',
-        margin: '0 4px',
-        borderRadius: '1px'
+        margin: '0 8px', // More space around the line
+        borderRadius: '1px',
+        flexShrink: 0, // CRITICAL: Prevent shrinking in a flex container
     }} />
 );
 
