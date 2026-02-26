@@ -105,14 +105,11 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
     }, []);
 
     const menuItems = {
-        apple: ['About This Mac', '---', 'System Settings...', 'App Store...', '---', 'Sleep', 'Restart...', 'Shut Down...'],
-        app: ['About Finder', '---', 'Settings...', '---', 'Empty Trash', '---', 'Hide Finder', 'Hide Others', 'Quit Finder'],
-        file: ['New Finder Window', 'New Folder', 'New Smart Folder', '---', 'Close Window'],
-        edit: ['Undo', 'Redo', '---', 'Cut', 'Copy', 'Paste', 'Select All'],
-        view: ['As Icons', 'As List', 'As Columns', 'As Gallery'],
-        go: ['Back', 'Forward', 'Enclosing Folder', '---', 'Projects', 'Contact', '---', 'Recents', 'Documents', 'Desktop', 'Downloads'],
-        window: ['Minimize', 'Zoom', '---', 'Cycle Through Windows', 'Bring All to Front'],
-        help: ['macOS Help', "See What's New"]
+        apple: ['About This Mac', '---', 'Restart...', 'Shut Down...'],
+        about: ['About Me', '---', 'View Resume'],
+        projects: ['All Projects', '---', 'Alanya Holidays', 'Iffa Tech', 'Kassimova Design'],
+        contact: ['Contact Form', '---', 'Copy Email', 'Copy Phone'],
+        socials: ['GitHub', 'LinkedIn', 'Telegram', 'Instagram']
     };
 
     const toggleMenu = (menu: string) => {
@@ -134,31 +131,49 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
             case 'Restart...':
                 window.location.reload();
                 break;
-            case 'About Finder':
+            case 'Shut Down...':
+                document.body.style.filter = 'brightness(0)';
+                break;
+            case 'About Me':
                 onToggleWindow?.('about');
                 break;
-            case 'Projects': // Assuming you might add this to Go or somewhere
+            case 'View Resume':
+                window.open('https://docs.google.com/document/d/your-resume-id/preview', '_blank'); // Update with actual link if needed
+                break;
+            case 'All Projects':
                 onToggleWindow?.('projects');
                 break;
-            case 'Contact':
+            case 'Alanya Holidays':
+                onToggleWindow?.('alanya');
+                break;
+            case 'Iffa Tech':
+                onToggleWindow?.('iffa');
+                break;
+            case 'Kassimova Design':
+                onToggleWindow?.('kassimova');
+                break;
+            case 'Contact Form':
                 onToggleWindow?.('contact');
                 break;
-            case 'Close Window':
-                onSystemAlert?.('Action Not Supported', 'Please use the red traffic light button on the window itself to close it.');
+            case 'Copy Email':
+                navigator.clipboard.writeText('chingiz.salikhov@gmail.com');
+                onSystemAlert?.('Copied to Clipboard', 'Email address has been copied to your clipboard.');
                 break;
-            case 'Minimize':
-                onSystemAlert?.('Action Not Supported', 'Please use the yellow traffic light button on the window itself to minimize it.');
+            case 'Copy Phone':
+                navigator.clipboard.writeText('+90 555 555 55 55'); // Replace with actual number
+                onSystemAlert?.('Copied to Clipboard', 'Phone number has been copied to your clipboard.');
                 break;
-            case 'Zoom':
-                onSystemAlert?.('Action Not Supported', 'Please use the green traffic light button on the window itself to maximize it.');
+            case 'GitHub':
+                window.open('https://github.com/ChilL-Q', '_blank');
                 break;
-            case 'Sleep':
-                // Fake sleep effect
-                document.body.style.filter = 'brightness(0)';
-                setTimeout(() => document.body.style.filter = 'brightness(1)', 2000);
+            case 'LinkedIn':
+                window.open('https://linkedin.com/in/chingiz-salikhov', '_blank');
                 break;
-            case 'macOS Help':
-                window.open('https://support.apple.com/macos', '_blank');
+            case 'Telegram':
+                window.open('https://t.me/kachevn1k', '_blank');
+                break;
+            case 'Instagram':
+                window.open('https://instagram.com/kachevn1k', '_blank');
                 break;
             default:
                 onSystemAlert?.('Feature Not Implemented', `The "${item}" action is a placeholder and not fully functional in this web simulation.`);
@@ -217,26 +232,8 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
                     </AnimatePresence>
                 </div>
 
-                {/* App Name (Bold) */}
-                <div style={{ position: 'relative', height: '100%' }}>
-                    <div
-                        onClick={(e) => { e.stopPropagation(); toggleMenu('app'); }}
-                        onMouseEnter={() => handleMouseEnter('app')}
-                        style={{
-                            padding: '0 12px', height: '100%', display: 'flex', alignItems: 'center', fontWeight: 700,
-                            cursor: 'pointer', background: activeMenu === 'app' ? 'rgba(255,255,255,0.1)' : 'transparent',
-                            borderRadius: '4px'
-                        }}
-                    >
-                        Finder
-                    </div>
-                    <AnimatePresence>
-                        {activeMenu === 'app' && <MenuDropdown items={menuItems.app} setActiveMenu={setActiveMenu} onItemClick={handleMenuClick} />}
-                    </AnimatePresence>
-                </div>
-
-                {/* Standard Menus */}
-                {['File', 'Edit', 'View', 'Go', 'Window', 'Help'].map(menu => (
+                {/* New Useful Menus */}
+                {['About', 'Projects', 'Contact', 'Socials'].map(menu => (
                     <div key={menu} style={{ position: 'relative', height: '100%' }}>
                         <div
                             onClick={(e) => { e.stopPropagation(); toggleMenu(menu.toLowerCase()); }}
@@ -244,7 +241,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
                             style={{
                                 padding: '0 12px', height: '100%', display: 'flex', alignItems: 'center',
                                 cursor: 'pointer', background: activeMenu === menu.toLowerCase() ? 'rgba(255,255,255,0.1)' : 'transparent',
-                                borderRadius: '4px', opacity: 0.9
+                                borderRadius: '4px', opacity: 0.9, fontWeight: 500
                             }}
                         >
                             {menu}
