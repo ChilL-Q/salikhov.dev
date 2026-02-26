@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { User, Briefcase, Send, Globe, Monitor, PenTool } from 'lucide-react';
+import { User, Briefcase, Mail, Globe, Monitor, PenTool } from 'lucide-react';
 import { Dock } from '../components/Dock';
 import { AppIcon } from '../components/AppIcon';
 import { GlassWindow } from '../components/GlassWindow';
@@ -137,10 +137,10 @@ export const Desktop = () => {
                     background="linear-gradient(180deg, #F472B6, #9333EA)"
                 />
                 <AppIcon
-                    icon={<Send size={32} strokeWidth={1} />}
+                    icon={<Mail size={32} strokeWidth={1} />}
                     label="Contact"
                     onClick={() => toggleWindow('contact')}
-                    background="linear-gradient(180deg, #4ADE80, #16A34A)"
+                    background="linear-gradient(180deg, #60A5FA, #2563EB)"
                 />
             </div>
 
