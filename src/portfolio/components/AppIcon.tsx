@@ -42,15 +42,16 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
                 display: 'block',
                 marginTop: '6px',
                 opacity: 0.9,
-                fontSize: '11px',
+                fontSize: '12px',
                 color: '#ffffff',
                 textShadow: '0 1px 3px rgba(0,0,0,0.8)',
-                fontWeight: 600,
+                fontWeight: 500,
                 textAlign: 'center',
-                maxWidth: '110px',
-                lineHeight: '1.2',
-                overflowWrap: 'break-word',
-                hyphens: 'auto'
+                maxWidth: '150px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                padding: '0 4px'
             }}>
                 {label}
             </span>
