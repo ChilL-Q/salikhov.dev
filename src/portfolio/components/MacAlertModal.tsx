@@ -40,15 +40,14 @@ export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, mes
                     />
                     {/* Modal */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.95, x: "-50%", y: "-50%" }}
+                        animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+                        exit={{ opacity: 0, scale: 0.95, x: "-50%", y: "-50%" }}
                         transition={{ duration: 0.15 }}
                         style={{
                             position: 'fixed',
                             top: '50%',
                             left: '50%',
-                            transform: 'translate(-50%, -50%)',
                             background: 'rgba(30, 30, 30, 0.95)',
                             backdropFilter: 'blur(20px)',
                             border: '1px solid rgba(255,255,255,0.1)',
