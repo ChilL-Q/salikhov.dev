@@ -94,12 +94,14 @@ export const MobileHome = () => {
                 <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 <div style={{ display: 'flex', gap: '8px', cursor: 'pointer', color: isCharging ? '#4ade80' : 'white', alignItems: 'center' }} onClick={() => setSystemAlert({ isOpen: true, title: 'Battery details', message: `${batteryLevel}% remaining. Power Source: ${isCharging ? 'Power Adapter' : 'Battery'}` })}>
                     <div className="signal" style={{ width: '18px', height: '12px', background: 'currentColor', clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' }} />
-                    <span style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.5px' }}>{batteryLevel}%</span>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div className="battery-body" style={{ width: '24px', height: '12px', border: '1px solid currentColor', borderRadius: '4px', position: 'relative', padding: '1px', boxSizing: 'border-box' }}>
-                            <div style={{ width: `${batteryLevel}%`, height: '100%', background: 'currentColor', borderRadius: '2px', maxWidth: '100%', transition: 'width 0.3s ease' }} />
+                        <div className="battery-body" style={{ width: '28px', height: '14px', border: '1px solid currentColor', borderRadius: '4px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ position: 'absolute', left: '1px', top: '1px', bottom: '1px', width: `calc(${batteryLevel}% - 2px)`, background: 'currentColor', borderRadius: '2px', transition: 'width 0.3s ease' }} />
+                            <span style={{ position: 'relative', zIndex: 2, fontSize: '10px', fontWeight: 800, color: '#FFFFFF', mixBlendMode: 'difference' }}>
+                                {batteryLevel}
+                            </span>
                         </div>
-                        <div className="battery-nub" style={{ width: '2px', height: '4px', background: 'currentColor', borderRadius: '0 2px 2px 0', opacity: 0.6 }} />
+                        <div className="battery-nub" style={{ width: '2px', height: '5px', background: 'currentColor', borderRadius: '0 2px 2px 0', opacity: 0.6 }} />
                     </div>
                 </div>
             </div>
