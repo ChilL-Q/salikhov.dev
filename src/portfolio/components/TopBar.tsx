@@ -109,7 +109,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
         about: ['About Me', '---', 'View Resume'],
         projects: ['All Projects', '---', 'Alanya Holidays', 'Iffa Tech', 'Kassimova Design'],
         contact: ['Contact Form', '---', 'Copy Email', 'Copy Phone'],
-        socials: ['GitHub', 'LinkedIn', 'Telegram', 'Instagram']
+        socials: ['Telegram', 'Instagram', 'WhatsApp']
     };
 
     const toggleMenu = (menu: string) => {
@@ -156,24 +156,21 @@ export const TopBar: React.FC<TopBarProps> = ({ onAboutClick, onToggleWindow, on
                 onToggleWindow?.('contact');
                 break;
             case 'Copy Email':
-                navigator.clipboard.writeText('chingiz.salikhov@gmail.com');
+                navigator.clipboard.writeText('salikhovchingiz@gmail.com');
                 onSystemAlert?.('Copied to Clipboard', 'Email address has been copied to your clipboard.');
                 break;
             case 'Copy Phone':
-                navigator.clipboard.writeText('+90 555 555 55 55'); // Replace with actual number
+                navigator.clipboard.writeText('+7 701 981 37 21');
                 onSystemAlert?.('Copied to Clipboard', 'Phone number has been copied to your clipboard.');
                 break;
-            case 'GitHub':
-                window.open('https://github.com/ChilL-Q', '_blank');
-                break;
-            case 'LinkedIn':
-                window.open('https://linkedin.com/in/chingiz-salikhov', '_blank');
-                break;
             case 'Telegram':
-                window.open('https://t.me/kachevn1k', '_blank');
+                window.open('https://t.me/salikhov_dev', '_blank');
                 break;
             case 'Instagram':
-                window.open('https://instagram.com/kachevn1k', '_blank');
+                window.open('https://instagram.com/salikhov.dev', '_blank');
+                break;
+            case 'WhatsApp':
+                window.open('https://wa.me/77019813721', '_blank');
                 break;
             default:
                 onSystemAlert?.('Feature Not Implemented', `The "${item}" action is a placeholder and not fully functional in this web simulation.`);
