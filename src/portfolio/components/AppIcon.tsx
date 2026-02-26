@@ -40,13 +40,16 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
             </motion.button>
             <span style={{
                 display: 'block',
-                marginTop: '4px',
-                opacity: 1,
-                fontSize: '13px',
+                marginTop: '6px',
+                opacity: 0.9,
+                fontSize: '12px',
                 color: '#ffffff',
                 textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                 fontWeight: 600,
-                textAlign: 'center'
+                textAlign: 'center',
+                maxWidth: '100px',
+                lineHeight: '1.2',
+                overflowWrap: 'anywhere'
             }}>
                 {label}
             </span>
