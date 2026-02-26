@@ -147,7 +147,7 @@ export const Desktop = () => {
                     icon={<Contact size={32} strokeWidth={1} />}
                     label={t('desktop.contact')}
                     onClick={() => toggleWindow('contact')}
-                    background="linear-gradient(180deg, #94A3B8, #475569)"
+                    background="linear-gradient(180deg, #FF9500, #FF5E00)"
                 />
                 <AppIcon
                     icon={<Shield size={32} strokeWidth={1} />}

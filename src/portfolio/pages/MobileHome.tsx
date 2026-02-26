@@ -26,7 +26,7 @@ export const MobileHome = () => {
     const apps = [
         { id: 'about', label: t('desktop.about'), icon: <User size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #30D5C8, #0EA5E9)' },
         { id: 'projects', label: t('desktop.projects'), icon: <Briefcase size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #F472B6, #9333EA)' },
-        { id: 'contact', label: t('desktop.contact'), icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #94A3B8, #475569)' },
+        { id: 'contact', label: t('desktop.contact'), icon: <Contact size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #FF9500, #FF5E00)' },
         { id: 'privacy', label: t('desktop.privacy'), icon: <Shield size={32} strokeWidth={1} />, background: 'linear-gradient(180deg, #64748B, #475569)' },
         { id: 'settings', label: t('desktop.settings'), icon: <Globe size={32} strokeWidth={1} />, background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' },
     ];
