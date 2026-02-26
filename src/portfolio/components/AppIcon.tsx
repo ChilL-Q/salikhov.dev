@@ -44,7 +44,6 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
                 </div>
             </motion.button>
             <span style={{
-                display: 'block',
                 marginTop: '6px',
                 opacity: 0.9,
                 fontSize: '12px',
@@ -52,11 +51,18 @@ const AppIconComponent: React.FC<AppIconProps> = ({ icon, label, onClick, backgr
                 textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                 fontWeight: 600,
                 textAlign: 'center',
-                whiteSpace: 'normal', // Allow wrapping again
-                lineHeight: '1.2',
+                whiteSpace: 'normal',
+                lineHeight: '1.1',
                 overflowWrap: 'break-word',
-                padding: '0 4px',
-                width: '100%' // Fill the container
+                wordBreak: 'break-word', // Ensure it breaks
+                hyphens: 'auto', // Enable hyphenation if browser supports it
+                WebkitHyphens: 'auto',
+                padding: '0 2px',
+                width: '100%',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
             }}>
                 {label}
             </span>
