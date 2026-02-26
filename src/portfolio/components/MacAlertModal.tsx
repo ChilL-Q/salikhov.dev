@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface MacAlertModalProps {
@@ -9,7 +10,15 @@ interface MacAlertModalProps {
 }
 
 export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, message, onClose }) => {
-    return (
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <>
@@ -74,6 +83,7 @@ export const MacAlertModal: React.FC<MacAlertModalProps> = ({ isOpen, title, mes
                     </motion.div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 };
