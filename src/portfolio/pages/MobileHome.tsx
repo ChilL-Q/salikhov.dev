@@ -144,8 +144,11 @@ export const MobileHome = () => {
                 position: 'relative',
                 zIndex: 10,
                 padding: 'calc(58px + env(safe-area-inset-top, 0px)) 20px 20px', // Tighter spacing for Android devices
-                display: 'flex',
-                justifyContent: 'space-between',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                rowGap: '24px',
+                columnGap: '16px',
+                justifyItems: 'center',
                 maxWidth: '400px',
                 margin: '0 auto'
             }}>
@@ -206,7 +209,7 @@ export const MobileHome = () => {
                             borderRadius: '32px 32px 0 0' // Fix for Safari background clipping
                         }}>
                             <div style={{ width: '36px', height: '5px', background: 'rgba(255,255,255,0.3)', borderRadius: '3px', position: 'absolute', top: '8px' }} />
-                            <button onClick={handleCloseApp} style={{ color: '#007AFF', fontSize: '17px', fontWeight: 600, position: 'absolute', right: '16px' }}>Done</button>
+                            <button onClick={handleCloseApp} style={{ color: '#007AFF', fontSize: '17px', fontWeight: 600, position: 'absolute', right: '16px' }}>{t('common.done') || 'Done'}</button>
                         </div>
 
                         {/* Sheet Content */}
@@ -233,8 +236,8 @@ export const MobileHome = () => {
 
                             {openApp === 'alanya' && (
                                 <ProjectWindowContent
-                                    title="Alanya Holidays"
-                                    description="Premium holiday rentals and experiences platform in Alanya. Features luxury villas, apartments, and yacht tours with a focus on authentic local experiences."
+                                    title={t('projects.items.alanya.title')}
+                                    description={t('projects.items.alanya.desc')}
                                     technologies={['React', 'Next.js', 'Booking System', 'Stripe']}
                                     link="https://alanyaholidays.com"
                                     gradient="linear-gradient(135deg, #2dd4bf, #0ea5e9)"
@@ -244,8 +247,8 @@ export const MobileHome = () => {
 
                             {openApp === 'iffa' && (
                                 <ProjectWindowContent
-                                    title="Iffa Tech"
-                                    description="Innovative technical solutions and custom software development. Delivering robust digital products for modern business needs."
+                                    title={t('projects.items.iffa.title')}
+                                    description={t('projects.items.iffa.desc')}
                                     technologies={['Software Development', 'Cloud Solutions', 'Enterprise Tech']}
                                     link="https://iffatech.com"
                                     gradient="linear-gradient(135deg, #818cf8, #6366f1)"
@@ -255,8 +258,8 @@ export const MobileHome = () => {
 
                             {openApp === 'kassimova' && (
                                 <ProjectWindowContent
-                                    title="Kassimova Design"
-                                    description="A portfolio showcasing exquisite design works, branding, and visual storytelling."
+                                    title={t('projects.items.kassimova.title')}
+                                    description={t('projects.items.kassimova.desc')}
                                     technologies={['UI/UX', 'Branding', 'Visual Identity']}
                                     link="https://kassimova.design"
                                     gradient="linear-gradient(135deg, #fb7185, #f43f5e)"

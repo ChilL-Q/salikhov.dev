@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Cpu, Zap, HardDrive, Monitor } from 'lucide-react';
 import avatar from '../../assets/avatar.webp'; // Using avatar as the "OS Logo" or we could use an icon
+import { useLanguage } from '../../context/LanguageContext';
 
 interface AboutMacModalProps {
     isOpen: boolean;
@@ -9,6 +10,8 @@ interface AboutMacModalProps {
 }
 
 const AboutMacModalComponent: React.FC<AboutMacModalProps> = ({ isOpen, onClose }) => {
+    const { t } = useLanguage();
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -115,7 +118,7 @@ const AboutMacModalComponent: React.FC<AboutMacModalProps> = ({ isOpen, onClose 
                                     fontWeight: 600,
                                     letterSpacing: '-0.5px'
                                 }}>
-                                    Portfolio OS
+                                    {t('aboutMac.title')}
                                 </h1>
                                 <p style={{
                                     margin: '0 0 24px 0',
@@ -123,36 +126,36 @@ const AboutMacModalComponent: React.FC<AboutMacModalProps> = ({ isOpen, onClose 
                                     fontSize: '14px',
                                     fontWeight: 500
                                 }}>
-                                    Version 1.0 (Sonoma-inspired)
+                                    {t('aboutMac.version')}
                                 </p>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                                         <Monitor size={16} style={{ opacity: 0.5 }} />
                                         <span style={{ fontSize: '13px' }}>
-                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>Display</span>
-                                            Liquid Retina XDR, React-Powered
+                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>{t('aboutMac.display')}</span>
+                                            {t('aboutMac.displayValue')}
                                         </span>
                                     </div>
                                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                                         <Cpu size={16} style={{ opacity: 0.5 }} />
                                         <span style={{ fontSize: '13px' }}>
-                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>Processor</span>
-                                            Human Intelligence + AI Assist
+                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>{t('aboutMac.processor')}</span>
+                                            {t('aboutMac.processorValue')}
                                         </span>
                                     </div>
                                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                                         <Zap size={16} style={{ opacity: 0.5 }} />
                                         <span style={{ fontSize: '13px' }}>
-                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>Memory</span>
-                                            Full Stack Knowledge Base
+                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>{t('aboutMac.memory')}</span>
+                                            {t('aboutMac.memoryValue')}
                                         </span>
                                     </div>
                                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                                         <HardDrive size={16} style={{ opacity: 0.5 }} />
                                         <span style={{ fontSize: '13px' }}>
-                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>Startup Disk</span>
-                                            Vite + TypeScript
+                                            <span style={{ opacity: 0.5, marginRight: '8px' }}>{t('aboutMac.startupDisk')}</span>
+                                            {t('aboutMac.startupDiskValue')}
                                         </span>
                                     </div>
                                 </div>
@@ -202,7 +205,7 @@ const AboutMacModalComponent: React.FC<AboutMacModalProps> = ({ isOpen, onClose 
                             fontSize: '11px',
                             opacity: 0.4
                         }}>
-                            Designed & Developed by Chingiz Salikhov © 2026
+                            {t('aboutMac.footer')}
                         </div>
                     </motion.div>
                 </>

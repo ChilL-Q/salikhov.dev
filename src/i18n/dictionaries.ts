@@ -17,7 +17,8 @@ export const translations = {
             projects: 'Projects',
             contact: 'Contact',
             privacy: 'Privacy',
-            settings: 'Language'
+            settings: 'Language',
+            settingsSubtitle: 'Select your preferred language'
         },
         topbar: {
             about: 'About',
@@ -32,21 +33,45 @@ export const translations = {
         about: {
             title: 'About Me',
             role: 'Product Designer & Frontend Developer',
+            role2: 'Full Stack Developer & AI Enthusiast',
             location: 'Istanbul, Turkey',
             bio1: 'Hello! I am Chingiz, a passionate Product Designer and Frontend Developer with a keen eye for creating beautiful, functional, and user-centric digital experiences.',
             bio2: 'Bridging the gap between design and engineering, I specialize in crafting seamless interfaces that look great and feel intuitive to use.',
+            bio3: 'Crafting digital experiences that merge aesthetics with functionality. Currently focused on building next-gen AI interfaces and immersive web applications. Exploring the boundaries of what\'s possible on the web with React, Three.js, and modern AI tools.',
+            bioTitle: 'Bio',
             skills: 'Skills & Tools',
-            experience: 'Experience'
+            techStackTitle: 'Tech Stack',
+            experience: 'Experience',
+            contactTelegram: 'Contact Telegram',
+            sendEmail: 'Send Email'
         },
         projects: {
             title: 'Projects',
             viewProject: 'View Project',
+            visitSite: 'Visit Site',
+            techTools: 'Technologies & Tools',
             technologies: 'Technologies Used',
             items: {
                 alanya: { title: 'Alanya Holidays', desc: 'Premium rentals platform in Alanya, Turkey.' },
                 iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' }
             }
+        },
+        common: {
+            done: 'Done'
+        },
+        aboutMac: {
+            title: 'Portfolio OS',
+            version: 'Version 1.0 (Sonoma-inspired)',
+            display: 'Display',
+            displayValue: 'Liquid Retina XDR, React-Powered',
+            processor: 'Processor',
+            processorValue: 'Human Intelligence + AI Assist',
+            memory: 'Memory',
+            memoryValue: 'Full Stack Knowledge Base',
+            startupDisk: 'Startup Disk',
+            startupDiskValue: 'Vite + TypeScript',
+            footer: 'Designed & Developed by Chingiz Salikhov © 2026'
         },
         contact: {
             title: 'Contact',
@@ -89,7 +114,8 @@ export const translations = {
             projects: 'Проекты',
             contact: 'Контакты',
             privacy: 'Секретность',
-            settings: 'Язык'
+            settings: 'Язык',
+            settingsSubtitle: 'Выберите предпочитаемый язык'
         },
         topbar: {
             about: 'Об авторе',
@@ -104,21 +130,45 @@ export const translations = {
         about: {
             title: 'Обо мне',
             role: 'Продуктовый Дизайнер & Фронтенд Разработчик',
+            role2: 'Full Stack Разработчик & AI Энтузиаст',
             location: 'Стамбул, Турция',
             bio1: 'Привет! Я Чингиз, увлеченный продуктовый дизайнер и разработчик. Обожаю создавать красивые, функциональные и удобные цифровые продукты.',
             bio2: 'Объединяя дизайн и программирование, я специализируюсь на бесшовных интерфейсах, которые не только отлично выглядят, но и интуитивно понятны.',
+            bio3: 'Создаю цифровой опыт, сочетающий эстетику с функциональностью. В настоящее время сосредоточен на создании ИИ-интерфейсов следующего поколения и иммерсивных веб-приложений. Изучаю возможности веба с помощью React, Three.js и современных инструментов ИИ.',
+            bioTitle: 'Био',
             skills: 'Навыки и Инструменты',
-            experience: 'Опыт работы'
+            techStackTitle: 'Стек Технологий',
+            experience: 'Опыт работы',
+            contactTelegram: 'Связаться в Telegram',
+            sendEmail: 'Написать Email'
         },
         projects: {
             title: 'Проекты',
             viewProject: 'Посмотреть проект',
-            technologies: 'Технологии',
+            visitSite: 'Посетить сайт',
+            techTools: 'Технологии и инструменты',
+            technologies: 'Используемые технологии',
             items: {
                 alanya: { title: 'Alanya Holidays', desc: 'Платформа премиум-аренды в Алании, Турция.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' }
             }
+        },
+        common: {
+            done: 'Готово'
+        },
+        aboutMac: {
+            title: 'Portfolio OS',
+            version: 'Версия 1.0 (Sonoma-inspired)',
+            display: 'Дисплей',
+            displayValue: 'Liquid Retina XDR, на базе React',
+            processor: 'Процессор',
+            processorValue: 'Human Intelligence + AI Assist',
+            memory: 'Память',
+            memoryValue: 'Full Stack Knowledge Base',
+            startupDisk: 'Загрузочный диск',
+            startupDiskValue: 'Vite + TypeScript',
+            footer: 'Разработано Chingiz Salikhov © 2026'
         },
         contact: {
             title: 'Связь',
@@ -161,7 +211,8 @@ export const translations = {
             projects: 'Жобалар',
             contact: 'Байланыс',
             privacy: 'Құпиялық',
-            settings: 'Тіл'
+            settings: 'Тіл',
+            settingsSubtitle: 'Қалаған тілді таңдаңыз'
         },
         topbar: {
             about: 'Авторы',
@@ -176,21 +227,45 @@ export const translations = {
         about: {
             title: 'Мен туралы',
             role: 'Өнім Дизайнері & Фронтенд Әзірлеуші',
+            role2: 'Full Stack Әзірлеуші & ИИ Әуесқойы',
             location: 'Ыстамбұл, Түркия',
             bio1: 'Сәлем! Мен Шыңғыспын, әдемі әрі ыңғайлы цифрлық өнімдерді жасауға құмармын.',
             bio2: 'Дизайн мен инженерияны біріктіре отырып, мен тек визуалды тартымды ғана емес, сонымен бірге қолдануға өте ыңғайлы интерфейстерді жасаймын.',
+            bio3: 'Эстетика мен функционалдылықты біріктіретін цифрлық тәжірибелерді жасау. Қазіргі уақытта жаңа буынның ИИ интерфейстерін және иммерсивті веб-қосымшаларды жасауға бағытталған. React, Three.js және заманауи ИИ құралдарымен вебтің мүмкіндіктерін зерттеу.',
+            bioTitle: 'Био',
             skills: 'Дағдылар мен Құралдар',
-            experience: 'Жұмыс тәжірибесі'
+            techStackTitle: 'Технологиялық Стек',
+            experience: 'Жұмыс тәжірибесі',
+            contactTelegram: 'Telegram-мен байланысу',
+            sendEmail: 'Email жазу'
         },
         projects: {
             title: 'Жобалар',
             viewProject: 'Жобаны көру',
+            visitSite: 'Сайтқа өту',
+            techTools: 'Технологиялар мен құралдар',
             technologies: 'Қолданылған технологиялар',
             items: {
                 alanya: { title: 'Alanya Holidays', desc: 'Аланиядағы премиум жалға беру платформасы.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' }
             }
+        },
+        common: {
+            done: 'Дайын'
+        },
+        aboutMac: {
+            title: 'Portfolio OS',
+            version: 'Нұсқа 1.0 (Sonoma стилінде)',
+            display: 'Дисплей',
+            displayValue: 'Liquid Retina XDR, React негізінде',
+            processor: 'Процессор',
+            processorValue: 'Human Intelligence + AI Assist',
+            memory: 'Жад',
+            memoryValue: 'Full Stack Knowledge Base',
+            startupDisk: 'Жүктеу дискісі',
+            startupDiskValue: 'Vite + TypeScript',
+            footer: 'Шыңғыс Салыхов әзірлеген © 2026'
         },
         contact: {
             title: 'Байланыс',
@@ -233,7 +308,8 @@ export const translations = {
             projects: 'المشاريع',
             contact: 'اتصل بي',
             privacy: 'الخصوصية',
-            settings: 'اللغة'
+            settings: 'اللغة',
+            settingsSubtitle: 'اختر لغتك المفضلة'
         },
         topbar: {
             about: 'عني',
@@ -248,21 +324,45 @@ export const translations = {
         about: {
             title: 'نبذة عني',
             role: 'مصمم منتجات ومطور واجهات',
+            role2: 'مطور Full Stack ومتحمس للذكاء الاصطناعي',
             location: 'إسطنبول، تركيا',
             bio1: 'مرحباً! أنا جنكيز، مصمم منتجات ومطور واجهات شغوف بإنشاء تجارب رقمية جميلة وعملية وتتمحور حول المستخدم.',
             bio2: 'أقوم بسد الفجوة بين التصميم والهندسة، وأتخصص في صياغة واجهات سلسة تبدو رائعة وبديهية في الاستخدام.',
+            bio3: 'صياغة تجارب رقمية تدمج الجماليات مع الوظيفة. أركز حالياً على بناء واجهات ذكاء اصطناعي من الجيل القادم وتطبيقات ويب غامرة. استكشاف حدود ما هو ممكن على الويب باستخدام React و Three.js وأدوات الذكاء الاصطناعي الحديثة.',
+            bioTitle: 'السيرة',
             skills: 'المهارات والأدوات',
-            experience: 'الخبرة'
+            techStackTitle: 'مجموعة التقنيات',
+            experience: 'الخبرة',
+            contactTelegram: 'اتصال عبر تلغرام',
+            sendEmail: 'إرسال بريد إلكتروني'
         },
         projects: {
             title: 'المشاريع',
             viewProject: 'عرض المشروع',
+            visitSite: 'زيارة الموقع',
+            techTools: 'التقنيات والأدوات',
             technologies: 'التقنيات المستخدمة',
             items: {
                 alanya: { title: 'Alanya Holidays', desc: 'منصة تأجير متميزة في ألانيا، تركيا.' },
                 iffa: { title: 'Iffa Tech', desc: 'حلول وبرامج تقنية للشركات.' },
                 kassimova: { title: 'Kassimova Design', desc: 'محفظة الهندسة المعمارية والتصميم الداخلي.' }
             }
+        },
+        common: {
+            done: 'تم'
+        },
+        aboutMac: {
+            title: 'Portfolio OS',
+            version: 'الإصدار 1.0 (Sonoma)',
+            display: 'الشاشة',
+            displayValue: 'Liquid Retina XDR، مدعوم من React',
+            processor: 'المعالج',
+            processorValue: 'Human Intelligence + AI Assist',
+            memory: 'الذاكرة',
+            memoryValue: 'Full Stack Knowledge Base',
+            startupDisk: 'قرص الإقلاع',
+            startupDiskValue: 'Vite + TypeScript',
+            footer: 'تصميم وبناء Chingiz Salikhov © 2026'
         },
         contact: {
             title: 'اتصل بي',
@@ -305,7 +405,8 @@ export const translations = {
             projects: 'Projeler',
             contact: 'İletişim',
             privacy: 'Gizlilik',
-            settings: 'Dil'
+            settings: 'Dil',
+            settingsSubtitle: 'Tercih ettiğiniz dili seçin'
         },
         topbar: {
             about: 'Hakkımda',
@@ -320,21 +421,45 @@ export const translations = {
         about: {
             title: 'Hakkımda',
             role: 'Ürün Tasarımcısı & Arayüz Geliştiricisi',
+            role2: 'Full Stack Geliştirici & Yapay Zeka Meraklısı',
             location: 'İstanbul, Türkiye',
             bio1: 'Merhaba! Ben Cengiz, güzel ve işlevsel dijital deneyimler yaratmaya hevesli bir Ürün Tasarımcısı ve Arayüz Geliştiricisiyim.',
             bio2: 'Tasarım ve mühendislik arasındaki boşluğu kapatarak, harika görünen ve kullanımı sezgisel olan kusursuz arayüzler tasarlamada uzmanım.',
+            bio3: 'Estetiği işlevsellikle birleştiren dijital deneyimler hazırlamak. Şu anda yeni nesil yapay zeka arayüzleri ve sürükleyici web uygulamaları oluşturmaya odaklanmış durumda. React, Three.js ve modern yapay zeka araçlarıyla web üzerinde nelerin mümkün olduğunun sınırlarını keşfetmek.',
+            bioTitle: 'Biyografi',
             skills: 'Yetenekler & Araçlar',
-            experience: 'Deneyim'
+            techStackTitle: 'Teknoloji Yığını',
+            experience: 'Deneyim',
+            contactTelegram: 'Telegram ile İletişime Geç',
+            sendEmail: 'E-posta Gönder'
         },
         projects: {
             title: 'Projeler',
             viewProject: 'Projeyi Görüntüle',
+            visitSite: 'Siteyi Ziyaret Et',
+            techTools: 'Teknolojiler ve Araçlar',
             technologies: 'Kullanılan Teknolojiler',
             items: {
                 alanya: { title: 'Alanya Holidays', desc: 'Alanya, Türkiye\'de premium kiralama platformu.' },
                 iffa: { title: 'Iffa Tech', desc: 'Kurumsal teknik çözümler ve yazılım.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Mimarlık ve iç mimarlık portföyü.' }
             }
+        },
+        common: {
+            done: 'Tamam'
+        },
+        aboutMac: {
+            title: 'Portfolio OS',
+            version: 'Sürüm 1.0 (Sonoma esintili)',
+            display: 'Ekran',
+            displayValue: 'Liquid Retina XDR, React Destekli',
+            processor: 'İşlemci',
+            processorValue: 'Human Intelligence + AI Assist',
+            memory: 'Bellek',
+            memoryValue: 'Full Stack Knowledge Base',
+            startupDisk: 'Başlangıç Diski',
+            startupDiskValue: 'Vite + TypeScript',
+            footer: 'Chingiz Salikhov tarafından tasarlandı и geliştirildi © 2026'
         },
         contact: {
             title: 'İletişim',

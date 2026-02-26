@@ -77,8 +77,8 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                     Chingiz Salikhov
                 </h2>
                 <p style={{ margin: 0, opacity: 0.8, fontSize: '16px', fontWeight: 400, marginBottom: '24px' }}>
-                    Full Stack Developer<br />
-                    AI Enthusiast
+                    {t('about.role2').split('&')[0]}<br />
+                    {t('about.role2').split('&')[1]}
                 </p>
 
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -91,7 +91,7 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                             cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px'
                         }}
                     >
-                        <Send size={16} /> Contact Telegram
+                        <Send size={16} /> {t('about.contactTelegram')}
                     </button>
                     <button
                         onClick={() => window.location.href = 'mailto:salikhovchingiz@gmail.com'}
@@ -102,7 +102,7 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                             cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px'
                         }}
                     >
-                        <Mail size={16} /> Send Email
+                        <Mail size={16} /> {t('about.sendEmail')}
                     </button>
                 </div>
             </div>
@@ -118,16 +118,14 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                     lineHeight: '1.6',
                     fontSize: '15px'
                 }}>
-                    <h3 style={{ fontSize: '18px', marginBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Bio</h3>
+                    <h3 style={{ fontSize: '18px', marginBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>{t('about.bioTitle')}</h3>
                     <p style={{ opacity: 0.9, margin: 0 }}>
-                        Crafting digital experiences that merge aesthetics with functionality.
-                        Currently focused on building next-gen AI interfaces and immersive web applications.
-                        Exploring the boundaries of what's possible on the web with React, Three.js, and modern AI tools.
+                        {t('about.bio3')}
                     </p>
                 </div>
 
                 <div>
-                    <h3 style={{ fontSize: '18px', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Tech Stack</h3>
+                    <h3 style={{ fontSize: '18px', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>{t('about.techStackTitle')}</h3>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '8px' }}>
                         {techStack.map(tech => (
                             <span key={tech} style={{

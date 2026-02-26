@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ProjectWindowContentProps {
     title: string;
@@ -18,6 +19,8 @@ const ProjectWindowContentComponent: React.FC<ProjectWindowContentProps> = ({
     gradient,
     icon
 }) => {
+    const { t } = useLanguage();
+
     return (
         <div style={{
             display: 'flex',
@@ -87,7 +90,7 @@ const ProjectWindowContentComponent: React.FC<ProjectWindowContentProps> = ({
                                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 122, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)';
                             }}
                         >
-                            Visit Site <ExternalLink size={16} />
+                            {t('projects.visitSite')} <ExternalLink size={16} />
                         </button>
                     </div>
 
@@ -110,7 +113,7 @@ const ProjectWindowContentComponent: React.FC<ProjectWindowContentProps> = ({
                             fontWeight: 600,
                             marginBottom: '12px'
                         }}>
-                            Technologies & Tools
+                            {t('projects.techTools')}
                         </div>
                         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             {technologies.map(tech => (

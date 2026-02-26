@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Send, Instagram, Mail, MessageCircle } from 'lucide-react';
+import { User, Send, Instagram, Mail, MessageCircle, Globe } from 'lucide-react';
 import alanyaLogo from '../../assets/logos/alanya-logo.webp';
 import iffaLogo from '../../assets/logos/iffa-logo.webp';
 import kassimovaLogo from '../../assets/logos/kassimova-logo.webp';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface DockItemProps {
     icon: React.ReactNode;
@@ -64,6 +65,7 @@ interface DockProps {
 
 export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
     const isMobile = useIsMobile();
+    const { t } = useLanguage();
 
     return (
         <motion.div
@@ -141,9 +143,15 @@ export const Dock: React.FC<DockProps> = ({ onOpenApp }) => {
             />
             <DockItem
                 icon={<Mail size={28} strokeWidth={1.5} />}
-                label="Email"
+                label={t('topbar.email') || "Email"}
                 onClick={() => window.open('mailto:salikhovchingiz@gmail.com', '_blank')}
                 background="linear-gradient(135deg, #5AC8FA, #007AFF)" // Apple Mail Blue
+            />
+            <DockItem
+                icon={<Globe size={28} strokeWidth={1.5} />}
+                label={t('desktop.settings') || "Language"}
+                onClick={() => onOpenApp('settings')}
+                background="linear-gradient(135deg, #3B82F6, #1D4ED8)" // Settings Blue
             />
         </motion.div>
     );

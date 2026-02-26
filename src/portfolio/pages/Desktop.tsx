@@ -205,8 +205,8 @@ export const Desktop = () => {
                         height={320}
                     >
                         <ProjectWindowContent
-                            title="Alanya Holidays"
-                            description="Premium holiday rentals and experiences platform in Alanya. Features luxury villas, apartments, and yacht tours with a focus on authentic local experiences."
+                            title={t('projects.items.alanya.title')}
+                            description={t('projects.items.alanya.desc')}
                             technologies={['React', 'Next.js', 'Booking System', 'Stripe']}
                             link="https://alanyaholidays.com"
                             gradient="linear-gradient(135deg, #2dd4bf, #0ea5e9)"
@@ -221,7 +221,7 @@ export const Desktop = () => {
                 {windowStates.iffa.isOpen && !windowStates.iffa.isMinimized && (
                     <GlassWindow
                         key="iffa-window"
-                        title="Iffa Tech"
+                        title={t('projects.items.iffa.title')}
                         isOpen={true}
                         isMaximized={windowStates.iffa.isMaximized}
                         onClose={() => closeWindow('iffa')}
@@ -235,8 +235,8 @@ export const Desktop = () => {
                         height={320}
                     >
                         <ProjectWindowContent
-                            title="Iffa Tech"
-                            description="Innovative technical solutions and custom software development. Delivering robust digital products for modern business needs."
+                            title={t('projects.items.iffa.title')}
+                            description={t('projects.items.iffa.desc')}
                             technologies={['Software Development', 'Cloud Solutions', 'Enterprise Tech']}
                             link="https://iffatech.com"
                             gradient="linear-gradient(135deg, #818cf8, #6366f1)"
@@ -251,7 +251,7 @@ export const Desktop = () => {
                 {windowStates.kassimova.isOpen && !windowStates.kassimova.isMinimized && (
                     <GlassWindow
                         key="kassimova-window"
-                        title="Kassimova Design"
+                        title={t('projects.items.kassimova.title')}
                         isOpen={true}
                         isMaximized={windowStates.kassimova.isMaximized}
                         onClose={() => closeWindow('kassimova')}
@@ -265,8 +265,8 @@ export const Desktop = () => {
                         height={320}
                     >
                         <ProjectWindowContent
-                            title="Kassimova Design"
-                            description="A portfolio showcasing exquisite design works, branding, and visual storytelling."
+                            title={t('projects.items.kassimova.title')}
+                            description={t('projects.items.kassimova.desc')}
                             technologies={['UI/UX', 'Branding', 'Visual Identity']}
                             link="https://kassimova.design"
                             gradient="linear-gradient(135deg, #fb7185, #f43f5e)"
@@ -280,7 +280,7 @@ export const Desktop = () => {
                 {windowStates.projects.isOpen && !windowStates.projects.isMinimized && (
                     <GlassWindow
                         key="projects-window-main"
-                        title="Projects"
+                        title={t('projects.title')}
                         isOpen={true}
                         isMaximized={windowStates.projects.isMaximized}
                         onClose={() => closeWindow('projects')}

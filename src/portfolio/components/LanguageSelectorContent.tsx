@@ -1,7 +1,8 @@
 import React from 'react';
 import { Globe, Check } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { languages, LanguageCode } from '../../i18n/dictionaries';
+import { languages } from '../../i18n/dictionaries';
+import type { LanguageCode } from '../../i18n/dictionaries';
 
 interface LanguageSelectorContentProps {
     isMobile?: boolean;
@@ -44,7 +45,7 @@ const LanguageSelectorContentComponent: React.FC<LanguageSelectorContentProps> =
                 </div>
                 <div>
                     <h2 style={{ margin: 0, fontSize: isMobile ? '20px' : '24px', fontWeight: 600 }}>{t('desktop.settings')}</h2>
-                    <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>Select your preferred language</span>
+                    <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{t('desktop.settingsSubtitle')}</span>
                 </div>
             </div>
 
