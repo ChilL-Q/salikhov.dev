@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { translations, isRTL } from '../i18n/dictionaries';
@@ -13,20 +14,12 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [language, setLanguageState] = useState<LanguageCode>('en');
-
-    useEffect(() => {
-        // Try to load saved language, fallback to browser language, default to 'en'
+    const [language, setLanguageState] = useState<LanguageCode>(() => {
+        if (typeof window === 'undefined') return 'ru';
         const savedLang = localStorage.getItem('app_language') as LanguageCode;
-        if (savedLang && translations[savedLang]) {
-            setLanguageState(savedLang);
-        } else {
-            const browserLang = navigator.language.split('-')[0] as LanguageCode;
-            if (translations[browserLang]) {
-                setLanguageState(browserLang);
-            }
-        }
-    }, []);
+        if (savedLang && translations[savedLang]) return savedLang;
+        return 'ru';
+    });
 
     const setLanguage = (lang: LanguageCode) => {
         setLanguageState(lang);
@@ -35,22 +28,24 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const t = (path: string): string => {
         const keys = path.split('.');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let current: any = translations[language];
 
         for (const key of keys) {
-            if (current[key] === undefined) {
+            if (!current || typeof current !== 'object' || current[key] === undefined) {
                 console.warn(`Translation key not found: ${path} for language: ${language}`);
                 // Fallback to English if translation is missing
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 let englishFallback: any = translations['en'];
                 for (const k of keys) {
-                    if (englishFallback[k] === undefined) return path;
+                    if (!englishFallback || typeof englishFallback !== 'object' || englishFallback[k] === undefined) return path;
                     englishFallback = englishFallback[k];
                 }
-                return englishFallback;
+                return typeof englishFallback === 'string' ? englishFallback : path;
             }
             current = current[key];
         }
-        return current;
+        return typeof current === 'string' ? current : path;
     };
 
     // Apply RTL font setting to document body for global effect if needed

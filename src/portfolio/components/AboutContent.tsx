@@ -20,15 +20,66 @@ const AboutContentComponent: React.FC<AboutContentProps> = ({ isMobile }) => {
                     </div>
                 </div>
                 <h2 style={{ fontSize: '28px', marginBottom: '8px' }}>Chingiz Salikhov</h2>
-                <p style={{ opacity: 0.7, marginBottom: '24px' }}>{t('about.role')}</p>
-                <div style={{ lineHeight: '1.6', opacity: 0.8, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <p style={{ margin: 0 }}>{t('about.bio1')}</p>
-                    <p style={{ margin: 0 }}>{t('about.bio2')}</p>
+                <p style={{ margin: 0, opacity: 0.8, fontSize: '16px', fontWeight: 400, marginBottom: '24px' }}>
+                    {t('about.role2').split('&')[0]}<br />
+                    {t('about.role2').split('&')[1]}
+                </p>
+
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '30px' }}>
+                    <button
+                        onClick={() => window.open('https://t.me/salikhov_dev', '_blank')}
+                        style={{
+                            width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)',
+                            borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)',
+                            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                            cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px'
+                        }}
+                    >
+                        <Send size={16} /> {t('about.contactTelegram')}
+                    </button>
+                    <button
+                        onClick={() => window.location.href = 'mailto:salikhovchingiz@gmail.com'}
+                        style={{
+                            width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)',
+                            borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)',
+                            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                            cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px'
+                        }}
+                    >
+                        <Mail size={16} /> {t('about.sendEmail')}
+                    </button>
                 </div>
-                <div style={{ marginTop: '30px', display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                    {techStack.map(tag => (
-                        <span key={tag} style={{ background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '12px', fontSize: '13px' }}>{tag}</span>
-                    ))}
+
+                <div style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    padding: '20px',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                    marginBottom: '24px',
+                    textAlign: 'left'
+                }}>
+                    <h3 style={{ fontSize: '16px', marginBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>{t('about.bioTitle')}</h3>
+                    <p style={{ margin: 0, lineHeight: '1.6', opacity: 0.9, fontSize: '15px' }}>
+                        {t('about.bio3')}
+                    </p>
+                </div>
+
+                <div style={{ textAlign: 'left', marginBottom: '20px' }}>
+                    <h3 style={{ fontSize: '16px', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>{t('about.techStackTitle')}</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '8px' }}>
+                        {techStack.map(tag => (
+                            <span key={tag} style={{
+                                padding: '8px 12px',
+                                background: 'rgba(255,255,255,0.03)',
+                                borderRadius: '8px',
+                                fontSize: '13px',
+                                border: '1px solid rgba(255,255,255,0.08)',
+                                textAlign: 'center'
+                            }}>
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             </div>
         );
