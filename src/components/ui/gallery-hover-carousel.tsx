@@ -372,8 +372,8 @@ export default function GalleryHoverCarousel() {
                         transform: rotate(-45deg) !important;
                     }
                     .embla-slide.active-slide .project-card {
-                        border-color: rgba(245, 158, 11, 0.25) !important;
-                        box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.2), 0 0 0 1px rgba(245, 158, 11, 0.05) !important;
+                        border-color: rgba(255, 255, 255, 0.15) !important;
+                        box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8) !important;
                     }
                     .project-card-info-title {
                         font-size: 15px !important;
