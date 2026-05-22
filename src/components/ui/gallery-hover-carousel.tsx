@@ -391,7 +391,7 @@ export default function GalleryHoverCarousel() {
                     .project-card-info {
                         backdrop-filter: none !important;
                         -webkit-backdrop-filter: none !important;
-                        background: rgb(15, 15, 18) !important;
+                        background: rgba(9, 9, 11, 0.98) !important;
                     }
                     
                     .project-card-info-title {
