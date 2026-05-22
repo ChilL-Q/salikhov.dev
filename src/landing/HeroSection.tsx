@@ -1,10 +1,20 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { DottedSurface } from '../components/DottedSurface';
 import avatar from '../assets/ava.png';
 
 export const HeroSection = () => {
     const { t } = useLanguage();
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 30);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <section style={{
@@ -137,42 +147,54 @@ export const HeroSection = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                transition={{ delay: 1.5, duration: 1 }}
-                style={{
-                    position: 'absolute',
-                    bottom: '40px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '8px',
-                    color: 'var(--text-tertiary)',
-                    fontSize: '11px',
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                    zIndex: 2,
-                }}
-                className="hero-scroll"
-            >
-                <motion.div
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{ width: '24px', height: '40px', border: '1.5px solid var(--text-tertiary)', borderRadius: '12px', position: 'relative' }}
-                >
+            <AnimatePresence>
+                {!scrolled && (
                     <motion.div
-                        animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
-                        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                        style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)' }}
-                    />
-                </motion.div>
-                Scroll
-            </motion.div>
+                        key="hero-scroll"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.5 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                            position: 'absolute',
+                            bottom: '40px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '8px',
+                            color: 'var(--text-tertiary)',
+                            fontSize: '11px',
+                            letterSpacing: '1px',
+                            textTransform: 'uppercase',
+                            zIndex: 2,
+                            pointerEvents: 'none',
+                        }}
+                        className="hero-scroll"
+                    >
+                        <motion.div
+                            animate={{ y: [0, 6, 0] }}
+                            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                            style={{ width: '24px', height: '40px', border: '1.5px solid var(--text-tertiary)', borderRadius: '12px', position: 'relative' }}
+                        >
+                            <motion.div
+                                animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
+                                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                                style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)' }}
+                            />
+                        </motion.div>
+                        Scroll
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <style>{`
+                @media (max-width: 768px) {
+                    .hero-scroll {
+                        display: none !important;
+                    }
+                }
                 @media (max-width: 480px) {
                     .hero-avatar { width: 80px !important; height: 80px !important; margin-bottom: 20px !important; }
                     .hero-name { margin-bottom: 16px !important; }
