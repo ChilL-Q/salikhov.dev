@@ -18,10 +18,10 @@ interface ProjectCard {
 }
 
 const projects: ProjectCard[] = [
+    { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
+    { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
     { id: 'alanya', url: 'https://alanyaholidays.com', logo: alanyaLogo, bg: '#fcfcfc', tags: ['React', 'Next.js', 'PostgreSQL'] },
     { id: 'iffa', url: 'https://iffatech.com', logo: iffaLogo, bg: '#07080d', tags: ['TypeScript', 'Cloud', 'Node.js'] },
-    { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
-    { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
     { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
 ];
 
@@ -221,6 +221,7 @@ export default function GalleryHoverCarousel() {
                     position: absolute;
                     top: 0; left: 0; right: 0;
                     height: 100%;
+                    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
                     z-index: 1;
                 }
 
@@ -231,6 +232,7 @@ export default function GalleryHoverCarousel() {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
                     z-index: 2;
                 }
 
@@ -241,16 +243,16 @@ export default function GalleryHoverCarousel() {
                     object-fit: contain;
                     margin: auto;
                     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-                    transform: scale(1) translateY(0);
-                    will-change: transform;
+                    transform: scale(1);
                 }
 
                 .project-card-info {
                     position: absolute;
                     bottom: 0; left: 0; right: 0;
-                    padding: 20px 24px;
-                    height: 150px;
+                    padding: 24px 28px;
+                    height: 0;
                     opacity: 0;
+                    visibility: hidden;
                     overflow: hidden;
                     display: flex;
                     flex-direction: column;
@@ -259,9 +261,7 @@ export default function GalleryHoverCarousel() {
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
                     border-top: 1px solid rgba(255,255,255,0.08);
-                    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-                    transform: translateY(101%);
-                    will-change: transform, opacity;
+                    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
                     z-index: 3;
                 }
 
@@ -295,14 +295,23 @@ export default function GalleryHoverCarousel() {
 
                 /* Hover Interaction on Desktop (Hover-capable devices) */
                 @media (hover: hover) {
+                    .project-card:hover .project-card-bg,
+                    .project-card.hovered .project-card-bg {
+                        height: 56%;
+                    }
+                    .project-card:hover .project-card-logo-container,
+                    .project-card.hovered .project-card-logo-container {
+                        height: 55%;
+                    }
                     .project-card:hover .project-card-logo,
                     .project-card.hovered .project-card-logo {
-                        transform: scale(0.8) translateY(-25px);
+                        transform: scale(0.8);
                     }
                     .project-card:hover .project-card-info,
                     .project-card.hovered .project-card-info {
-                        transform: translateY(0);
+                        height: 45%;
                         opacity: 1;
+                        visibility: visible;
                     }
                     .project-card:hover .project-card-arrow,
                     .project-card.hovered .project-card-arrow {
@@ -331,30 +340,44 @@ export default function GalleryHoverCarousel() {
                         transform: scale(1.03) !important;
                     }
 
-                    .project-card-info {
-                        height: 135px !important;
-                        padding: 12px 16px !important;
-                    }
-
                     /* Inactive card on mobile: full-screen logo, details fully collapsed */
+                    .embla-slide:not(.active-slide) .project-card-bg {
+                        height: 100% !important;
+                    }
+                    .embla-slide:not(.active-slide) .project-card-logo-container {
+                        height: 100% !important;
+                    }
                     .embla-slide:not(.active-slide) .project-card-logo {
-                        transform: scale(1) translateY(0) !important;
+                        transform: scale(1) !important;
                     }
                     .embla-slide:not(.active-slide) .project-card-info {
-                        transform: translateY(101%) !important;
+                        height: 0 !important;
+                        min-height: 0 !important;
                         opacity: 0 !important;
+                        visibility: hidden !important;
+                        padding: 0 16px !important;
+                        border-top-color: transparent !important;
                     }
                     .embla-slide:not(.active-slide) .project-card-arrow {
                         transform: rotate(0deg) !important;
                     }
 
                     /* Active card on mobile: details expanded, logo shrunk */
+                    .embla-slide.active-slide .project-card-bg {
+                        height: 56% !important;
+                    }
+                    .embla-slide.active-slide .project-card-logo-container {
+                        height: 55% !important;
+                    }
                     .embla-slide.active-slide .project-card-logo {
-                        transform: scale(0.8) translateY(-25px) !important;
+                        transform: scale(0.8) !important;
                     }
                     .embla-slide.active-slide .project-card-info {
-                        transform: translateY(0) !important;
+                        height: auto !important;
+                        min-height: 44% !important;
                         opacity: 1 !important;
+                        visibility: visible !important;
+                        padding: 14px 16px !important;
                     }
                     .embla-slide.active-slide .project-card-arrow {
                         transform: rotate(-45deg) !important;
@@ -363,6 +386,14 @@ export default function GalleryHoverCarousel() {
                         border-color: rgba(255, 255, 255, 0.15) !important;
                         box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8) !important;
                     }
+                    
+                    /* Optimization: Disable heavy backdrop-filter blur on mobile screens */
+                    .project-card-info {
+                        backdrop-filter: none !important;
+                        -webkit-backdrop-filter: none !important;
+                        background: rgb(15, 15, 18) !important;
+                    }
+                    
                     .project-card-info-title {
                         font-size: 15px !important;
                     }
