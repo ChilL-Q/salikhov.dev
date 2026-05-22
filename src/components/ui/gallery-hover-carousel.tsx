@@ -27,12 +27,11 @@ const projects: ProjectCard[] = [
 
 export default function GalleryHoverCarousel() {
     const { t } = useLanguage();
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-        checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
@@ -58,9 +57,21 @@ export default function GalleryHoverCarousel() {
         setSelectedIndex(emblaApi.selectedScrollSnap());
     }, [emblaApi]);
 
+    // Force Embla reInit whenever options change dynamically (e.g. isMobile changes)
     useEffect(() => {
         if (!emblaApi) return;
+        emblaApi.reInit({
+            loop: true,
+            align: isMobile ? 'center' : 'start',
+            slidesToScroll: 1,
+            containScroll: false,
+            dragFree: false
+        });
         updateButtons();
+    }, [emblaApi, isMobile, updateButtons]);
+
+    useEffect(() => {
+        if (!emblaApi) return;
         emblaApi.on('select', updateButtons);
         emblaApi.on('reInit', updateButtons);
         return () => {
