@@ -39,11 +39,11 @@ export default function GalleryHoverCarousel() {
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
         { 
-            loop: isMobile, 
+            loop: true, 
             align: isMobile ? 'center' : 'start', 
             slidesToScroll: 1, 
-            containScroll: isMobile ? false : 'trimSnaps', 
-            dragFree: !isMobile 
+            containScroll: false, 
+            dragFree: false
         },
         [WheelGesturesPlugin()]
     );
