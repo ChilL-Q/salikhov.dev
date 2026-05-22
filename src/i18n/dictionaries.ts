@@ -99,7 +99,7 @@ export const translations = {
             s4Desc: 'You have the right to request the deletion of any correspondence. Please contact us directly using the provided email address.'
         },
         hero: {
-            greeting: 'Anything is buildable.',
+            greeting: 'If you can imagine it, I can code it.',
             name: 'Chingiz Salikhov',
             role: 'Product Designer',
             location: 'Based in Astana'
@@ -199,7 +199,7 @@ export const translations = {
             s4Desc: 'Вы имеете право потребовать удаление любой вашей переписки. Для этого просто напишите нам на email.'
         },
         hero: {
-            greeting: 'Всё можно построить.',
+            greeting: 'Если вы можете это представить, я могу это закодить.',
             name: 'Чингиз Салихов',
             role: 'Продуктовый Дизайнер',
             location: 'Астана, Казахстан'
@@ -299,7 +299,7 @@ export const translations = {
             s4Desc: 'Кез келген хабарламаны өшіруді талап ете аласыз. Ол үшін бізге тікелей хат жазыңыз.'
         },
         hero: {
-            greeting: 'Бәрін құрастыруға болады.',
+            greeting: 'Егер сіз оны елестете алсаңыз, мен оны жүзеге асыра аламын.',
             name: 'Чингиз Салихов',
             role: 'Өнім Дизайнері',
             location: 'Астана қаласы'
