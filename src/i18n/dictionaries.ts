@@ -1,14 +1,12 @@
-export type LanguageCode = 'en' | 'ru' | 'kk' | 'ar' | 'tr';
+export type LanguageCode = 'en' | 'ru' | 'kz';
 
 export const languages = [
     { code: 'en' as const, label: 'English' },
     { code: 'ru' as const, label: 'Русский' },
-    { code: 'kk' as const, label: 'Қазақша' },
-    { code: 'ar' as const, label: 'العربية' },
-    { code: 'tr' as const, label: 'Türkçe' },
+    { code: 'kz' as const, label: 'Қазақша' },
 ];
 
-export const isRTL = (lang: LanguageCode) => lang === 'ar';
+export const isRTL = (_lang: LanguageCode) => false;
 
 export const translations = {
     en: {
@@ -34,7 +32,7 @@ export const translations = {
             title: 'About Me',
             role: 'Product Designer & Frontend Developer',
             role2: 'Full Stack Developer & AI Enthusiast',
-            location: 'Istanbul, Turkey',
+            location: 'Astana, Kazakhstan',
             bio1: 'Hi! I am Chingiz—a Full Stack Developer and AI Enthusiast dedicated to building the future of the web.',
             bio2: 'You bring the business idea—I bring the digital architecture to power it. With over 6 years of engineering experience, I specialize in transforming complex concepts into fluid, high-performance digital products that drive results.',
             bio3: 'My focus lies at the intersection of cutting-edge AI and robust full-stack development. I build clean, scalable, and intuitive ecosystems using the latest industry tools, constantly evolving my stack to ensure every project is future-proof.',
@@ -47,14 +45,17 @@ export const translations = {
         },
         projects: {
             title: 'Projects',
+            subtitle: 'Experience',
             viewProject: 'View Project',
             visitSite: 'Visit Site',
             techTools: 'Technologies & Tools',
             technologies: 'Technologies Used',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Premium rentals platform in Alanya, Turkey.' },
+                alanya: { title: 'Alanya Holidays', desc: 'Premium rentals platform for vacation properties.' },
                 iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
-                kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' }
+                kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
+                abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
+                azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' }
             }
         },
         common: {
@@ -98,10 +99,10 @@ export const translations = {
             s4Desc: 'You have the right to request the deletion of any correspondence. Please contact us directly using the provided email address.'
         },
         hero: {
-            greeting: 'Hi, I am',
-            name: 'Chingiz',
+            greeting: 'Anything is buildable.',
+            name: 'Chingiz Salikhov',
             role: 'Product Designer',
-            location: 'Based in Istanbul'
+            location: 'Based in Astana'
         },
         systemAlert: {
             settingsTitle: 'Settings',
@@ -131,7 +132,7 @@ export const translations = {
             title: 'Обо мне',
             role: 'Продуктовый Дизайнер & Фронтенд Разработчик',
             role2: 'Full Stack Разработчик & AI Энтузиаст',
-            location: 'Стамбул, Турция',
+            location: 'Астана, Казахстан',
             bio1: 'Привет! Я Чингиз — Full Stack разработчик и AI-энтузиаст, создающий современные цифровые миры.',
             bio2: 'Ваша бизнес-идея заслуживает мощного технического воплощения. С более чем 6-летним опытом в разработке, я помогаю брендам проходить путь от сырого концепта до масштабируемого, высокопроизводительного продукта.',
             bio3: 'Моя работа — это синтез передового ИИ и надежной Full Stack архитектуры. Я создаю чистые, эффективные и интуитивно понятные веб-системы, используя только актуальные инструменты. Постоянно расширяю свой стек, чтобы каждое решение было современным и готовым к вызовам будущего.',
@@ -144,14 +145,17 @@ export const translations = {
         },
         projects: {
             title: 'Проекты',
+            subtitle: 'Опыт',
             viewProject: 'Посмотреть проект',
             visitSite: 'Посетить сайт',
             techTools: 'Технологии и инструменты',
             technologies: 'Используемые технологии',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Платформа премиум-аренды в Алании, Турция.' },
+                alanya: { title: 'Alanya Holidays', desc: 'Платформа премиум-аренды для отпускных объектов.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
-                kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' }
+                kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
+                abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
+                azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' }
             }
         },
         common: {
@@ -195,17 +199,17 @@ export const translations = {
             s4Desc: 'Вы имеете право потребовать удаление любой вашей переписки. Для этого просто напишите нам на email.'
         },
         hero: {
-            greeting: 'Привет, я',
-            name: 'Чингиз',
+            greeting: 'Всё можно построить.',
+            name: 'Чингиз Салихов',
             role: 'Продуктовый Дизайнер',
-            location: 'Стамбул, Турция'
+            location: 'Астана, Казахстан'
         },
         systemAlert: {
             settingsTitle: 'Настройки',
             languageChanged: 'Язык изменен на Русский'
         }
     },
-    kk: {
+    kz: {
         desktop: {
             about: 'Мен туралы',
             projects: 'Жобалар',
@@ -228,8 +232,8 @@ export const translations = {
             title: 'Мен туралы',
             role: 'Өнім Дизайнері & Фронтенд Әзірлеуші',
             role2: 'Full Stack Әзірлеуші & ИИ Әуесқойы',
-            location: 'Ыстамбұл, Түркия',
-            bio1: 'Сәлем! Мен Шыңғыспын — заманауи цифрлық әлемді құрушы Full Stack әзірлеуші және ИИ әуесқойы.',
+            location: 'Астана, Қазақстан',
+            bio1: 'Сәлем! Мен Чингиз — заманауи цифрлық әлемді құрушы Full Stack әзірлеуші және ИИ әуесқойы.',
             bio2: 'Сіздің бизнес-идеяңыз қуатты техникалық іске асыруға лайықты. Бағдарламалаудағы 6 жылдан астам тәжірибеммен мен брендтерге концепциядан бастап ауқымды, жоғары өнімді өнімге дейінгі жолдан өтуге көмектесемін.',
             bio3: 'Менің жұмысым — озық ИИ мен сенімді Full Stack архитектурасының синтезі. Мен тек өзекті құралдарды пайдалана отырып, таза, тиімді және интуитивті түсінікті веб-жүйелерді жасаймын. Әрбір шешім заманауи және болашаққа дайын болуы үшін өз стегімді үнемі кеңейтіп отырамын.',
             bioTitle: 'Био',
@@ -241,14 +245,17 @@ export const translations = {
         },
         projects: {
             title: 'Жобалар',
+            subtitle: 'Тәжірибе',
             viewProject: 'Жобаны көру',
             visitSite: 'Сайтқа өту',
             techTools: 'Технологиялар мен құралдар',
             technologies: 'Қолданылған технологиялар',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Аланиядағы премиум жалға беру платформасы.' },
+                alanya: { title: 'Alanya Holidays', desc: 'Демалыс объектілері үшін премиум жалға беру платформасы.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
-                kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' }
+                kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
+                abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },
+                azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' }
             }
         },
         common: {
@@ -265,7 +272,7 @@ export const translations = {
             memoryValue: 'Full Stack Knowledge Base',
             startupDisk: 'Жүктеу дискісі',
             startupDiskValue: 'Vite + TypeScript',
-            footer: 'Шыңғыс Салыхов әзірлеген © 2026'
+            footer: 'Чингиз Салихов әзірлеген © 2026'
         },
         contact: {
             title: 'Байланыс',
@@ -292,208 +299,14 @@ export const translations = {
             s4Desc: 'Кез келген хабарламаны өшіруді талап ете аласыз. Ол үшін бізге тікелей хат жазыңыз.'
         },
         hero: {
-            greeting: 'Сәлем, мен',
-            name: 'Шыңғыспын',
+            greeting: 'Бәрін құрастыруға болады.',
+            name: 'Чингиз Салихов',
             role: 'Өнім Дизайнері',
-            location: 'Ыстамбұл қаласы'
+            location: 'Астана қаласы'
         },
         systemAlert: {
             settingsTitle: 'Баптаулар',
             languageChanged: 'Тіл қазақшаға ауыстырылды'
-        }
-    },
-    ar: {
-        desktop: {
-            about: 'نبذة عني',
-            projects: 'المشاريع',
-            contact: 'اتصل بي',
-            privacy: 'الخصوصية',
-            settings: 'اللغة',
-            settingsSubtitle: 'اختر لغتك المفضلة'
-        },
-        topbar: {
-            about: 'عني',
-            projects: 'المشاريع',
-            contact: 'اتصال',
-            socials: 'تواصل اجتماعي',
-            resume: 'سيرة ذاتية',
-            email: 'بريد',
-            phone: 'هاتف',
-            copied: 'تم النسخ!'
-        },
-        about: {
-            title: 'نبذة عني',
-            role: 'مصمم منتجات ومطور واجهات',
-            role2: 'مطور Full Stack ومتحمس للذكاء الاصطناعي',
-            location: 'إسطنبول، تركيا',
-            bio1: 'مرحباً! أنا جنكيز، مطور Full Stack ومتحمس للذكاء الاصطناعي مكرس لبناء مستقبل الويب.',
-            bio2: 'أنت تقدم فكرة العمل — وأنا أقدم الهندسة الرقمية لتفعيلها. مع أكثر من 6 سنوات من الخبرة الهندسية، أتخصص في تحويل المفاهيم المعقدة إلى منتجات رقمية سلسة وعالية الأداء تحقق النتائج.',
-            bio3: 'ينصب تركيزي على تقاطع الذكاء الاصطناعي المتطور وتطوير الويب المتكامل. أقوم ببناء أنظمة بيئية نظيفة وقابلة للتطوير وبديهية باستخدام أحدث الأدوات، مع تطوير مهاراتي باستمرار لضمان استدامة كل مشروع.',
-            bioTitle: 'السيرة',
-            skills: 'المهارات والأدوات',
-            techStackTitle: 'مجموعة التقنيات',
-            experience: 'الخبرة',
-            contactTelegram: 'اتصال عبر تلغرام',
-            sendEmail: 'إرسال بريد إلكتروني'
-        },
-        projects: {
-            title: 'المشاريع',
-            viewProject: 'عرض المشروع',
-            visitSite: 'زيارة الموقع',
-            techTools: 'التقنيات والأدوات',
-            technologies: 'التقنيات المستخدمة',
-            items: {
-                alanya: { title: 'Alanya Holidays', desc: 'منصة تأجير متميزة في ألانيا، تركيا.' },
-                iffa: { title: 'Iffa Tech', desc: 'حلول وبرامج تقنية للشركات.' },
-                kassimova: { title: 'Kassimova Design', desc: 'محفظة الهندسة المعمارية والتصميم الداخلي.' }
-            }
-        },
-        common: {
-            done: 'تم'
-        },
-        aboutMac: {
-            title: 'Portfolio OS',
-            version: 'الإصدار 1.0 (Sonoma)',
-            display: 'الشاشة',
-            displayValue: 'Liquid Retina XDR، مدعوم من React',
-            processor: 'المعالج',
-            processorValue: 'Human Intelligence + AI Assist',
-            memory: 'الذاكرة',
-            memoryValue: 'Full Stack Knowledge Base',
-            startupDisk: 'قرص الإقلاع',
-            startupDiskValue: 'Vite + TypeScript',
-            footer: 'تصميم وبناء Chingiz Salikhov © 2026'
-        },
-        contact: {
-            title: 'اتصل بي',
-            name: 'الاسم',
-            email: 'البريد الإلكتروني',
-            message: 'الرسالة',
-            send: 'إرسال',
-            sending: 'جاري الإرسال...',
-            success: 'تم إرسال الرسالة بنجاح!',
-            error: 'فشل إرسال الرسالة. حاول مرة اخرى.',
-            getInTouch: 'ابقى على تواصل',
-            description: "هل لديك مشروع في الاعتبار أو تريد فقط إلقاء التحية؟ أحب أن أسمع منك."
-        },
-        privacy: {
-            title: 'سياسة الخصوصية',
-            updated: 'تاريخ التحديث: فبراير 2026',
-            s1Title: '1. جمع البيانات',
-            s1Desc: 'هذا موقع شخصي. نحن لا نستخدم ملفات تعريف الارتباط للتتبع. البيانات الوحيدة التي يتم جمعها هي ما تقدمه طواعية من خلال نموذج الاتصال.',
-            s2Title: '2. كيف نستخدم بياناتك',
-            s2Desc: 'يتم استخدام أي معلومات مقدمة عبر نموذج الاتصال حصريًا لغرض التواصل معك. نحن لا نبيع بياناتك لأطراف ثالثة.',
-            s3Title: '3. التخزين المحلي',
-            s3Desc: 'قد نستخدم تقنيات المتصفح القياسية فقط لتذكر تفضيلات واجهة المستخدم الخاصة بك (مثل إعدادات اللغة).',
-            s4Title: '4. حقوقك',
-            s4Desc: 'لديك الحق في طلب حذف أي مراسلات. يرجى الاتصال بنا مباشرة لمعالجة ذلك.'
-        },
-        hero: {
-            greeting: 'مرحباً، أنا',
-            name: 'جنكيز',
-            role: 'مصمم منتجات',
-            location: 'مقيم في إسطنبول'
-        },
-        systemAlert: {
-            settingsTitle: 'إعدادات',
-            languageChanged: 'تم تغيير اللغة إلى العربية'
-        }
-    },
-    tr: {
-        desktop: {
-            about: 'Hakkımda',
-            projects: 'Projeler',
-            contact: 'İletişim',
-            privacy: 'Gizlilik',
-            settings: 'Dil',
-            settingsSubtitle: 'Tercih ettiğiniz dili seçin'
-        },
-        topbar: {
-            about: 'Hakkımda',
-            projects: 'Projeler',
-            contact: 'İletişim',
-            socials: 'Sosyal Medya',
-            resume: 'Özgeçmiş',
-            email: 'E-posta',
-            phone: 'Telefon',
-            copied: 'Kopyalandı!'
-        },
-        about: {
-            title: 'Hakkımda',
-            role: 'Ürün Tasarımcısı & Arayüz Geliştiricisi',
-            role2: 'Full Stack Geliştirici & Yapay Zeka Meraklısı',
-            location: 'İstanbul, Türkiye',
-            bio1: 'Merhaba! Ben Cengiz — Web\'in geleceğini inşa etmeye kendini adamış bir Full Stack Geliştirici ve Yapay Zeka Meraklısı.',
-            bio2: 'Siz iş fikrini getirirsiniz — ben onu hayata geçirecek dijital mimariyi sağlarım. 6 yılı aşkın mühendislik deneyimimle, karmaşık konseptleri sonuç odaklı, akıcı ve yüksek performanslı dijital ürünlere dönüştürme konusunda uzmanım.',
-            bio3: 'Odak noktam, ileri düzey yapay zeka ile güçlü full-stack geliştirmenin kesiştiği yerdedir. En modern araçları kullanarak temiz, ölçeklenebilir ve sezgisel ekosistemler kuruyor, her projenin geleceğe hazır olmasını sağlamak için yetkinliklerimi sürekli geliştiriyorum.',
-            bioTitle: 'Biyografi',
-            skills: 'Yetenekler & Araçlar',
-            techStackTitle: 'Teknoloji Yığını',
-            experience: 'Deneyim',
-            contactTelegram: 'Telegram ile İletişime Geç',
-            sendEmail: 'E-posta Gönder'
-        },
-        projects: {
-            title: 'Projeler',
-            viewProject: 'Projeyi Görüntüle',
-            visitSite: 'Siteyi Ziyaret Et',
-            techTools: 'Teknolojiler ve Araçlar',
-            technologies: 'Kullanılan Teknolojiler',
-            items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Alanya, Türkiye\'de premium kiralama platformu.' },
-                iffa: { title: 'Iffa Tech', desc: 'Kurumsal teknik çözümler ve yazılım.' },
-                kassimova: { title: 'Kassimova Design', desc: 'Mimarlık ve iç mimarlık portföyü.' }
-            }
-        },
-        common: {
-            done: 'Tamam'
-        },
-        aboutMac: {
-            title: 'Portfolio OS',
-            version: 'Sürüm 1.0 (Sonoma esintili)',
-            display: 'Ekran',
-            displayValue: 'Liquid Retina XDR, React Destekli',
-            processor: 'İşlemci',
-            processorValue: 'Human Intelligence + AI Assist',
-            memory: 'Bellek',
-            memoryValue: 'Full Stack Knowledge Base',
-            startupDisk: 'Başlangıç Diski',
-            startupDiskValue: 'Vite + TypeScript',
-            footer: 'Chingiz Salikhov tarafından tasarlandı и geliştirildi © 2026'
-        },
-        contact: {
-            title: 'İletişim',
-            name: 'İsim',
-            email: 'E-posta',
-            message: 'Mesaj',
-            send: 'Gönder',
-            sending: 'Gönderiliyor...',
-            success: 'Mesaj başarıyla gönderildi!',
-            error: 'Mesaj gönderilemedi. Lütfen tekrar deneyin.',
-            getInTouch: 'İletişime Geçin',
-            description: "Aklınızda bir proje mi var veya sadece merhaba mı demek istiyorsunuz? Sizden haber almaktan memnuniyet duyarım."
-        },
-        privacy: {
-            title: 'Gizlilik Politikası',
-            updated: 'Son güncelleme: Şubat 2026',
-            s1Title: '1. Veri Toplama',
-            s1Desc: 'Bu kişisel bir portföy web sitesidir. İzleme çerezleri veya analitik araçlar kullanmıyoruz. Sadece İletişim formu aracılığıyla kendi isteğinizle sağladığınız veriler toplanır.',
-            s2Title: '2. Verilerinizi Nasıl Kullanıyoruz',
-            s2Desc: 'İletişim formu aracılığıyla gönderilen bilgiler yalnızca talebinizi yanıtlamak amacıyla kullanılır. Bilgilerinizi üçüncü taraflarla paylaşmıyoruz.',
-            s3Title: '3. Yerel Depolama',
-            s3Desc: 'UI tercihlerinizi (pencere konumları veya dil ayarları gibi) hatırlamak için yalnızca standart tarayıcı teknolojilerini kullanabiliriz.',
-            s4Title: '4. Haklarınız',
-            s4Desc: 'Herhangi bir yazışmanın silinmesini talep etme hakkına sahipsiniz. Bunun için doğrudan bizimle iletişime geçebilirsiniz.'
-        },
-        hero: {
-            greeting: 'Merhaba, ben',
-            name: 'Cengiz',
-            role: 'Ürün Tasarımcısı',
-            location: 'İstanbul, Türkiye'
-        },
-        systemAlert: {
-            settingsTitle: 'Ayarlar',
-            languageChanged: 'Dil Türkçeye değiştirildi'
         }
     }
 };
