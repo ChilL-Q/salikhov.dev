@@ -320,14 +320,21 @@ export default function GalleryHoverCarousel() {
                 /* Mobile/Touch screen fallback (pointer: coarse) or screen widths */
                 @media (max-width: 768px) {
                     .embla-slide {
-                        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease !important;
+                        transition: opacity 0.4s ease !important;
                     }
                     .embla-slide:not(.active-slide) {
                         opacity: 0.5 !important;
-                        transform: scale(0.92) !important;
                     }
                     .embla-slide.active-slide {
                         opacity: 1 !important;
+                    }
+                    .embla-slide .project-card {
+                        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s !important;
+                    }
+                    .embla-slide:not(.active-slide) .project-card {
+                        transform: scale(0.92) !important;
+                    }
+                    .embla-slide.active-slide .project-card {
                         transform: scale(1.03) !important;
                     }
 
