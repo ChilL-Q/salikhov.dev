@@ -17,15 +17,18 @@ export const HeroSection = () => {
     }, []);
 
     return (
-        <section style={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px 24px 80px',
-            position: 'relative',
-        }}>
+        <section 
+            className="hero-section"
+            style={{
+                minHeight: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px 24px 80px',
+                position: 'relative',
+            }}
+        >
             <DottedSurface />
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -191,6 +194,11 @@ export const HeroSection = () => {
 
             <style>{`
                 @media (max-width: 768px) {
+                    .hero-section {
+                        justify-content: flex-start !important;
+                        padding-top: clamp(90px, 14vh, 140px) !important;
+                        padding-bottom: 40px !important;
+                    }
                     .hero-scroll {
                         display: none !important;
                     }
