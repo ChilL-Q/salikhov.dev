@@ -196,7 +196,7 @@ export const HeroSection = () => {
                 @media (max-width: 768px) {
                     .hero-section {
                         justify-content: flex-start !important;
-                        padding-top: clamp(90px, 14vh, 140px) !important;
+                        padding-top: clamp(120px, 16vh, 170px) !important;
                         padding-bottom: 40px !important;
                     }
                     .hero-scroll {
