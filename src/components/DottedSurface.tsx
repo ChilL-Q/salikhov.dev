@@ -137,18 +137,25 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         };
 
         let lastWidth = window.innerWidth;
+        let maxHeight = window.innerHeight;
 
         const handleResize = () => {
-            // On mobile browsers, scrolling shows/hides the address bar and
-            // fires resize events with only innerHeight changing. Ignore
-            // those so the animation doesn't jump while scrolling.
-            if (window.innerWidth === lastWidth) return;
-            lastWidth = window.innerWidth;
+            // On mobile browsers, scrolling shows/hides the address bar,
+            // shrinking and growing innerHeight repeatedly. Only grow the
+            // canvas to the tallest height seen (address bar hidden) and
+            // never shrink it back down, so the animation keeps filling the
+            // full screen without jumping while scrolling.
+            const widthChanged = window.innerWidth !== lastWidth;
+            const grew = window.innerHeight > maxHeight;
+            if (!widthChanged && !grew) return;
 
-            camera.aspect = window.innerWidth / window.innerHeight;
+            lastWidth = window.innerWidth;
+            maxHeight = Math.max(maxHeight, window.innerHeight);
+
+            camera.aspect = window.innerWidth / maxHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.uViewportHeight.value = window.innerHeight * window.devicePixelRatio;
+            renderer.setSize(window.innerWidth, maxHeight);
+            material.uniforms.uViewportHeight.value = maxHeight * window.devicePixelRatio;
         };
 
         window.addEventListener('resize', handleResize);
