@@ -27,6 +27,21 @@ const fragmentShader = `
     }
 `;
 
+// Mobile browsers show the address bar on load and hide it once the user
+// starts scrolling, growing window.innerHeight. Measuring against `100lvh`
+// (the viewport size with browser UI collapsed) upfront lets us size the
+// canvas correctly from the very first frame, so it never has to jump when
+// the address bar hides for the first time.
+function getMaxViewportHeight(): number {
+    if (typeof document === 'undefined') return window.innerHeight;
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:fixed;top:0;left:0;height:100lvh;width:0;visibility:hidden;pointer-events:none;';
+    document.body.appendChild(probe);
+    const height = probe.getBoundingClientRect().height;
+    document.body.removeChild(probe);
+    return height || window.innerHeight;
+}
+
 export function DottedSurface({ ...props }: DottedSurfaceProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const isInitialized = useRef(false);
@@ -40,11 +55,13 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         const AMOUNTX = 40;
         const AMOUNTY = 80;
 
+        const initialHeight = getMaxViewportHeight();
+
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(
             60,
-            window.innerWidth / window.innerHeight,
+            window.innerWidth / initialHeight,
             1,
             10000,
         );
@@ -55,7 +72,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             antialias: true,
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, initialHeight);
         renderer.setClearColor(0x000000, 0);
 
         container.appendChild(renderer.domElement);
@@ -96,7 +113,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 pointTexture: { value: texture },
-                uViewportHeight: { value: window.innerHeight * window.devicePixelRatio },
+                uViewportHeight: { value: initialHeight * window.devicePixelRatio },
             },
             vertexShader,
             fragmentShader,
@@ -137,7 +154,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         };
 
         let lastWidth = window.innerWidth;
-        let maxHeight = window.innerHeight;
+        let maxHeight = initialHeight;
 
         const handleResize = () => {
             // On mobile browsers, scrolling shows/hides the address bar,
