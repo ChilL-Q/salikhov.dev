@@ -136,7 +136,15 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             count += 0.03;
         };
 
+        let lastWidth = window.innerWidth;
+
         const handleResize = () => {
+            // On mobile browsers, scrolling shows/hides the address bar and
+            // fires resize events with only innerHeight changing. Ignore
+            // those so the animation doesn't jump while scrolling.
+            if (window.innerWidth === lastWidth) return;
+            lastWidth = window.innerWidth;
+
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
