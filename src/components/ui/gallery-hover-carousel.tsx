@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
+import Autoplay from 'embla-carousel-autoplay';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import alanyaLogo from '@/assets/projects-logos/alanya-holidays.png';
@@ -36,15 +37,19 @@ export default function GalleryHoverCarousel() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    const autoplay = useRef(
+        Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })
+    );
+
     const [emblaRef, emblaApi] = useEmblaCarousel(
-        { 
-            loop: true, 
-            align: isMobile ? 'center' : 'start', 
-            slidesToScroll: 1, 
-            containScroll: false, 
+        {
+            loop: true,
+            align: isMobile ? 'center' : 'start',
+            slidesToScroll: 1,
+            containScroll: false,
             dragFree: false
         },
-        [WheelGesturesPlugin()]
+        [WheelGesturesPlugin(), autoplay.current]
     );
     const [hoveredId, setHoveredId] = useState<string | null>(null);
     const [canScrollPrev, setCanScrollPrev] = useState(false);
