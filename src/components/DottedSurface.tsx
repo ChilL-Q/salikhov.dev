@@ -126,13 +126,22 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         const points = new THREE.Points(geometry, material);
         scene.add(points);
 
+        // Advance by elapsed time rather than a fixed amount per frame, so
+        // the animation runs at the same speed regardless of the display's
+        // refresh rate / actual FPS (e.g. a 60Hz phone vs a 120Hz laptop).
+        const COUNT_PER_SECOND = 1.8;
         let count = 0;
+        let lastTime = performance.now();
         let animationId: number;
         let isRunning = true;
 
         const animate = () => {
             if (!isRunning) return;
             animationId = requestAnimationFrame(animate);
+
+            const now = performance.now();
+            const delta = (now - lastTime) / 1000;
+            lastTime = now;
 
             const positionAttribute = geometry.attributes.position;
             const posArray = positionAttribute.array as Float32Array;
@@ -150,7 +159,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
 
             positionAttribute.needsUpdate = true;
             renderer.render(scene, camera);
-            count += 0.03;
+            count += COUNT_PER_SECOND * delta;
         };
 
         let lastWidth = window.innerWidth;
