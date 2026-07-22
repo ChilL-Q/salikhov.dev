@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { DottedSurface } from '../components/DottedSurface';
-import avatar from '../assets/ava.png';
+import avatar from '../assets/ava.webp';
 
 export const HeroSection = () => {
     const { t } = useLanguage();
