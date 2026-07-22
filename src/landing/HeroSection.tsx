@@ -41,9 +41,9 @@ export const HeroSection = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.1, duration: 0.6, type: 'spring', stiffness: 200 }}
                     style={{
-                        width: '96px',
-                        height: '96px',
-                        borderRadius: '28px',
+                        width: '128px',
+                        height: '128px',
+                        borderRadius: '36px',
                         overflow: 'hidden',
                         margin: '0 auto 24px',
                         border: '2px solid rgba(255, 255, 255, 0.1)',
@@ -204,7 +204,7 @@ export const HeroSection = () => {
                     }
                 }
                 @media (max-width: 480px) {
-                    .hero-avatar { width: 80px !important; height: 80px !important; margin-bottom: 20px !important; }
+                    .hero-avatar { width: 104px !important; height: 104px !important; border-radius: 30px !important; margin-bottom: 20px !important; }
                     .hero-name { margin-bottom: 16px !important; }
                 }
             `}</style>
