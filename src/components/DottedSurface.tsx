@@ -56,12 +56,17 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         const AMOUNTY = 80;
 
         const initialHeight = getMaxViewportHeight();
+        // documentElement.clientWidth excludes the scrollbar, unlike
+        // window.innerWidth — page content centers within it, so the canvas
+        // must match or the dot grid renders slightly off-center.
+        const getViewportWidth = () => document.documentElement.clientWidth || window.innerWidth;
+        const initialWidth = getViewportWidth();
 
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(
             60,
-            window.innerWidth / initialHeight,
+            initialWidth / initialHeight,
             1,
             10000,
         );
@@ -72,7 +77,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             antialias: true,
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, initialHeight);
+        renderer.setSize(initialWidth, initialHeight);
         renderer.setClearColor(0x000000, 0);
 
         container.appendChild(renderer.domElement);
@@ -84,11 +89,11 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
 
         for (let ix = 0; ix < AMOUNTX; ix++) {
             for (let iy = 0; iy < AMOUNTY; iy++) {
-                const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
+                const x = ix * SEPARATION - ((AMOUNTX - 1) * SEPARATION) / 2;
                 const y = 0;
-                const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
+                const z = iy * SEPARATION - ((AMOUNTY - 1) * SEPARATION) / 2;
                 positions.push(x, y, z);
-                colors.push(0.96, 0.62, 0.04);
+                colors.push(0.81, 0.56, 0.34);
             }
         }
 
@@ -162,7 +167,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             count += COUNT_PER_SECOND * delta;
         };
 
-        let lastWidth = window.innerWidth;
+        let lastWidth = initialWidth;
         let maxHeight = initialHeight;
 
         const handleResize = () => {
@@ -171,16 +176,17 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             // canvas to the tallest height seen (address bar hidden) and
             // never shrink it back down, so the animation keeps filling the
             // full screen without jumping while scrolling.
-            const widthChanged = window.innerWidth !== lastWidth;
+            const width = getViewportWidth();
+            const widthChanged = width !== lastWidth;
             const grew = window.innerHeight > maxHeight;
             if (!widthChanged && !grew) return;
 
-            lastWidth = window.innerWidth;
+            lastWidth = width;
             maxHeight = Math.max(maxHeight, window.innerHeight);
 
-            camera.aspect = window.innerWidth / maxHeight;
+            camera.aspect = width / maxHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, maxHeight);
+            renderer.setSize(width, maxHeight);
             material.uniforms.uViewportHeight.value = maxHeight * window.devicePixelRatio;
         };
 

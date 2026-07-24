@@ -102,7 +102,7 @@ export default function GalleryHoverCarousel() {
                     style={{
                         position: 'absolute', left: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
                         width: 40, height: 40, borderRadius: '50%',
-                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(9,9,11,0.8)',
+                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(13,11,9,0.8)',
                         backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: canScrollPrev ? 'pointer' : 'default',
                         opacity: canScrollPrev ? 1 : 0,
@@ -117,7 +117,7 @@ export default function GalleryHoverCarousel() {
                     style={{
                         position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
                         width: 40, height: 40, borderRadius: '50%',
-                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(9,9,11,0.8)',
+                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(13,11,9,0.8)',
                         backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: canScrollNext ? 'pointer' : 'default',
                         opacity: canScrollNext ? 1 : 0,
@@ -262,7 +262,7 @@ export default function GalleryHoverCarousel() {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    background: rgba(9, 9, 11, 0.95);
+                    background: rgba(13, 11, 9, 0.95);
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
                     border-top: 1px solid rgba(255,255,255,0.08);
@@ -396,7 +396,7 @@ export default function GalleryHoverCarousel() {
                     .project-card-info {
                         backdrop-filter: none !important;
                         -webkit-backdrop-filter: none !important;
-                        background: rgba(9, 9, 11, 0.98) !important;
+                        background: rgba(13, 11, 9, 0.98) !important;
                     }
                     
                     .project-card-info-title {

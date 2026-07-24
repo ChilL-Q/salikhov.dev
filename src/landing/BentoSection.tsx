@@ -220,9 +220,9 @@ export const BentoSection = () => {
                     className="bento-card bento-card-compact"
                     gridClassName="col-span-1 bento-grid-item"
                     style={{
-                        background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(239, 68, 68, 0.08))',
+                        background: 'linear-gradient(135deg, rgba(168, 98, 50, 0.08), rgba(110, 60, 23, 0.08))',
                         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-                        border: '1px solid rgba(245, 158, 11, 0.1)',
+                        border: '1px solid rgba(168, 98, 50, 0.1)',
                     }}
                 >
                     <div style={{ fontSize: '14px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Focus</div>
@@ -276,7 +276,7 @@ export const BentoSection = () => {
                     pointer-events: none;
                     background: radial-gradient(
                         140px circle at var(--touch-x, 50%) var(--touch-y, 50%),
-                        rgba(245, 158, 11, 0.12),
+                        rgba(168, 98, 50, 0.12),
                         transparent 80%
                     );
                     opacity: var(--touch-opacity, 0);

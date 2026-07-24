@@ -47,7 +47,7 @@ export const HeroSection = () => {
                         overflow: 'hidden',
                         margin: '0 auto 24px',
                         border: '2px solid rgba(255, 255, 255, 0.1)',
-                        boxShadow: '0 0 80px -20px rgba(245, 158, 11, 0.4), 0 0 40px -10px rgba(239, 68, 68, 0.2)',
+                        boxShadow: '0 0 80px -20px rgba(168, 98, 50, 0.4), 0 0 40px -10px rgba(110, 60, 23, 0.2)',
                     }}
                     className="hero-avatar"
                 >
@@ -100,21 +100,21 @@ export const HeroSection = () => {
                         href="#projects"
                         style={{
                             padding: '12px 28px',
-                            background: 'linear-gradient(135deg, var(--accent-orange), var(--accent-red))',
-                            color: 'white',
+                            background: 'linear-gradient(135deg, #cf8f56, #a86232)',
+                            color: '#f7f0e4',
                             borderRadius: '100px',
                             fontWeight: 600,
                             fontSize: '14px',
-                            boxShadow: '0 0 40px -8px rgba(245, 158, 11, 0.5), 0 8px 32px -8px rgba(239, 68, 68, 0.3)',
+                            boxShadow: '0 0 40px -8px rgba(168, 98, 50, 0.5), 0 8px 32px -8px rgba(110, 60, 23, 0.3)',
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                         onMouseEnter={e => {
                             e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                            e.currentTarget.style.boxShadow = '0 0 60px -8px rgba(245, 158, 11, 0.6), 0 12px 40px -8px rgba(239, 68, 68, 0.4)';
+                            e.currentTarget.style.boxShadow = '0 0 60px -8px rgba(168, 98, 50, 0.6), 0 12px 40px -8px rgba(110, 60, 23, 0.4)';
                         }}
                         onMouseLeave={e => {
                             e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                            e.currentTarget.style.boxShadow = '0 0 40px -8px rgba(245, 158, 11, 0.5), 0 8px 32px -8px rgba(239, 68, 68, 0.3)';
+                            e.currentTarget.style.boxShadow = '0 0 40px -8px rgba(168, 98, 50, 0.5), 0 8px 32px -8px rgba(110, 60, 23, 0.3)';
                         }}
                     >
                         {t('desktop.projects')}

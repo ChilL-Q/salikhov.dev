@@ -2,23 +2,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #09090b;
-  --color-foreground: #fafafa;
+  --color-background: #0d0b09;
+  --color-foreground: #f2ede3;
   --color-card: rgba(255, 255, 255, 0.03);
-  --color-card-foreground: #fafafa;
-  --color-primary: #f59e0b;
-  --color-primary-foreground: #09090b;
+  --color-card-foreground: #f2ede3;
+  --color-primary: #a86232;
+  --color-primary-foreground: #0d0b09;
   --color-secondary: rgba(255, 255, 255, 0.06);
-  --color-secondary-foreground: #fafafa;
-  --color-muted: #0f0f11;
-  --color-muted-foreground: #a1a1aa;
+  --color-secondary-foreground: #f2ede3;
+  --color-muted: #141110;
+  --color-muted-foreground: #aaa295;
   --color-accent: rgba(255, 255, 255, 0.06);
-  --color-accent-foreground: #fafafa;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #fafafa;
+  --color-accent-foreground: #f2ede3;
+  --color-destructive: #6e3c17;
+  --color-destructive-foreground: #f2ede3;
   --color-border: rgba(255, 255, 255, 0.1);
   --color-input: rgba(255, 255, 255, 0.1);
-  --color-ring: #f59e0b;
+  --color-ring: #a86232;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -31,24 +31,24 @@
     --font-body: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
     --font-mono: "SF Mono", "Fira Code", "Menlo", monospace;
 
-    --bg-primary: #09090b;
-    --bg-secondary: #0f0f11;
+    --bg-primary: #0d0b09;
+    --bg-secondary: #141110;
     --bg-card: rgba(255, 255, 255, 0.03);
     --bg-card-hover: rgba(255, 255, 255, 0.06);
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-medium: rgba(255, 255, 255, 0.1);
 
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-tertiary: #71717a;
+    --text-primary: #f2ede3;
+    --text-secondary: #aaa295;
+    --text-tertiary: #7d7466;
 
-    --accent-orange: #f59e0b;
-    --accent-red: #ef4444;
+    --accent-orange: #a86232;
+    --accent-red: #6e3c17;
     --accent-blue: #3b82f6;
-    --accent-cyan: #22d3ee;
+    --accent-cyan: #a86232;
     --accent-purple: #a855f7;
     --accent-pink: #ec4899;
-    --accent-green: #22c55e;
+    --accent-green: #a86232;
 
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -85,7 +85,7 @@
   h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.1; }
 
   ::selection {
-    background: rgba(245, 158, 11, 0.3);
+    background: rgba(168, 98, 50, 0.35);
     color: white;
   }
 }
@@ -122,7 +122,7 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-4px);
-    box-shadow: 0 20px 60px -15px rgba(245, 158, 11, 0.15), 0 0 0 1px rgba(245, 158, 11, 0.05);
+    box-shadow: 0 20px 60px -15px rgba(168, 98, 50, 0.15), 0 0 0 1px rgba(168, 98, 50, 0.05);
   }
 
   .glass-card:hover::before { opacity: 1; }
@@ -167,21 +167,21 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.12);
     transform: translateY(-4px);
-    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 40px -15px rgba(245, 158, 11, 0.1);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 40px -15px rgba(168, 98, 50, 0.1);
   }
 
   .bento-card:hover::after { opacity: 1; }
 
   /* Gradient Text */
   .gradient-text {
-    background: linear-gradient(135deg, #fafafa 0%, #a1a1aa 100%);
+    background: linear-gradient(135deg, #f2ede3 0%, #b3aa9c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .gradient-text-accent {
-    background: linear-gradient(135deg, #fbbf24, #f97316, #ef4444);
+    background: linear-gradient(135deg, #cf8f56, #a86232, #6e3c17);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -189,7 +189,7 @@
 
   /* Shimmer effect */
   .shimmer-text {
-    background: linear-gradient(90deg, #fbbf24 0%, #ff2d55 50%, #fbbf24 100%);
+    background: linear-gradient(90deg, #cf8f56 0%, #6e3c17 50%, #cf8f56 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -205,7 +205,7 @@
     border-radius: 50%;
     animation: pulse-dot 2s ease-in-out infinite;
     flex-shrink: 0;
-    box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0 12px rgba(168, 98, 50, 0.5);
   }
 
   /* Tech tag */
@@ -225,8 +225,8 @@
   }
 
   .tech-tag:hover {
-    background: rgba(245, 158, 11, 0.08);
-    border-color: rgba(245, 158, 11, 0.2);
+    background: rgba(168, 98, 50, 0.08);
+    border-color: rgba(168, 98, 50, 0.2);
     color: var(--accent-orange);
     transform: translateY(-1px);
   }
