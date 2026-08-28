@@ -51,7 +51,6 @@ export const translations = {
             techTools: 'Technologies & Tools',
             technologies: 'Technologies Used',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Premium rentals platform for vacation properties.' },
                 iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
                 abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
@@ -151,7 +150,6 @@ export const translations = {
             techTools: 'Технологии и инструменты',
             technologies: 'Используемые технологии',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Платформа премиум-аренды для отпускных объектов.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
                 abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
@@ -251,7 +249,6 @@ export const translations = {
             techTools: 'Технологиялар мен құралдар',
             technologies: 'Қолданылған технологиялар',
             items: {
-                alanya: { title: 'Alanya Holidays', desc: 'Демалыс объектілері үшін премиум жалға беру платформасы.' },
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
                 abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },

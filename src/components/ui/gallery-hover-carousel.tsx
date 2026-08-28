@@ -4,7 +4,6 @@ import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import Autoplay from 'embla-carousel-autoplay';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import alanyaLogo from '@/assets/projects-logos/alanya-holidays.png';
 import iffaLogo from '@/assets/projects-logos/iffatech.png';
 import kassimovaLogo from '@/assets/projects-logos/kassimova-design.png';
 import abaiLogo from '@/assets/projects-logos/ab-ai.png';
@@ -21,7 +20,6 @@ interface ProjectCard {
 const projects: ProjectCard[] = [
     { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
     { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
-    { id: 'alanya', url: 'https://alanyaholidays.com', logo: alanyaLogo, bg: '#fcfcfc', tags: ['React', 'Next.js', 'PostgreSQL'] },
     { id: 'iffa', url: 'https://iffatech.com', logo: iffaLogo, bg: '#07080d', tags: ['TypeScript', 'Cloud', 'Node.js'] },
     { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
 ];
