@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const techStack = ['React', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'Three.js', 'Tailwind', 'AI/LLM'];
@@ -229,6 +230,30 @@ export const BentoSection = () => {
                     <div style={{ fontSize: '18px', fontWeight: 700 }}>Full Stack & AI</div>
                     <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('about.focusDesc')}</div>
                 </TiltCard>
+
+                <TiltCard
+                    custom={4}
+                    className="bento-card"
+                    gridClassName="col-span-1 md:col-span-2 lg:col-span-4 bento-grid-item"
+                >
+                    <div className="bento-ioai">
+                        <div>
+                            <div style={{ fontSize: '13px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '8px' }}>{t('about.ioaiLabel')}</div>
+                            <div style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-1px', lineHeight: 1 }}>
+                                <span className="gradient-text-accent">IOAI 2026</span>
+                            </div>
+                        </div>
+                        <p className="bento-ioai-desc">{t('about.ioaiDesc')}</p>
+                        <a
+                            href="https://ioai-official.org"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bento-ioai-link"
+                        >
+                            ioai-official.org <ArrowUpRight size={14} />
+                        </a>
+                    </div>
+                </TiltCard>
             </div>
 
             <style>{`
@@ -258,6 +283,39 @@ export const BentoSection = () => {
                     margin-top: 32px;
                     flex-wrap: wrap;
                     transition: all 0.3s ease;
+                }
+
+                .bento-ioai {
+                    display: flex;
+                    align-items: center;
+                    gap: 32px;
+                    height: 100%;
+                }
+                .bento-ioai-desc {
+                    flex: 1;
+                    color: var(--text-secondary);
+                    font-size: 15px;
+                    line-height: 1.7;
+                    max-width: 520px;
+                }
+                .bento-ioai-link {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    flex-shrink: 0;
+                    padding: 9px 16px;
+                    border-radius: 100px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: var(--accent-orange);
+                    border: 1px solid rgb(var(--accent-rgb) / 0.35);
+                    transition: background 0.25s, border-color 0.25s;
+                    position: relative;
+                    z-index: 6; /* above the touch-glow overlay so it stays clickable */
+                }
+                .bento-ioai-link:hover {
+                    background: rgb(var(--accent-rgb) / 0.12);
+                    border-color: rgb(var(--accent-rgb) / 0.6);
                 }
 
                 /* Haptic/Tactile Active Tap Feedback */
@@ -312,6 +370,11 @@ export const BentoSection = () => {
                     }
                     .bento-card-compact {
                         padding: 20px !important;
+                    }
+                    .bento-ioai {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 16px;
                     }
                 }
             `}</style>

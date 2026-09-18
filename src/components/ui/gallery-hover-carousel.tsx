@@ -9,6 +9,8 @@ import iffaLogo from '@/assets/projects-logos/iffatech.png';
 import kassimovaLogo from '@/assets/projects-logos/kassimova-design.png';
 import abaiLogo from '@/assets/projects-logos/ab-ai.png';
 import azharLogo from '@/assets/projects-logos/azhar-trading.png';
+import thirdTimeLogo from '@/assets/projects-logos/3time.webp';
+import breakfastLogo from '@/assets/projects-logos/the-breakfast.svg';
 
 interface ProjectCard {
     id: string;
@@ -16,6 +18,8 @@ interface ProjectCard {
     logo: string;
     bg: string;
     tags: string[];
+    /** Max logo width in px — for emblems that are taller than they are wide */
+    logoMaxWidth?: number;
 }
 
 const projects: ProjectCard[] = [
@@ -23,6 +27,8 @@ const projects: ProjectCard[] = [
     { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
     { id: 'iffa', url: 'https://iffatech.com', logo: iffaLogo, bg: '#07080d', tags: ['TypeScript', 'Cloud', 'Node.js'] },
     { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
+    { id: 'thirdtime', url: 'https://3time.kz', logo: thirdTimeLogo, bg: '#0d2118', tags: ['QR Menu', 'React', 'Admin'], logoMaxWidth: 170 },
+    { id: 'breakfast', url: 'https://thebreakfast.kz', logo: breakfastLogo, bg: '#faf5ec', tags: ['QR Menu', 'HoReCa', 'Node.js'] },
 ];
 
 export default function GalleryHoverCarousel() {
@@ -117,6 +123,7 @@ export default function GalleryHoverCarousel() {
                                                 src={project.logo}
                                                 alt={t(`projects.items.${project.id}.title`)}
                                                 className="project-card-logo"
+                                                style={project.logoMaxWidth ? { maxWidth: project.logoMaxWidth } : undefined}
                                                 loading="lazy"
                                             />
                                         </div>
@@ -173,13 +180,13 @@ export default function GalleryHoverCarousel() {
                     transition: margin-bottom 0.3s ease;
                 }
 
-                /* Desktop: static 2-column grid. Mobile: Embla carousel (see below). */
+                /* Desktop: static grid (3 columns, 2 on narrower screens). Mobile: Embla carousel (see below). */
                 .projects-viewport {
                     overflow: visible;
                 }
                 .projects-track {
                     display: grid;
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
                     gap: 20px;
                 }
                 .projects-dots {
@@ -425,6 +432,11 @@ export default function GalleryHoverCarousel() {
                     }
                 }
 
+                @media (max-width: 1023px) {
+                    .projects-track {
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                    }
+                }
                 @media (max-width: 900px) {
                     .projects-section {
                         padding: 50px 24px 20px !important;

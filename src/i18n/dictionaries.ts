@@ -26,6 +26,8 @@ export const translations = {
             remote: 'Open to remote work',
             focusLabel: 'Focus',
             focusDesc: 'Building the future of the web',
+            ioaiLabel: 'Organizer',
+            ioaiDesc: 'International Olympiad in Artificial Intelligence — member of the organizing team.',
         },
         projects: {
             title: 'Projects',
@@ -34,7 +36,9 @@ export const translations = {
                 iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
                 abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
-                azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' }
+                azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' },
+                thirdtime: { title: '3rd Time', desc: 'QR menu for a sports bar with an admin panel and stop-list.' },
+                breakfast: { title: 'The Breakfast', desc: 'Digital menu for a café & kitchen in Astana.' }
             },
         },
         contact: {
@@ -70,6 +74,8 @@ export const translations = {
             remote: 'Открыт к удалённой работе',
             focusLabel: 'Фокус',
             focusDesc: 'Создаю будущее веба',
+            ioaiLabel: 'Организатор',
+            ioaiDesc: 'Международная олимпиада по искусственному интеллекту — был в команде организаторов.',
         },
         projects: {
             title: 'Проекты',
@@ -78,7 +84,9 @@ export const translations = {
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
                 abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
-                azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' }
+                azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' },
+                thirdtime: { title: '3й Тайм', desc: 'QR-меню спорт-бара с админ-панелью и стоп-листом.' },
+                breakfast: { title: 'The Breakfast', desc: 'Электронное меню кафе в Астане.' }
             },
         },
         contact: {
@@ -114,6 +122,8 @@ export const translations = {
             remote: 'Қашықтан жұмысқа ашықпын',
             focusLabel: 'Фокус',
             focusDesc: 'Вебтің болашағын құрамын',
+            ioaiLabel: 'Ұйымдастырушы',
+            ioaiDesc: 'Жасанды интеллект бойынша халықаралық олимпиада — ұйымдастыру тобында болдым.',
         },
         projects: {
             title: 'Жобалар',
@@ -122,7 +132,9 @@ export const translations = {
                 iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
                 abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },
-                azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' }
+                azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' },
+                thirdtime: { title: '3й Тайм', desc: 'Спорт-барға арналған QR-мәзір, админ-панелі мен стоп-парағы бар.' },
+                breakfast: { title: 'The Breakfast', desc: 'Астанадағы кафенің электрондық мәзірі.' }
             },
         },
         contact: {
