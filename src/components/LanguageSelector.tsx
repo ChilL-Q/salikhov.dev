@@ -22,14 +22,23 @@ export const LanguageSelector = () => {
                 setOpen(false);
             }
         };
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setOpen(false);
+        };
         document.addEventListener('mousedown', handleClickOutside);
-        return () =>         document.removeEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleEscape);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleEscape);
+        };
     }, []);
 
     return (
         <div style={{ position: 'relative', display: 'inline-block' }} ref={dropdownRef}>
             <button
                 onClick={() => setOpen(o => !o)}
+                aria-haspopup="listbox"
+                aria-expanded={open}
                 style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -59,7 +68,7 @@ export const LanguageSelector = () => {
                     minWidth: '160px',
                     borderRadius: '16px',
                     overflow: 'hidden',
-                    background: 'rgba(20, 17, 16, 0.95)',
+                    background: 'rgb(var(--bg-raised-rgb) / 0.95)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255,255,255,0.1)',
@@ -83,7 +92,7 @@ export const LanguageSelector = () => {
                                 fontSize: '14px',
                                 fontWeight: lang.code === language ? 600 : 400,
                                 color: lang.code === language ? 'var(--accent-orange)' : 'var(--text-secondary)',
-                                background: lang.code === language ? 'rgba(168,98,50,0.1)' : 'transparent',
+                                background: lang.code === language ? 'rgb(var(--accent-rgb) / 0.12)' : 'transparent',
                                 border: 'none',
                                 cursor: 'pointer',
                                 transition: 'background 0.15s ease',

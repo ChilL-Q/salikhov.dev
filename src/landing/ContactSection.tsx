@@ -8,38 +8,42 @@ const links = [
 ];
 
 const FlipLink = ({ children, href }: { children: string; href: string }) => {
+    // mailto: opened with target="_blank" leaves an empty tab behind
+    const isExternal = href.startsWith('http');
+
     return (
         <a
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={isExternal ? '_blank' : undefined}
+            rel={isExternal ? 'noopener noreferrer' : undefined}
+            aria-label={children}
             className="group relative block overflow-hidden whitespace-nowrap text-3xl font-black uppercase sm:text-4xl md:text-5xl lg:text-6xl"
             style={{ lineHeight: 0.85, color: 'inherit', textDecoration: 'none' }}
         >
-            <div className="flex">
+            <div className="flex" aria-hidden="true">
                 {children.split('').map((letter, i) => (
                     <span
                         key={i}
                         className="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-[110%] mobile-flip-top"
-                        style={{ 
+                        style={{
                             transitionDelay: `${i * 25}ms`,
-                            ['--letter-index' as any]: i,
-                        }}
+                            '--letter-index': i,
+                        } as React.CSSProperties}
                     >
                         {letter === ' ' ? '\u00A0' : letter}
                     </span>
                 ))}
             </div>
-            <div className="absolute inset-0 flex">
+            <div className="absolute inset-0 flex" aria-hidden="true">
                 {children.split('').map((letter, i) => (
                     <span
                         key={i}
                         className="inline-block translate-y-[110%] transition-transform duration-300 ease-in-out group-hover:translate-y-0 mobile-flip-bottom"
-                        style={{ 
-                            transitionDelay: `${i * 25}ms`, 
+                        style={{
+                            transitionDelay: `${i * 25}ms`,
                             color: 'var(--accent-orange)',
-                            ['--letter-index' as any]: i,
-                        }}
+                            '--letter-index': i,
+                        } as React.CSSProperties}
                     >
                         {letter === ' ' ? '\u00A0' : letter}
                     </span>
@@ -56,7 +60,7 @@ export const ContactSection = () => {
         <section id="contact" className="contact-section">
             <div style={{ textAlign: 'center', marginBottom: '56px' }}>
                 <p style={{ color: 'var(--accent-orange)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '3px', marginBottom: 16 }}>
-                    {t('desktop.contact')}
+                    {t('nav.contact')}
                 </p>
                 <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 16 }}>
                     <span className="gradient-text">{t('contact.getInTouch')}</span>
@@ -75,7 +79,7 @@ export const ContactSection = () => {
             <style>{`
                 .contact-section {
                     padding: 80px 24px 120px;
-                    max-width: 1120px;
+                    max-width: 1168px; /* 1120 content + 2×24 padding */
                     margin: 0 auto;
                     transition: padding 0.3s ease;
                 }

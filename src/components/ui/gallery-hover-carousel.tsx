@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import Autoplay from 'embla-carousel-autoplay';
 import { ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import iffaLogo from '@/assets/projects-logos/iffatech.png';
 import kassimovaLogo from '@/assets/projects-logos/kassimova-design.png';
@@ -35,119 +36,77 @@ export default function GalleryHoverCarousel() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    const autoplay = useRef(
-        Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })
-    );
+    const [plugins] = useState(() => [
+        WheelGesturesPlugin(),
+        Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
+    ]);
 
+    // The carousel only runs on mobile. On wider screens every project fits
+    // into a static grid, so Embla is deactivated and CSS grid takes over.
     const [emblaRef, emblaApi] = useEmblaCarousel(
         {
             loop: true,
-            align: isMobile ? 'center' : 'start',
+            align: 'center',
             slidesToScroll: 1,
             containScroll: false,
-            dragFree: false
+            dragFree: false,
+            active: isMobile,
         },
-        [WheelGesturesPlugin(), autoplay.current]
+        plugins
     );
-    const [hoveredId, setHoveredId] = useState<string | null>(null);
-    const [canScrollPrev, setCanScrollPrev] = useState(false);
-    const [canScrollNext, setCanScrollNext] = useState(false);
 
-    const updateButtons = useCallback(() => {
+    const onSelect = useCallback(() => {
         if (!emblaApi) return;
-        setCanScrollPrev(emblaApi.canScrollPrev());
-        setCanScrollNext(emblaApi.canScrollNext());
         setSelectedIndex(emblaApi.selectedScrollSnap());
     }, [emblaApi]);
 
-    // Force Embla reInit whenever options change dynamically (e.g. isMobile changes)
     useEffect(() => {
         if (!emblaApi) return;
-        emblaApi.reInit({
-            loop: true,
-            align: isMobile ? 'center' : 'start',
-            slidesToScroll: 1,
-            containScroll: false,
-            dragFree: false
-        });
-        updateButtons();
-    }, [emblaApi, isMobile, updateButtons]);
-
-    useEffect(() => {
-        if (!emblaApi) return;
-        emblaApi.on('select', updateButtons);
-        emblaApi.on('reInit', updateButtons);
+        emblaApi.on('select', onSelect);
+        emblaApi.on('reInit', onSelect);
         return () => {
-            emblaApi.off('select', updateButtons);
-            emblaApi.off('reInit', updateButtons);
+            emblaApi.off('select', onSelect);
+            emblaApi.off('reInit', onSelect);
         };
-    }, [emblaApi, updateButtons]);
+    }, [emblaApi, onSelect]);
 
     return (
         <section id="projects" className="projects-section">
-            <div className="projects-header">
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.6 }}
+                className="projects-header"
+            >
                 <p style={{ color: 'var(--accent-orange)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '3px', marginBottom: 16 }}>
                     {t('projects.subtitle')}
                 </p>
                 <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-1.5px' }}>
                     <span className="gradient-text">{t('projects.title')}</span>
                 </h2>
-            </div>
+            </motion.div>
 
-            <div style={{ position: 'relative' }}>
-                <button
-                    onClick={() => emblaApi?.scrollPrev()}
-                    style={{
-                        position: 'absolute', left: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-                        width: 40, height: 40, borderRadius: '50%',
-                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(13,11,9,0.8)',
-                        backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        cursor: canScrollPrev ? 'pointer' : 'default',
-                        opacity: canScrollPrev ? 1 : 0,
-                        transition: 'opacity 0.3s',
-                    }}
-                    aria-label="Previous"
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <button
-                    onClick={() => emblaApi?.scrollNext()}
-                    style={{
-                        position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-                        width: 40, height: 40, borderRadius: '50%',
-                        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(13,11,9,0.8)',
-                        backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        cursor: canScrollNext ? 'pointer' : 'default',
-                        opacity: canScrollNext ? 1 : 0,
-                        transition: 'opacity 0.3s',
-                    }}
-                    aria-label="Next"
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
-
-                <div ref={emblaRef} style={{ overflow: 'hidden' }}>
-                    <div style={{ display: 'flex', gap: 20 }}>
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+                <div ref={emblaRef} className="projects-viewport">
+                    <div className="projects-track">
                         {projects.map((project, index) => {
-                            const isHovered = hoveredId === project.id;
                             const isActiveMobile = isMobile && selectedIndex === index;
                             return (
-                                <div 
-                                    key={project.id} 
-                                    style={{ 
-                                        flex: isMobile ? '0 0 75%' : '0 0 calc((100% - 40px) / 3)', 
-                                        minWidth: isMobile ? 240 : 260,
-                                        padding: isMobile ? '12px 0' : '0'
-                                    }}
+                                <div
+                                    key={project.id}
                                     className={`embla-slide ${isActiveMobile ? 'active-slide' : ''}`}
                                 >
                                     <a
                                         href={project.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        onMouseEnter={() => setHoveredId(project.id)}
-                                        onMouseLeave={() => setHoveredId(null)}
-                                        className={`project-card ${isHovered ? 'hovered' : ''}`}
+                                        className="project-card"
                                     >
                                         {/* Card background container */}
                                         <div className="project-card-bg" style={{ background: project.bg }} />
@@ -158,6 +117,7 @@ export default function GalleryHoverCarousel() {
                                                 src={project.logo}
                                                 alt={t(`projects.items.${project.id}.title`)}
                                                 className="project-card-logo"
+                                                loading="lazy"
                                             />
                                         </div>
 
@@ -176,7 +136,7 @@ export default function GalleryHoverCarousel() {
                                                     ))}
                                                 </div>
                                                 <div className="project-card-arrow">
-                                                    <ArrowUpRight size={14} color="white" />
+                                                    <ArrowUpRight size={14} color="currentColor" />
                                                 </div>
                                             </div>
                                         </div>
@@ -186,12 +146,24 @@ export default function GalleryHoverCarousel() {
                         })}
                     </div>
                 </div>
-            </div>
+
+                <div className="projects-dots">
+                    {projects.map((project, index) => (
+                        <button
+                            key={project.id}
+                            onClick={() => emblaApi?.scrollTo(index)}
+                            className={`projects-dot ${selectedIndex === index ? 'active' : ''}`}
+                            aria-label={t(`projects.items.${project.id}.title`)}
+                            aria-current={selectedIndex === index ? 'true' : undefined}
+                        />
+                    ))}
+                </div>
+            </motion.div>
 
             <style>{`
                 .projects-section {
                     padding: 80px 24px 40px;
-                    max-width: 1200px;
+                    max-width: 1168px; /* 1120 content + 2×24 padding, same column as the other sections */
                     margin: 0 auto;
                     transition: padding 0.3s ease;
                 }
@@ -199,6 +171,19 @@ export default function GalleryHoverCarousel() {
                     text-align: center;
                     margin-bottom: 56px;
                     transition: margin-bottom 0.3s ease;
+                }
+
+                /* Desktop: static 2-column grid. Mobile: Embla carousel (see below). */
+                .projects-viewport {
+                    overflow: visible;
+                }
+                .projects-track {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 20px;
+                }
+                .projects-dots {
+                    display: none;
                 }
 
                 /* Project Card Layout */
@@ -211,13 +196,14 @@ export default function GalleryHoverCarousel() {
                     text-decoration: none;
                     color: inherit;
                     background: transparent;
-                    border: 1px solid rgba(255,255,255,0.06);
-                    transition: border-color 0.4s, box-shadow 0.4s;
+                    border: 1px solid rgb(var(--tint-rgb) / 0.1);
+                    transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
                 .project-card:hover {
-                    border-color: rgba(255, 255, 255, 0.15);
-                    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+                    border-color: rgb(var(--accent-rgb) / 0.45);
+                    box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.7), 0 0 60px -18px rgb(var(--accent-rgb) / 0.35);
+                    transform: translateY(-4px);
                 }
 
                 .project-card-bg {
@@ -260,7 +246,7 @@ export default function GalleryHoverCarousel() {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    background: rgba(13, 11, 9, 0.95);
+                    background: rgb(var(--bg-rgb) / 0.95);
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
                     border-top: 1px solid rgba(255,255,255,0.08);
@@ -288,44 +274,82 @@ export default function GalleryHoverCarousel() {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
-                    border: 1px solid rgba(255,255,255,0.1);
+                    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+                    color: var(--accent-orange);
+                    flex-shrink: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                    transform: rotate(0deg);
                 }
 
                 /* Hover Interaction on Desktop (Hover-capable devices) */
                 @media (hover: hover) {
-                    .project-card:hover .project-card-bg,
-                    .project-card.hovered .project-card-bg {
+                    .project-card:hover .project-card-bg {
                         height: 56%;
                     }
-                    .project-card:hover .project-card-logo-container,
-                    .project-card.hovered .project-card-logo-container {
+                    .project-card:hover .project-card-logo-container {
                         height: 55%;
                     }
-                    .project-card:hover .project-card-logo,
-                    .project-card.hovered .project-card-logo {
+                    .project-card:hover .project-card-logo {
                         transform: scale(0.8);
                     }
-                    .project-card:hover .project-card-info,
-                    .project-card.hovered .project-card-info {
+                    .project-card:hover .project-card-info {
                         height: 45%;
                         opacity: 1;
                         visibility: visible;
                     }
-                    .project-card:hover .project-card-arrow,
-                    .project-card.hovered .project-card-arrow {
-                        transform: rotate(-45deg);
+                    .project-card:hover .project-card-arrow {
+                        transform: translate(2px, -2px);
+                    }
+                }
+
+                /* Touch devices wider than the mobile carousel (tablets): no hover, so keep details visible */
+                @media (hover: none) and (min-width: 769px) {
+                    .project-card .project-card-bg { height: 56%; }
+                    .project-card .project-card-logo-container { height: 55%; }
+                    .project-card .project-card-logo { transform: scale(0.8); }
+                    .project-card .project-card-info {
+                        height: 45%;
+                        opacity: 1;
+                        visibility: visible;
                     }
                 }
 
                 /* Mobile/Touch screen fallback (pointer: coarse) or screen widths */
                 @media (max-width: 768px) {
+                    .projects-viewport {
+                        overflow: hidden;
+                        margin: 0 -24px;
+                    }
+                    .projects-track {
+                        display: flex;
+                        gap: 0;
+                    }
                     .embla-slide {
+                        flex: 0 0 78%;
+                        min-width: 0;
+                        padding: 12px 8px;
                         transition: opacity 0.4s ease !important;
+                    }
+                    .projects-dots {
+                        display: flex;
+                        justify-content: center;
+                        gap: 8px;
+                        margin-top: 16px;
+                    }
+                    .projects-dot {
+                        width: 8px;
+                        height: 8px;
+                        padding: 0;
+                        border: none;
+                        border-radius: 100px;
+                        background: rgb(var(--tint-rgb) / 0.2);
+                        transition: width 0.3s ease, background 0.3s ease;
+                    }
+                    .projects-dot.active {
+                        width: 24px;
+                        background: var(--accent-orange);
                     }
                     .embla-slide:not(.active-slide) {
                         opacity: 0.5 !important;
@@ -361,9 +385,6 @@ export default function GalleryHoverCarousel() {
                         padding: 0 16px !important;
                         border-top-color: transparent !important;
                     }
-                    .embla-slide:not(.active-slide) .project-card-arrow {
-                        transform: rotate(0deg) !important;
-                    }
 
                     /* Active card on mobile: details expanded, logo shrunk */
                     .embla-slide.active-slide .project-card-bg {
@@ -382,11 +403,8 @@ export default function GalleryHoverCarousel() {
                         visibility: visible !important;
                         padding: 14px 16px !important;
                     }
-                    .embla-slide.active-slide .project-card-arrow {
-                        transform: rotate(-45deg) !important;
-                    }
                     .embla-slide.active-slide .project-card {
-                        border-color: rgba(255, 255, 255, 0.15) !important;
+                        border-color: rgb(var(--accent-rgb) / 0.4) !important;
                         box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8) !important;
                     }
                     
@@ -394,7 +412,7 @@ export default function GalleryHoverCarousel() {
                     .project-card-info {
                         backdrop-filter: none !important;
                         -webkit-backdrop-filter: none !important;
-                        background: rgba(13, 11, 9, 0.98) !important;
+                        background: rgb(var(--bg-rgb) / 0.98) !important;
                     }
                     
                     .project-card-info-title {
@@ -413,9 +431,6 @@ export default function GalleryHoverCarousel() {
                     }
                     .projects-header {
                         margin-bottom: 32px !important;
-                    }
-                    #projects div[style*="calc((100% - 40px) / 3)"] {
-                        flex: 0 0 calc((100% - 20px) / 2) !important;
                     }
                 }
                 @media (max-width: 600px) {

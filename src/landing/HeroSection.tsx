@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { DottedSurface } from '../components/DottedSurface';
-import avatar from '../assets/ava.webp';
+import portrait from '../assets/portrait.webp';
+
+// three.js is ~500 kB — keep it out of the main bundle so the hero text paints first
+const DottedSurface = lazy(() => import('../components/DottedSurface').then(m => ({ default: m.DottedSurface })));
+
+const fadeUp = (delay: number) => ({
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+});
 
 export const HeroSection = () => {
     const { t } = useLanguage();
@@ -16,164 +24,80 @@ export const HeroSection = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Subtle pointer parallax on the portrait
+    const pointerX = useMotionValue(0);
+    const pointerY = useMotionValue(0);
+    const springX = useSpring(pointerX, { stiffness: 60, damping: 18 });
+    const springY = useSpring(pointerY, { stiffness: 60, damping: 18 });
+    const portraitX = useTransform(springX, v => v * -10);
+    const portraitY = useTransform(springY, v => v * -6);
+
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (e.pointerType !== 'mouse') return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
+        pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
+    };
+
     return (
-        <section 
-            className="hero-section"
-            style={{
-                minHeight: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '20px 24px 80px',
-                position: 'relative',
-            }}
-        >
-            <DottedSurface />
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                style={{ textAlign: 'center', position: 'relative', zIndex: 2, maxWidth: '720px' }}
-            >
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.1, duration: 0.6, type: 'spring', stiffness: 200 }}
-                    style={{
-                        width: '128px',
-                        height: '128px',
-                        borderRadius: '36px',
-                        overflow: 'hidden',
-                        margin: '0 auto 24px',
-                        border: '2px solid rgba(255, 255, 255, 0.1)',
-                        boxShadow: '0 0 80px -20px rgba(168, 98, 50, 0.4), 0 0 40px -10px rgba(110, 60, 23, 0.2)',
-                    }}
-                    className="hero-avatar"
-                >
-                    <img src={avatar} alt="Chingiz Salikhov" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </motion.div>
+        <section className="hero-section" onPointerMove={handlePointerMove}>
+            {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
+                The dots drift over the jacket, so the figure sits *in* the wave. */}
+            <Suspense fallback={null}>
+                <DottedSurface className="hero-dots" />
+            </Suspense>
 
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.7 }}
-                    style={{ fontSize: 'clamp(24px, 5vw, 48px)', fontWeight: 700, marginBottom: '12px', letterSpacing: '-1px', lineHeight: 1.1 }}
-                >
-                    <span className="gradient-text">{t('hero.greeting')}</span>
-                </motion.h1>
+            <div className="hero-inner">
+                <div className="hero-copy">
+                    <motion.p {...fadeUp(0.2)} className="hero-greeting">
+                        <span className="gradient-text">{t('hero.greeting')}</span>
+                    </motion.p>
+
+                    <motion.h1 {...fadeUp(0.3)} className="hero-name">
+                        <span className="shimmer-text">{t('hero.name')}</span>
+                    </motion.h1>
+
+                    <motion.p {...fadeUp(0.4)} className="hero-role">
+                        {t('about.role')}
+                    </motion.p>
+
+                    <motion.div {...fadeUp(0.5)} className="hero-actions">
+                        <a href="#projects" className="hero-btn hero-btn-primary">{t('nav.projects')}</a>
+                        <a href="#contact" className="hero-btn hero-btn-ghost">{t('nav.contact')}</a>
+                    </motion.div>
+                </div>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35, duration: 0.7 }}
-                    style={{ fontSize: 'clamp(36px, 8vw, 88px)', fontWeight: 800, marginBottom: '20px', letterSpacing: 'clamp(-1px, -0.3vw, -3px)', lineHeight: 1.05 }}
-                    className="hero-name"
+                    initial={{ opacity: 0, scale: 0.94, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="hero-portrait"
                 >
-                    <span className="shimmer-text">{t('hero.name')}</span>
+                    <motion.div className="hero-portrait-figure" style={{ x: portraitX, y: portraitY }}>
+                        <img
+                            src={portrait}
+                            alt={t('hero.name')}
+                            width={1200}
+                            height={949}
+                            className="hero-portrait-img"
+                            draggable={false}
+                        />
+                        {/* Scene lighting: palette-coloured light cast onto the figure (clipped to its
+                            silhouette) so the daylight photo shares the page's light instead of sitting on top of it */}
+                        <div className="hero-portrait-light" style={{ '--portrait-url': `url(${portrait})` } as React.CSSProperties} />
+                        <div className="hero-portrait-tone" style={{ '--portrait-url': `url(${portrait})` } as React.CSSProperties} />
+                    </motion.div>
                 </motion.div>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.7 }}
-                    style={{
-                        fontSize: 'clamp(14px, 2.5vw, 20px)',
-                        color: 'var(--text-secondary)',
-                        maxWidth: '560px',
-                        margin: '0 auto 40px',
-                        lineHeight: 1.7,
-                        padding: '0 16px',
-                    }}
-                    className="hero-role"
-                >
-                    {t('about.role2')}
-                </motion.p>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.7 }}
-                    style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}
-                >
-                    <a
-                        href="#projects"
-                        style={{
-                            padding: '12px 28px',
-                            background: 'linear-gradient(135deg, #cf8f56, #a86232)',
-                            color: '#f7f0e4',
-                            borderRadius: '100px',
-                            fontWeight: 600,
-                            fontSize: '14px',
-                            boxShadow: '0 0 40px -8px rgba(168, 98, 50, 0.5), 0 8px 32px -8px rgba(110, 60, 23, 0.3)',
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                            e.currentTarget.style.boxShadow = '0 0 60px -8px rgba(168, 98, 50, 0.6), 0 12px 40px -8px rgba(110, 60, 23, 0.4)';
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                            e.currentTarget.style.boxShadow = '0 0 40px -8px rgba(168, 98, 50, 0.5), 0 8px 32px -8px rgba(110, 60, 23, 0.3)';
-                        }}
-                    >
-                        {t('desktop.projects')}
-                    </a>
-                    <a
-                        href="#contact"
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            padding: '12px 28px',
-                            background: 'rgba(255, 255, 255, 0.04)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            color: 'var(--text-primary)',
-                            borderRadius: '100px',
-                            fontWeight: 600,
-                            fontSize: '14px',
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.18)';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                        }}
-                    >
-                        {t('desktop.contact')}
-                    </a>
-                </motion.div>
-            </motion.div>
+            </div>
 
             <AnimatePresence>
                 {!scrolled && (
                     <motion.div
                         key="hero-scroll"
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.5 }}
+                        animate={{ opacity: 0.8 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        style={{
-                            position: 'absolute',
-                            bottom: '40px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '8px',
-                            color: 'var(--text-tertiary)',
-                            fontSize: '11px',
-                            letterSpacing: '1px',
-                            textTransform: 'uppercase',
-                            zIndex: 2,
-                            pointerEvents: 'none',
-                        }}
                         className="hero-scroll"
                     >
                         <motion.div
@@ -184,28 +108,178 @@ export const HeroSection = () => {
                             <motion.div
                                 animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
                                 transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                                style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)' }}
+                                style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', marginLeft: '-1.5px' }}
                             />
                         </motion.div>
-                        Scroll
+                        {t('hero.scroll')}
                     </motion.div>
                 )}
             </AnimatePresence>
 
             <style>{`
-                @media (max-width: 768px) {
-                    .hero-section {
-                        justify-content: flex-start !important;
-                        padding-top: clamp(120px, 16vh, 170px) !important;
-                        padding-bottom: 40px !important;
-                    }
-                    .hero-scroll {
-                        display: none !important;
-                    }
+                .hero-section {
+                    min-height: 100svh;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    padding: 88px 24px 104px;
+                    overflow: hidden;
                 }
-                @media (max-width: 480px) {
-                    .hero-avatar { width: 104px !important; height: 104px !important; border-radius: 30px !important; margin-bottom: 20px !important; }
-                    .hero-name { margin-bottom: 16px !important; }
+                .hero-dots { z-index: 1; }
+                .hero-inner {
+                    width: 100%;
+                    max-width: 1120px;
+                    margin: 0 auto;
+                    /* one centred column: portrait on top, copy overlapping its dissolving lower edge */
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                /* ── Copy ── */
+                .hero-copy { position: relative; z-index: 2; text-align: center; }
+                .hero-greeting {
+                    font-size: clamp(18px, 1.9vw, 26px);
+                    font-weight: 600;
+                    letter-spacing: -0.4px;
+                    line-height: 1.3;
+                    margin: 0 auto 14px;
+                    text-wrap: balance;
+                }
+                .hero-name {
+                    font-size: clamp(36px, 7.4vw, 104px);
+                    font-weight: 800;
+                    letter-spacing: -0.035em;
+                    line-height: 1.05;
+                    margin-bottom: 20px;
+                }
+                .hero-role {
+                    font-size: clamp(15px, 1.5vw, 19px);
+                    color: var(--text-secondary);
+                    line-height: 1.6;
+                    margin-bottom: 36px;
+                }
+                .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+                .hero-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 13px 30px;
+                    border-radius: 100px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, background 0.3s, border-color 0.3s;
+                }
+                .hero-btn-primary {
+                    background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 60%, rgb(var(--accent-mid-rgb)));
+                    color: var(--on-accent);
+                    box-shadow: 0 0 40px -8px rgb(var(--accent-rgb) / 0.6), 0 8px 32px -8px rgb(var(--accent-deep-rgb) / 0.4);
+                }
+                .hero-btn-primary:hover {
+                    transform: translateY(-2px) scale(1.02);
+                    box-shadow: 0 0 60px -8px rgb(var(--accent-rgb) / 0.75), 0 12px 40px -8px rgb(var(--accent-deep-rgb) / 0.5);
+                }
+                .hero-btn-ghost {
+                    background: rgb(var(--tint-rgb) / 0.06);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.18);
+                    color: var(--text-primary);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                }
+                .hero-btn-ghost:hover {
+                    transform: translateY(-2px);
+                    background: rgb(var(--tint-rgb) / 0.12);
+                    border-color: rgb(var(--accent-rgb) / 0.5);
+                }
+
+                /* ── Portrait ── */
+                .hero-portrait {
+                    position: relative;
+                    z-index: 0;
+                    order: -1;
+                    /* sized by height too, so the whole hero still fits short laptop screens */
+                    width: min(440px, 72vw, 44svh);
+                    margin-bottom: clamp(-64px, -6svh, -28px);
+                    aspect-ratio: 1200 / 949;
+                }
+                .hero-portrait-figure {
+                    position: relative;
+                    isolation: isolate;
+                    /* the image height is fractional, and the mask leaves its last sub-pixel row
+                       unmasked — a hairline under the portrait. Clip that row off. */
+                    clip-path: inset(0 0 3px 0);
+                    /* dissolve the photo's cut-off edges (bottom + both arms) into the background */
+                    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 96%), linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+                    -webkit-mask-composite: source-in;
+                    mask-image: linear-gradient(to bottom, #000 45%, transparent 96%), linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+                    mask-composite: intersect;
+                }
+                .hero-portrait-img {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    user-select: none;
+                    /* colour grade (white balance, black hair, vibrance) is baked into the file */
+                    filter: brightness(0.97) saturate(1.06);
+                }
+                .hero-portrait-light,
+                .hero-portrait-tone {
+                    position: absolute;
+                    inset: 0;
+                    pointer-events: none;
+                    /* silhouette ∩ vertical ramp: the hair (top of the frame) gets only a hint of the
+                       coloured light, otherwise black hair picks up the accent hue */
+                    -webkit-mask-image: var(--portrait-url), linear-gradient(to bottom, rgb(0 0 0 / 0.2) 10%, #000 38%);
+                    -webkit-mask-size: 100% 100%;
+                    -webkit-mask-repeat: no-repeat;
+                    -webkit-mask-composite: source-in;
+                    mask-image: var(--portrait-url), linear-gradient(to bottom, rgb(0 0 0 / 0.2) 10%, #000 38%);
+                    mask-size: 100% 100%;
+                    mask-repeat: no-repeat;
+                    mask-composite: intersect;
+                }
+                /* key light: warm accent from the side of the headline/buttons, deep accent shadow on the far side */
+                .hero-portrait-light {
+                    background: linear-gradient(100deg, rgb(var(--accent-light-rgb) / 0.75) 0%, rgb(var(--accent-rgb) / 0.35) 38%, transparent 60%, rgb(var(--accent-deep-rgb) / 0.55) 100%);
+                    mix-blend-mode: soft-light;
+                }
+                /* overall tone: nudge every hue a little toward the palette */
+                .hero-portrait-tone {
+                    background: rgb(var(--accent-mid-rgb));
+                    mix-blend-mode: color;
+                    opacity: 0.1;
+                }
+                .hero-scroll {
+                    position: absolute;
+                    bottom: 32px;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 8px;
+                    color: var(--text-tertiary);
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    z-index: 2;
+                    pointer-events: none;
+                }
+
+                /* short laptop screens: the scroll hint would crowd the buttons */
+                @media (max-height: 760px) {
+                    .hero-scroll { display: none; }
+                }
+                @media (max-width: 900px) {
+                    .hero-section {
+                        align-items: flex-start;
+                        padding: 84px 24px 56px;
+                    }
+                    .hero-portrait { width: min(70%, 290px); margin-bottom: -28px; }
+                    .hero-greeting { margin-bottom: 12px; }
+                    .hero-name { margin-bottom: 16px; }
+                    .hero-role { margin-bottom: 28px; }
+                    .hero-scroll { display: none; }
                 }
             `}</style>
         </section>

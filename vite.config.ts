@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   server: {
+    host: true, // listen on the LAN too, so the site can be opened from a phone
     port: Number(process.env.PORT) || 5173,
   },
   plugins: [react(), tailwindcss()],

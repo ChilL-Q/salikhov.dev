@@ -1,14 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { translations, isRTL } from '../i18n/dictionaries';
+import { translations } from '../i18n/dictionaries';
 import type { LanguageCode } from '../i18n/dictionaries';
 
 interface LanguageContextType {
     language: LanguageCode;
     setLanguage: (lang: LanguageCode) => void;
     t: (key: string) => string;
-    isRtl: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -48,21 +47,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         return typeof current === 'string' ? current : path;
     };
 
-    // Apply RTL font setting to document body for global effect if needed
     useEffect(() => {
-        if (isRTL(language)) {
-            document.documentElement.setAttribute('dir', 'rtl');
-            // We keep the main font, but we might want a specific Arabic font in the future
-        } else {
-            document.documentElement.setAttribute('dir', 'ltr');
-        }
+        document.documentElement.setAttribute('lang', language === 'kz' ? 'kk' : language);
     }, [language]);
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t, isRtl: isRTL(language) }}>
-            <div dir={isRTL(language) ? 'rtl' : 'ltr'} style={{ width: '100%', height: '100%' }}>
-                {children}
-            </div>
+        <LanguageContext.Provider value={{ language, setLanguage, t }}>
+            {children}
         </LanguageContext.Provider>
     );
 };

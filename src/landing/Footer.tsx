@@ -7,7 +7,7 @@ export const Footer = () => {
         <footer style={{
             padding: '40px 24px',
             textAlign: 'center',
-            maxWidth: '1120px',
+            maxWidth: '1168px',
             margin: '0 auto',
         }}>
             <div style={{
@@ -16,7 +16,7 @@ export const Footer = () => {
                 marginBottom: '32px',
             }} />
             <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', letterSpacing: '0.02em' }}>
-                {t('aboutMac.footer')}
+                {t('footer.copyright')}
             </p>
         </footer>
     );

@@ -122,10 +122,10 @@ function TiltCard({
                     transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
                     transition: 'transform 0.15s ease-out',
                     transformStyle: 'preserve-3d',
-                    ['--touch-x' as any]: `${touch.x}%`,
-                    ['--touch-y' as any]: `${touch.y}%`,
-                    ['--touch-opacity' as any]: touch.active ? 1 : 0,
-                }}
+                    '--touch-x': `${touch.x}%`,
+                    '--touch-y': `${touch.y}%`,
+                    '--touch-opacity': touch.active ? 1 : 0,
+                } as React.CSSProperties}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 onTouchStart={handleTouchStart}
@@ -155,7 +155,7 @@ export const BentoSection = () => {
                     {t('about.title')}
                 </p>
                 <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-1.5px' }}>
-                    <span className="gradient-text">{t('about.bioTitle')}</span>
+                    <span className="gradient-text">{t('about.heading')}</span>
                 </h2>
             </motion.div>
 
@@ -168,24 +168,24 @@ export const BentoSection = () => {
                     <div className="bento-bio-container">
                         <div>
                             <h3 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '16px', letterSpacing: '-0.5px' }}>{t('about.bioTitle')}</h3>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '15px' }}>{t('about.bio3')}</p>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '15px' }}>{t('about.bio')}</p>
                         </div>
                         <div className="bento-stats-container">
                             <div>
                                 <div style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px' }}>
                                     <AnimatedCounter value={6} suffix="+" />
                                 </div>
-                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Years Experience</div>
+                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('about.statYears')}</div>
                             </div>
                             <div>
                                 <div style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px' }}>
                                     <AnimatedCounter value={20} suffix="+" />
                                 </div>
-                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Projects Delivered</div>
+                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('about.statProjects')}</div>
                             </div>
                             <div>
                                 <div style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px' }} className="gradient-text-accent">∞</div>
-                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Cups of Coffee</div>
+                                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('about.statCoffee')}</div>
                             </div>
                         </div>
                     </div>
@@ -212,7 +212,7 @@ export const BentoSection = () => {
                 >
                     <div style={{ fontSize: '32px', marginBottom: '8px' }}>📍</div>
                     <div style={{ fontSize: '15px', fontWeight: 600 }}>{t('about.location')}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>Open to remote</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('about.remote')}</div>
                 </TiltCard>
 
                 <TiltCard
@@ -220,21 +220,21 @@ export const BentoSection = () => {
                     className="bento-card bento-card-compact"
                     gridClassName="col-span-1 bento-grid-item"
                     style={{
-                        background: 'linear-gradient(135deg, rgba(168, 98, 50, 0.08), rgba(110, 60, 23, 0.08))',
+                        background: 'linear-gradient(135deg, rgb(var(--accent-rgb) / 0.2), rgb(var(--accent-deep-rgb) / 0.07))',
                         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-                        border: '1px solid rgba(168, 98, 50, 0.1)',
+                        border: '1px solid rgb(var(--accent-rgb) / 0.3)',
                     }}
                 >
-                    <div style={{ fontSize: '14px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Focus</div>
+                    <div style={{ fontSize: '14px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>{t('about.focusLabel')}</div>
                     <div style={{ fontSize: '18px', fontWeight: 700 }}>Full Stack & AI</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>Building the future of the web</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('about.focusDesc')}</div>
                 </TiltCard>
             </div>
 
             <style>{`
                 .bento-section {
                     padding: 80px 24px 40px;
-                    max-width: 1120px;
+                    max-width: 1168px; /* 1120 content + 2×24 padding */
                     margin: 0 auto;
                     transition: padding 0.3s ease;
                 }
@@ -266,7 +266,7 @@ export const BentoSection = () => {
                 }
                 .bento-card:active {
                     transform: scale(0.97) !important;
-                    background: rgba(255, 255, 255, 0.08) !important;
+                    background: var(--bg-card-hover) !important;
                 }
 
                 /* Bento Touch Glow Beam */
@@ -276,7 +276,7 @@ export const BentoSection = () => {
                     pointer-events: none;
                     background: radial-gradient(
                         140px circle at var(--touch-x, 50%) var(--touch-y, 50%),
-                        rgba(168, 98, 50, 0.12),
+                        rgb(var(--accent-rgb) / 0.18),
                         transparent 80%
                     );
                     opacity: var(--touch-opacity, 0);

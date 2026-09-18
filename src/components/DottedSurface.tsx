@@ -4,9 +4,7 @@ import * as THREE from 'three';
 type DottedSurfaceProps = React.HTMLAttributes<HTMLDivElement>;
 
 const vertexShader = `
-    varying vec3 vColor;
     void main() {
-        vColor = color;
         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
         gl_PointSize = 24.0 * (300.0 / -mvPosition.z);
         gl_Position = projectionMatrix * mvPosition;
@@ -16,14 +14,14 @@ const vertexShader = `
 const fragmentShader = `
     uniform sampler2D pointTexture;
     uniform float uViewportHeight;
-    varying vec3 vColor;
+    uniform vec3 uColor;
     void main() {
         vec4 texColor = texture2D(pointTexture, gl_PointCoord);
         float screenY = gl_FragCoord.y / uViewportHeight;
         float fadeBottom = smoothstep(0.0, 0.2, screenY);
         float fadeTop = 1.0 - smoothstep(0.85, 1.0, screenY);
         float alpha = fadeBottom * fadeTop * texColor.a;
-        gl_FragColor = vec4(vColor, alpha);
+        gl_FragColor = vec4(uColor, alpha);
     }
 `;
 
@@ -40,6 +38,14 @@ function getMaxViewportHeight(): number {
     const height = probe.getBoundingClientRect().height;
     document.body.removeChild(probe);
     return height || window.innerHeight;
+}
+
+// Dots take their colour from the site palette (see --accent-light-rgb in index.css)
+function getDotColor(): THREE.Color {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--accent-light-rgb');
+    const [r, g, b] = raw.trim().split(/\s+/).map(Number);
+    if ([r, g, b].some(Number.isNaN)) return new THREE.Color(1, 1, 1);
+    return new THREE.Color(r / 255, g / 255, b / 255);
 }
 
 export function DottedSurface({ ...props }: DottedSurfaceProps) {
@@ -83,7 +89,6 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         container.appendChild(renderer.domElement);
 
         const positions: number[] = [];
-        const colors: number[] = [];
 
         const geometry = new THREE.BufferGeometry();
 
@@ -93,7 +98,6 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
                 const y = 0;
                 const z = iy * SEPARATION - ((AMOUNTY - 1) * SEPARATION) / 2;
                 positions.push(x, y, z);
-                colors.push(0.81, 0.56, 0.34);
             }
         }
 
@@ -101,7 +105,6 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             'position',
             new THREE.Float32BufferAttribute(positions, 3),
         );
-        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
         const canvas = document.createElement('canvas');
         canvas.width = 32;
@@ -119,13 +122,13 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             uniforms: {
                 pointTexture: { value: texture },
                 uViewportHeight: { value: initialHeight * window.devicePixelRatio },
+                uColor: { value: getDotColor() },
             },
             vertexShader,
             fragmentShader,
             transparent: true,
             depthWrite: false,
             blending: THREE.AdditiveBlending,
-            vertexColors: true,
         });
 
         const points = new THREE.Points(geometry, material);
@@ -190,12 +193,27 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             material.uniforms.uViewportHeight.value = maxHeight * window.devicePixelRatio;
         };
 
+        // Don't burn GPU/battery re-rendering the dots once the hero is
+        // scrolled out of view — pause the loop and resume when it's back.
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && !isRunning) {
+                isRunning = true;
+                lastTime = performance.now();
+                animate();
+            } else if (!entry.isIntersecting && isRunning) {
+                isRunning = false;
+                cancelAnimationFrame(animationId);
+            }
+        });
+        visibilityObserver.observe(container);
+
         window.addEventListener('resize', handleResize);
         animate();
 
         return () => {
             isRunning = false;
             cancelAnimationFrame(animationId);
+            visibilityObserver.disconnect();
             window.removeEventListener('resize', handleResize);
             isInitialized.current = false;
 

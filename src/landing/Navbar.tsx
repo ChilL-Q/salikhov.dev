@@ -15,9 +15,24 @@ export const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const [activeSection, setActiveSection] = useState<string | null>(null);
+
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', onScroll);
+        const onScroll = () => {
+            setScrolled(window.scrollY > 20);
+
+            // Highlight the last section whose top has passed the upper third of the viewport
+            const threshold = window.innerHeight * 0.35;
+            let current: string | null = null;
+            for (const link of navLinks) {
+                const el = document.getElementById(link.key);
+                if (el && el.getBoundingClientRect().top <= threshold) current = link.key;
+            }
+            const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+            setActiveSection(atBottom ? navLinks[navLinks.length - 1].key : current);
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
@@ -32,12 +47,13 @@ export const Navbar = () => {
                 left: 0,
                 right: 0,
                 zIndex: 1000,
-                padding: '0 24px',
+                // same 1120px column as the page content, so the logo lines up with the hero text
+                padding: '0 max(24px, calc((100% - 1120px) / 2))',
                 height: '64px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                background: scrolled ? 'rgba(13, 11, 9, 0.7)' : 'transparent',
+                background: scrolled ? 'rgb(var(--bg-rgb) / 0.7)' : 'transparent',
                 backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
                 WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
                 borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
@@ -56,14 +72,13 @@ export const Navbar = () => {
                             href={link.href}
                             style={{
                                 fontSize: '14px',
-                                color: 'var(--text-secondary)',
                                 transition: 'color var(--transition-fast)',
                                 fontWeight: 500,
                             }}
-                            onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
-                            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                            className={`nav-link ${activeSection === link.key ? 'active' : ''}`}
+                            aria-current={activeSection === link.key ? 'true' : undefined}
                         >
-                            {t(`desktop.${link.key}`)}
+                            {t(`nav.${link.key}`)}
                         </a>
                     ))}
                 </div>
@@ -73,6 +88,8 @@ export const Navbar = () => {
             <button
                 className="nav-mobile-btn"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Menu"
+                aria-expanded={mobileMenuOpen}
                 style={{ display: 'none', padding: '8px', color: 'var(--text-primary)' }}
             >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -90,7 +107,7 @@ export const Navbar = () => {
                             top: '64px',
                             left: 0,
                             right: 0,
-                            background: 'rgba(13, 11, 9, 0.95)',
+                            background: 'rgb(var(--bg-rgb) / 0.95)',
                             backdropFilter: 'blur(20px)',
                             borderBottom: '1px solid var(--border-subtle)',
                             padding: '16px 24px',
@@ -107,18 +124,18 @@ export const Navbar = () => {
                                 style={{
                                     padding: '12px 0',
                                     fontSize: '16px',
-                                    color: 'var(--text-secondary)',
+                                    color: activeSection === link.key ? 'var(--accent-orange)' : 'var(--text-secondary)',
                                     fontWeight: 500,
                                 }}
                             >
-                                {t(`desktop.${link.key}`)}
+                                {t(`nav.${link.key}`)}
                             </a>
                         ))}
                         <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                            <a href="https://t.me/salikhov_dev" target="_blank" rel="noopener noreferrer" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
-                            <a href="https://wa.me/77019813721" target="_blank" rel="noopener noreferrer" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
-                            <a href="https://instagram.com/salikhov.dev" target="_blank" rel="noopener noreferrer" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
-                            <a href="mailto:salikhovchingiz@gmail.com" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
+                            <a href="https://t.me/salikhov_dev" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
+                            <a href="https://wa.me/77019813721" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
+                            <a href="https://instagram.com/salikhov.dev" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
+                            <a href="mailto:salikhovchingiz@gmail.com" aria-label="Email" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
                         </div>
                         <div style={{ marginTop: '8px' }}>
                             <LanguageSelector />
@@ -128,6 +145,20 @@ export const Navbar = () => {
             </AnimatePresence>
 
             <style>{`
+                .nav-link { color: var(--text-secondary); position: relative; }
+                .nav-link:hover { color: var(--text-primary); }
+                .nav-link.active { color: var(--accent-orange); }
+                .nav-link::after {
+                    content: '';
+                    position: absolute;
+                    left: 0; right: 0; bottom: -6px;
+                    height: 2px;
+                    border-radius: 2px;
+                    background: var(--accent-orange);
+                    transform: scaleX(0);
+                    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .nav-link.active::after { transform: scaleX(1); }
                 @media (max-width: 768px) {
                     .nav-desktop { display: none !important; }
                     .nav-mobile-btn { display: flex !important; }
