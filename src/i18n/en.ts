@@ -92,6 +92,11 @@ export const en = {
             { title: 'Launch & support', meta: 'after launch too', text: 'Deployment, domain and analytics — and fixes after the launch.' },
         ],
     },
+    stack: {
+        label: 'Stack',
+        title: 'What I build with',
+        intro: 'Only what actually runs in the projects above.',
+    },
     contact: {
         getInTouch: 'Get in Touch',
         description: "Have a project in mind or just want to say hi? I'd love to hear from you.",
