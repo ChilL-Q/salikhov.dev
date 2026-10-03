@@ -34,11 +34,14 @@ export interface CaseData {
     shots: Shot[];
     /** open for pilot clients: shows the pilot status and CTA */
     pilot?: boolean;
+    /** my own product (counted in About) */
+    own?: boolean;
 }
 
 export const CASES: CaseData[] = [
     {
         slug: 'qarau',
+        own: true,
         pilot: true,
         links: [{ label: 'qarau.kz', url: 'https://qarau.kz' }],
         stack: [
@@ -54,6 +57,7 @@ export const CASES: CaseData[] = [
     },
     {
         slug: 'ab-ai',
+        own: true,
         links: [{ label: 'ab-ai.kz', url: 'https://www.ab-ai.kz' }],
         stack: [
             { group: 'backend', items: ['Python 3.12', 'FastAPI', 'SQLAlchemy 2.0 (async)', 'PostgreSQL', 'Alembic', 'Celery', 'Redis'] },
