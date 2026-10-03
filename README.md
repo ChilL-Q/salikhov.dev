@@ -27,7 +27,7 @@ npm run lint
 - Data that isn't text: `src/content/` — case studies (links, stack taken from each project's repository,
   visuals), services, stack, portrait and badge images.
 - Contacts and the canonical origin: `src/site.ts`.
-- Rule for case studies: no invented results. Screens with made-up numbers carry a "demo data" badge.
+- Rule for case studies: no invented results. Screens with made-up numbers are captioned "demo data".
 
 ## Assets
 
@@ -41,8 +41,14 @@ npm run lint
 
 ## ⌘K
 
-`src/components/palette/` — a terminal-style command palette: ⌘K / Ctrl+K or "/" (and the ›_ button on phones).
-Navigation, case studies, contacts, language, `help` and one easter egg. Loaded as its own chunk on idle.
+`src/components/palette/` — a quiet quick-jump menu for keyboard users: ⌘K / Ctrl+K on desktop, mentioned only in
+the footer. Navigation, case studies, contacts, language, `help` and one easter egg. Loaded as its own chunk on idle.
+
+## Look
+
+Warm near-black background, cream text, warm greys, and one solid orange accent (`--accent-rgb` in `src/index.css`)
+used only for the main button and links. No gradients, glows or eyebrow labels; mono only for stack lists and tiny
+captions.
 
 ## SEO
 

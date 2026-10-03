@@ -1,6 +1,6 @@
 import type { Stage } from '../../content/cases';
 import { workImage } from '../../content/work-images';
-import { BrowserFrame, DemoBadge, PhoneFrame } from './Frames';
+import { BrowserFrame, PhoneFrame } from './Frames';
 
 interface CaseStageProps {
     stage: Stage;
@@ -15,13 +15,13 @@ interface CaseStageProps {
 
 /**
  * The "stage" every project is shown on: the site in a dark browser window with its phone version on
- * top, or two phones for mobile-first products — on one warm dark backdrop, so light and dark sites
- * read as one set.
+ * top, or two phones for mobile-first products — on one plain dark surface, so light and dark sites
+ * read as one set. Demo-data notes are captions next to it, not overlays.
  */
 export function CaseStage({ stage, sizes, alt = '', priority, className = '' }: CaseStageProps) {
     return (
         <div
-            className={`@container relative aspect-[16/11] overflow-hidden bg-raised bg-[radial-gradient(120%_90%_at_30%_0%,rgb(var(--accent-rgb)/0.16),transparent_60%),radial-gradient(80%_70%_at_100%_100%,rgb(var(--accent-deep-rgb)/0.24),transparent_70%)] ${className}`}
+            className={`@container relative aspect-[16/11] overflow-hidden bg-raised ${className}`}
         >
             {stage.kind === 'browser-phone' ? (
                 <>
@@ -59,8 +59,6 @@ export function CaseStage({ stage, sizes, alt = '', priority, className = '' }: 
                     />
                 </>
             )}
-            {/* bottom-left is the one corner the composition leaves free */}
-            {stage.kind === 'browser-phone' && stage.demo && <DemoBadge className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4" />}
         </div>
     );
 }

@@ -1,25 +1,29 @@
 import { LANGS } from '../i18n';
 import { useI18n } from '../i18n/useI18n';
 
-/** EN / RU — plain links to this page in the other language, so it works before hydration too. */
+/** EN · RU — plain links to this page in the other language, so it works before hydration too. */
 export function LangSwitch() {
     const { lang, alt, d } = useI18n();
 
     return (
-        <div role="group" aria-label={d.nav.language} className="flex items-center rounded-full border border-tint/15 p-0.5 font-mono text-xs">
-            {LANGS.map(code => (
-                <a
-                    key={code}
-                    href={alt[code]}
-                    hrefLang={code}
-                    lang={code}
-                    aria-current={code === lang ? 'page' : undefined}
-                    className={`rounded-full px-2 py-1.5 uppercase transition-colors min-[380px]:px-2.5 ${
-                        code === lang ? 'bg-tint/10 text-ink' : 'text-ink-3 hover:text-ink'
-                    }`}
-                >
-                    {code}
-                </a>
+        <div role="group" aria-label={d.nav.language} className="flex items-center gap-1 text-sm">
+            {LANGS.map((code, i) => (
+                <span key={code} className="flex items-center gap-1">
+                    {i > 0 && (
+                        <span aria-hidden="true" className="text-ink-3">
+                            ·
+                        </span>
+                    )}
+                    <a
+                        href={alt[code]}
+                        hrefLang={code}
+                        lang={code}
+                        aria-current={code === lang ? 'page' : undefined}
+                        className={`px-1 py-2 uppercase transition-colors ${code === lang ? 'text-ink' : 'text-ink-3 hover:text-ink'}`}
+                    >
+                        {code}
+                    </a>
+                </span>
             ))}
         </div>
     );

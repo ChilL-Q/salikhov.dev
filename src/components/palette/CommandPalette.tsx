@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { Search } from 'lucide-react';
 import { useI18n } from '../../i18n/useI18n';
 import { CASES } from '../../content/cases';
 import { pathFor } from '../../routes';
@@ -28,8 +29,9 @@ const SECTIONS = ['work', 'services', 'process', 'stack', 'about', 'contact'] as
 const GROUPS: Group[] = ['go', 'cases', 'contact', 'settings'];
 
 /**
- * ⌘K menu styled as a terminal. Loaded on demand from the navbar; a native modal dialog gives focus
- * trapping and Esc. The input is a combobox driving the listbox with aria-activedescendant.
+ * ⌘K quick navigation. Loaded on demand from the navbar; a native modal dialog gives focus trapping
+ * and Esc. The input is a combobox driving the listbox with aria-activedescendant. Typing a command
+ * ("email", "/lang ru", "help") works too — and one more that isn't listed.
  */
 export default function CommandPalette({ onClose }: { onClose: () => void }) {
     const { d, lang, route, alt } = useI18n();
@@ -99,7 +101,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
     const run = (command: Command | undefined) => {
         const typed = query.trim();
         if (!command) {
-            if (typed) print(typed, `zsh: ${p.out.notFound}: ${typed}`, false);
+            if (typed) print(typed, `${p.out.notFound}: ${typed}`, false);
             setQuery('');
             return;
         }
@@ -125,7 +127,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                 break;
             case 'copy':
                 navigator.clipboard.writeText(action.text).then(
-                    () => print(command.cmd, `✓ ${p.out.copied}: ${action.text}`),
+                    () => print(command.cmd, `${p.out.copied}: ${action.text}`),
                     () => print(command.cmd, action.text),
                 );
                 break;
@@ -165,32 +167,10 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                 onClose();
             }}
             onClick={e => e.target === e.currentTarget && onClose()}
-            className="mx-auto mt-[9vh] mb-auto w-[min(640px,calc(100vw-24px))] overflow-hidden rounded-2xl border border-tint/15 bg-[#0b0806] p-0 text-ink shadow-[0_40px_80px_-20px_rgb(0_0_0/0.85)] outline-none backdrop:bg-bg/80"
+            className="mx-auto mt-[12vh] mb-auto w-[min(600px,calc(100vw-24px))] overflow-hidden rounded-2xl border border-tint/12 bg-raised p-0 text-ink shadow-[0_32px_64px_-24px_rgb(0_0_0/0.8)] outline-none backdrop:bg-bg/75"
         >
-            <div aria-hidden="true" className="flex items-center gap-2 border-b border-tint/10 bg-[#120d09] px-4 py-2.5 font-mono text-xs text-ink-3">
-                {[0, 1, 2].map(i => (
-                    <span key={i} className="size-2.5 rounded-full bg-tint/15" />
-                ))}
-                <span className="ml-3">salikhov.dev — zsh</span>
-                <span className="ml-auto">esc</span>
-            </div>
-
-            {log.length > 0 && (
-                <div aria-live="polite" className="space-y-2 border-b border-tint/10 px-4 py-3 font-mono text-[13px] leading-relaxed">
-                    {log.map((line, i) => (
-                        <p key={i}>
-                            <span className="text-accent">$</span> {line.cmd}
-                            <br />
-                            <span className={line.ok ? 'text-ink-2' : 'text-accent-light'}>{line.out}</span>
-                        </p>
-                    ))}
-                </div>
-            )}
-
-            <label className="flex items-center gap-2 px-4 py-3.5 font-mono text-sm">
-                <span aria-hidden="true" className="shrink-0 text-accent">
-                    ~/salikhov.dev $
-                </span>
+            <label className="flex items-center gap-3 border-b border-tint/10 px-5 py-4">
+                <Search size={18} aria-hidden="true" className="shrink-0 text-ink-3" />
                 <input
                     ref={input}
                     value={query}
@@ -209,19 +189,32 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                     spellCheck={false}
                     autoComplete="off"
                     autoCapitalize="none"
-                    className="min-w-0 flex-1 bg-transparent text-ink caret-accent outline-none placeholder:text-ink-3"
+                    className="min-w-0 flex-1 bg-transparent text-base text-ink caret-accent outline-none placeholder:text-ink-3"
                 />
+                <kbd aria-hidden="true" className="font-mono text-[11px] text-ink-3">
+                    esc
+                </kbd>
             </label>
 
-            <div id="cmdk-list" role="listbox" aria-label={p.label} className="max-h-[min(50vh,400px)] overflow-y-auto overscroll-contain border-t border-tint/10 pt-1 pb-2">
-                {results.length === 0 && <p className="px-4 py-6 font-mono text-sm text-ink-3">{p.empty}</p>}
+            {log.length > 0 && (
+                <div aria-live="polite" className="space-y-1 border-b border-tint/10 px-5 py-3 text-sm">
+                    {log.map((line, i) => (
+                        <p key={i} className={line.ok ? 'text-ink-2' : 'text-ink-3'}>
+                            {line.out}
+                        </p>
+                    ))}
+                </div>
+            )}
+
+            <div id="cmdk-list" role="listbox" aria-label={p.label} className="max-h-[min(52vh,420px)] overflow-y-auto overscroll-contain py-2">
+                {results.length === 0 && <p className="px-5 py-6 text-sm text-ink-3">{p.empty}</p>}
                 {GROUPS.map(group => {
                     const items = results.filter(c => c.group === group);
                     if (!items.length) return null;
                     return (
                         <div key={group} role="group" aria-label={p.groups[group]}>
-                            <p aria-hidden="true" className="px-4 pt-3 pb-1 font-mono text-[11px] text-ink-3">
-                                # {p.groups[group]}
+                            <p aria-hidden="true" className="px-5 pt-3 pb-1 text-xs text-ink-3">
+                                {p.groups[group]}
                             </p>
                             {items.map(command => {
                                 const index = results.indexOf(command);
@@ -234,15 +227,10 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                                         aria-selected={selected}
                                         onMouseMove={() => setActive(index)}
                                         onClick={() => run(command)}
-                                        className={`mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 font-mono text-sm ${selected ? 'bg-tint/[0.07]' : ''}`}
+                                        className={`mx-2 flex cursor-pointer items-center justify-between gap-4 rounded-lg px-3 py-2.5 text-[15px] ${selected ? 'bg-tint/[0.07] text-ink' : 'text-ink-2'}`}
                                     >
-                                        <span className={`shrink-0 ${selected ? 'text-accent-light' : 'text-ink'}`}>{command.cmd}</span>
-                                        <span className="truncate font-sans text-[13px] text-ink-3">{command.label}</span>
-                                        {selected && (
-                                            <span aria-hidden="true" className="ml-auto text-xs text-ink-3">
-                                                ↵
-                                            </span>
-                                        )}
+                                        <span className="truncate">{command.label}</span>
+                                        <span className="shrink-0 font-mono text-xs text-ink-3">{command.cmd}</span>
                                     </div>
                                 );
                             })}
@@ -251,7 +239,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                 })}
             </div>
 
-            <p aria-hidden="true" className="border-t border-tint/10 px-4 py-2 font-mono text-[11px] text-ink-3">
+            <p aria-hidden="true" className="border-t border-tint/10 px-5 py-2.5 text-xs text-ink-3">
                 {p.out.help}
             </p>
         </dialog>

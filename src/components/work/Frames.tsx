@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import { Picture } from '../Picture';
-import { useI18n } from '../../i18n/useI18n';
 import type { ResponsiveImage } from '../../lib/responsive';
 
 interface FrameProps {
@@ -54,16 +53,5 @@ export function PhoneFrame({ image, sizes, w, alt = '', className = '', priority
                 <Picture image={image} sizes={sizes} alt={alt} priority={priority} className="block h-full" imgClassName="h-full w-full object-cover object-top" />
             </div>
         </div>
-    );
-}
-
-/** Marks a screen with made-up numbers. */
-export function DemoBadge({ className = '' }: { className?: string }) {
-    const { d } = useI18n();
-    return (
-        <span className={`inline-flex items-center gap-1.5 rounded-full border border-tint/15 bg-bg/85 px-2.5 py-1 font-mono text-[11px] leading-none text-ink-2 ${className}`}>
-            <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
-            {d.work.demoData}
-        </span>
     );
 }

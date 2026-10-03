@@ -18,24 +18,21 @@ export function AboutSection() {
     ];
 
     return (
-        <section id="about" aria-labelledby="about-title" className="mx-auto max-w-[1200px] px-5 py-24 lg:px-10 lg:py-32">
-            <SectionHeader id="about-title" index="05" label={a.label} title={a.title} />
+        <section id="about" aria-labelledby="about-title" className="mx-auto max-w-[1200px] px-5 py-28 lg:px-10 lg:py-40">
+            <SectionHeader id="about-title" title={a.title} />
 
             <div className="mt-12 grid gap-14 lg:mt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] lg:gap-20">
                 <div data-reveal>
                     {/* the main point of the section: business first, code second */}
-                    <p className="border-l-2 border-accent pl-5 font-display text-[clamp(1.375rem,1.05rem+1vw,2rem)] leading-snug font-semibold tracking-[-0.02em] text-pretty text-ink sm:pl-7">
-                        {a.thesis}
-                    </p>
+                    <p className="font-display text-[clamp(1.5rem,1.1rem+1.1vw,2.125rem)] leading-snug tracking-[-0.02em] text-pretty text-ink">{a.thesis}</p>
                     <p className="mt-8 max-w-[58ch] text-[17px] leading-relaxed text-pretty text-ink-2">{a.bio}</p>
-                    <p className="mt-4 font-mono text-xs text-ink-3">{a.location}</p>
 
-                    <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-tint/10 pt-6 sm:gap-8">
+                    <dl className="mt-12 grid grid-cols-3 gap-4 border-t border-tint/10 pt-7 sm:gap-8">
                         {stats.map(stat => (
                             // label first in the markup (dt before dd), value shown on top
                             <div key={stat.label} className="flex flex-col-reverse justify-end">
-                                <dt className="mt-2 font-mono text-xs leading-snug text-ink-3">{stat.label}</dt>
-                                <dd className="font-display text-[clamp(2.25rem,1.6rem+2vw,3.5rem)] leading-none font-bold tracking-[-0.04em] text-accent-light">{stat.value}</dd>
+                                <dt className="mt-2 text-sm leading-snug text-ink-3">{stat.label}</dt>
+                                <dd className="font-display text-[clamp(2.25rem,1.6rem+2vw,3.25rem)] leading-none tracking-[-0.04em] text-ink">{stat.value}</dd>
                             </div>
                         ))}
                     </dl>
@@ -56,7 +53,7 @@ export function AboutSection() {
                             imgClassName="block h-auto w-full drop-shadow-[0_28px_36px_rgb(0_0_0/0.55)]"
                         />
                     </button>
-                    <figcaption className="mt-7 font-mono text-xs leading-relaxed text-pretty text-ink-3">{a.badgeCaption}</figcaption>
+                    <figcaption className="mt-7 text-sm leading-relaxed text-pretty text-ink-3">{a.badgeCaption}</figcaption>
                 </figure>
             </div>
 
@@ -77,7 +74,7 @@ export function AboutSection() {
                     type="button"
                     onClick={() => dialog.current?.close()}
                     aria-label={a.close}
-                    className="absolute -top-4 -right-4 grid size-11 place-items-center rounded-full border border-tint/20 bg-raised text-ink transition-colors hover:border-accent/60 max-sm:top-2 max-sm:right-2"
+                    className="absolute -top-4 -right-4 grid size-11 place-items-center rounded-full border border-tint/20 bg-raised text-ink transition-colors hover:border-tint/40 max-sm:top-2 max-sm:right-2"
                 >
                     <X size={20} aria-hidden="true" />
                 </button>

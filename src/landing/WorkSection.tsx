@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useI18n } from '../i18n/useI18n';
 import { CASES, type CaseData } from '../content/cases';
@@ -7,59 +6,53 @@ import { SectionHeader } from '../components/SectionHeader';
 import { CaseStage } from '../components/work/CaseStage';
 import { CaseStatus } from '../components/work/CaseStatus';
 
-// rendered widths (see CaseStage: browser 80cqw, phone 23–27cqw of the card; cards are 100vw − 40px on phones)
-const CARD_SIZES = { browser: '(min-width: 1024px) 440px, calc(80vw - 32px)', phone: '(min-width: 1024px) 150px, calc(27vw - 11px)' };
-const FEATURED_SIZES = { browser: '(min-width: 1024px) 520px, calc(80vw - 32px)', phone: '(min-width: 1024px) 170px, calc(27vw - 11px)' };
+// rendered widths: the visual takes 7 of 12 columns on desktop, the full column (100vw − 40px) on phones;
+// inside it the browser is 80cqw and a phone 23–27cqw
+const STAGE_SIZES = { browser: '(min-width: 1024px) 520px, calc(80vw - 32px)', phone: '(min-width: 1024px) 170px, calc(27vw - 11px)' };
 
 export function WorkSection() {
     const { d } = useI18n();
 
     return (
-        <section id="work" aria-labelledby="work-title" className="mx-auto max-w-[1200px] px-5 py-24 lg:px-10 lg:py-32">
-            <SectionHeader id="work-title" index="01" label={d.work.label} title={d.work.title} intro={d.work.intro} />
-            <ul className="mt-12 grid gap-5 lg:mt-16 lg:grid-cols-2 lg:gap-6">
+        <section id="work" aria-labelledby="work-title" className="mx-auto max-w-[1200px] px-5 py-28 lg:px-10 lg:py-40">
+            <SectionHeader id="work-title" title={d.work.title} intro={d.work.intro} />
+            <ol className="mt-16 space-y-20 lg:mt-24 lg:space-y-32">
                 {CASES.map((data, i) => (
-                    <li key={data.slug} data-reveal className={i === 0 ? 'lg:col-span-2' : ''} style={{ '--reveal-delay': `${(i % 2) * 80}ms` } as CSSProperties}>
-                        <CaseCard data={data} featured={i === 0} />
+                    <li key={data.slug} data-reveal>
+                        <CaseRow data={data} flip={i % 2 === 1} />
                     </li>
                 ))}
-            </ul>
+            </ol>
         </section>
     );
 }
 
-function CaseCard({ data, featured }: { data: CaseData; featured: boolean }) {
+/** One case: a large visual and a few lines of text, sides alternating on desktop. */
+function CaseRow({ data, flip }: { data: CaseData; flip: boolean }) {
     const { d, lang } = useI18n();
     const t = d.cases[data.slug];
+    const href = pathFor({ page: 'case', lang, slug: data.slug });
+    const demo = data.stage.kind === 'browser-phone' && data.stage.demo;
 
     return (
-        <a
-            href={pathFor({ page: 'case', lang, slug: data.slug })}
-            className={`group grid h-full overflow-hidden rounded-[28px] border border-tint/10 bg-raised transition-colors duration-300 hover:border-accent/45 ${
-                featured ? 'lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]' : 'grid-rows-[auto_1fr]'
-            }`}
-        >
-            <CaseStage stage={data.stage} sizes={featured ? FEATURED_SIZES : CARD_SIZES} className={featured ? 'lg:order-2 lg:h-full lg:aspect-auto lg:min-h-[420px]' : ''} />
+        <article className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+            {/* the visual is a second way into the case; the text link below is the one for keyboards and screen readers */}
+            <a href={href} tabIndex={-1} aria-hidden="true" className={`group block overflow-hidden rounded-3xl lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
+                <CaseStage stage={data.stage} sizes={STAGE_SIZES} />
+            </a>
 
-            <div className={`flex flex-col p-6 sm:p-7 ${featured ? 'lg:justify-center lg:p-12' : ''}`}>
-                {data.pilot && <CaseStatus status={t.status} className="mb-5 self-start" />}
-                <p className="font-mono text-xs text-ink-3">{t.type}</p>
-                <h3 className={`mt-2 font-display leading-[1.05] font-bold tracking-[-0.03em] ${featured ? 'text-[clamp(2rem,1.2rem+2.4vw,3.25rem)]' : 'text-[26px]'}`}>
-                    {t.title}
-                </h3>
-                <p className={`mt-3 leading-relaxed text-pretty text-ink-2 ${featured ? 'max-w-[44ch] text-[17px]' : 'text-[15.5px]'}`}>{featured ? t.summary : t.teaser}</p>
-                <ul className="mt-5 flex flex-wrap gap-1.5 font-mono text-xs text-ink-3">
-                    {t.tags.map(tag => (
-                        <li key={tag} className="rounded-full border border-tint/12 px-2.5 py-1">
-                            {tag}
-                        </li>
-                    ))}
-                </ul>
-                <span className="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-semibold text-ink transition-colors group-hover:text-accent-light">
+            <div className="lg:col-span-5">
+                <p className="text-sm text-ink-3">{t.type}</p>
+                <h3 className="mt-3 font-display text-[clamp(1.875rem,1.3rem+1.8vw,2.75rem)] leading-[1.08] tracking-[-0.03em]">{t.title}</h3>
+                <p className="mt-5 text-[17px] leading-relaxed text-pretty text-ink-2">{t.summary}</p>
+                {data.pilot && <CaseStatus status={t.status} className="mt-4" />}
+                {demo && <p className="mt-4 text-sm text-ink-3">{d.work.demoData}</p>}
+                <a href={href} className="link group mt-7 inline-flex items-center gap-2 text-[15px] font-medium">
                     {d.work.readCase}
+                    <span className="sr-only">: {t.title}</span>
                     <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
+                </a>
             </div>
-        </a>
+        </article>
     );
 }

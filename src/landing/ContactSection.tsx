@@ -1,85 +1,55 @@
-import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
-import { ArrowUpRight, Check, Copy } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../i18n/useI18n';
 import { CONTACTS, HANDLES } from '../site';
-import { GitHubIcon, InstagramIcon, MailIcon, TelegramIcon, WhatsAppIcon } from '../components/icons';
 
 export function ContactSection() {
     const { d } = useI18n();
     const c = d.contact;
 
-    return (
-        <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-[1200px] px-5 py-24 lg:px-10 lg:py-36">
-            <p data-reveal className="font-mono text-[13px] text-accent">
-                06 / {c.label}
-            </p>
-            <h2 id="contact-title" data-reveal className="mt-5 font-display text-[clamp(3rem,1rem+7.4vw,8.5rem)] leading-[0.92] font-bold tracking-[-0.05em] text-balance">
-                {c.titleLead} <span className="gradient-text-accent block">{c.titleAccent}</span>
-            </h2>
+    const links = [
+        { label: 'WhatsApp', value: HANDLES.whatsapp, href: CONTACTS.whatsapp },
+        { label: 'Instagram', value: HANDLES.instagram, href: CONTACTS.instagram },
+        { label: 'GitHub', value: HANDLES.github, href: CONTACTS.github },
+    ];
 
-            <div data-reveal className="mt-10 flex flex-col gap-8 lg:mt-12 lg:flex-row lg:items-end lg:justify-between">
+    return (
+        <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-[1200px] px-5 py-28 lg:px-10 lg:py-44">
+            <h2 id="contact-title" data-reveal className="max-w-[14ch] font-display text-[clamp(2.75rem,1.2rem+5.6vw,6rem)] leading-[1] tracking-[-0.045em] text-balance">
+                {c.title}
+            </h2>
+            <div data-reveal className="mt-8 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-end lg:justify-between">
                 <p className="max-w-[44ch] text-lg leading-relaxed text-pretty text-ink-2">{c.text}</p>
-                <div className="flex flex-col items-stretch gap-2.5 sm:items-start">
-                    <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-[60px] px-6 text-base max-sm:whitespace-normal sm:px-8">
-                        <TelegramIcon size={20} />
-                        {c.telegram}
-                        <ArrowUpRight size={18} aria-hidden="true" />
-                    </a>
-                    <span className="pl-1 font-mono text-xs text-ink-3">{HANDLES.telegram}</span>
-                </div>
+                <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary self-start max-sm:w-full lg:self-auto">
+                    {c.telegram}
+                </a>
             </div>
 
-            <h3 className="sr-only">{c.other}</h3>
-            {/* 1px gaps over a tinted background draw the dividers between the cells */}
-            <ul data-reveal className="mt-14 grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-3xl border border-tint/10 bg-tint/10 sm:grid-cols-[repeat(2,minmax(0,1fr))] lg:mt-20">
-                <li className="bg-bg">
-                    <ContactLink href={CONTACTS.whatsapp} icon={WhatsAppIcon} label="WhatsApp" value={HANDLES.whatsapp} />
-                </li>
-                <li className="bg-bg">
-                    <CopyEmail />
-                </li>
-                <li className="bg-bg">
-                    <ContactLink href={CONTACTS.instagram} icon={InstagramIcon} label="Instagram" value={HANDLES.instagram} />
-                </li>
-                <li className="bg-bg">
-                    <ContactLink href={CONTACTS.github} icon={GitHubIcon} label="GitHub" value={HANDLES.github} />
-                </li>
-            </ul>
+            <div data-reveal className="mt-16 border-t border-tint/10 pt-8 lg:mt-24">
+                <h3 className="font-sans text-sm font-normal text-ink-3">{c.other}</h3>
+                <dl className="mt-6 grid gap-x-10 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+                    <div>
+                        <dt className="text-sm text-ink-3">{c.email}</dt>
+                        <dd className="mt-1.5">
+                            <CopyEmail />
+                        </dd>
+                    </div>
+                    {links.map(link => (
+                        <div key={link.label}>
+                            <dt className="text-sm text-ink-3">{link.label}</dt>
+                            <dd className="mt-1.5">
+                                <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-[17px] text-ink transition-colors hover:text-accent">
+                                    {link.value}
+                                </a>
+                            </dd>
+                        </div>
+                    ))}
+                </dl>
+            </div>
         </section>
     );
 }
 
-const ROW = 'group flex w-full items-center gap-4 px-5 py-5 text-left transition-colors hover:bg-tint/[0.03] sm:px-6 sm:py-6';
-
-function RowBody({ icon: Icon, label, value, trailing }: { icon: ComponentType<{ size?: number }>; label: string; value: ReactNode; trailing: ReactNode }) {
-    return (
-        <>
-            <span className="grid size-11 shrink-0 place-items-center rounded-full border border-tint/15 text-ink-2 transition-colors group-hover:border-accent/60 group-hover:text-accent-light">
-                <Icon size={20} />
-            </span>
-            <span className="min-w-0 flex-1">
-                <span className="block font-mono text-xs text-ink-3">{label}</span>
-                <span className="mt-0.5 block truncate text-[15px] text-ink">{value}</span>
-            </span>
-            {trailing}
-        </>
-    );
-}
-
-function ContactLink({ href, icon, label, value }: { href: string; icon: ComponentType<{ size?: number }>; label: string; value: string }) {
-    return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={ROW}>
-            <RowBody
-                icon={icon}
-                label={label}
-                value={value}
-                trailing={<ArrowUpRight size={18} aria-hidden="true" className="shrink-0 text-ink-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-light" />}
-            />
-        </a>
-    );
-}
-
-/** One tap copies the address; the row confirms, and a live region announces it. */
+/** The address, and one tap to copy it; the button confirms and a live region announces it. */
 function CopyEmail() {
     const { d } = useI18n();
     const c = d.contact;
@@ -101,24 +71,16 @@ function CopyEmail() {
     };
 
     return (
-        <>
-            <button type="button" onClick={copy} className={ROW}>
-                <RowBody
-                    icon={MailIcon}
-                    label={c.email}
-                    // the confirmation takes the address's place, so it's visible on the narrowest screen
-                    value={copied ? <span className="text-accent-light">{c.copied}</span> : CONTACTS.email}
-                    trailing={
-                        <span className={`inline-flex shrink-0 items-center gap-1.5 font-mono text-xs transition-colors ${copied ? 'text-accent-light' : 'text-ink-3 group-hover:text-ink'}`}>
-                            {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
-                            <span className="max-sm:sr-only">{copied ? c.copied : c.copy}</span>
-                        </span>
-                    }
-                />
+        <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <a href={`mailto:${CONTACTS.email}`} className="text-[17px] break-all text-ink transition-colors hover:text-accent">
+                {CONTACTS.email}
+            </a>
+            <button type="button" onClick={copy} className={`py-1 text-sm transition-colors ${copied ? 'text-ink' : 'text-ink-3 hover:text-ink'}`}>
+                {copied ? c.copied : c.copy}
             </button>
             <span aria-live="polite" className="sr-only">
                 {copied ? c.emailCopied : ''}
             </span>
-        </>
+        </span>
     );
 }

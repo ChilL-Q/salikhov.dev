@@ -96,7 +96,7 @@
   line-gap-override: 0%;
 }
 
-/* ── Design tokens for Tailwind utilities (bg-bg, text-ink-2, border-tint/10, font-mono…).
+/* ── Design tokens for Tailwind utilities (bg-bg, text-ink-2, border-tint/10, text-accent…).
    Colours point at the palette channels below, which stay the single source. ── */
 @theme {
   --color-bg: rgb(var(--bg-rgb));
@@ -106,9 +106,7 @@
   --color-ink-2: var(--text-secondary);
   --color-ink-3: var(--text-tertiary);
   --color-accent: rgb(var(--accent-rgb));
-  --color-accent-light: rgb(var(--accent-light-rgb));
-  --color-accent-mid: rgb(var(--accent-mid-rgb));
-  --color-accent-deep: rgb(var(--accent-deep-rgb));
+  --color-accent-hover: rgb(var(--accent-hover-rgb));
   --color-on-accent: var(--on-accent);
 
   --font-sans: "Onest", "Onest Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -121,18 +119,18 @@
 @layer base {
   :root {
     /* ── Palette: the only place colours are defined. Channels are
-       space-separated RGB so they work as rgb(var(--x) / alpha). ── */
-    --bg-rgb: 14 10 7;
-    --bg-raised-rgb: 24 17 12;
-    --tint-rgb: 255 232 208;          /* card / border surface tint */
-    --accent-rgb: 214 120 52;         /* cognac caramel: saturated, but not candy-orange */
-    --accent-light-rgb: 236 164 98;
-    --accent-mid-rgb: 188 92 32;
-    --accent-deep-rgb: 130 58 18;
-    --on-accent: #1f0e03;             /* text on accent-filled buttons */
-    --text-primary: #fbf3e8;
-    --text-secondary: #c9baa6;
-    --text-tertiary: #9c8b76;
+       space-separated RGB so they work as rgb(var(--x) / alpha).
+       One accent, used sparingly: the main button, links, focus. ── */
+    --bg-rgb: 14 10 7;                /* warm near-black */
+    --bg-raised-rgb: 23 18 14;
+    --tint-rgb: 255 236 214;          /* hairlines and quiet surfaces */
+    --accent-rgb: 234 123 48;         /* solid orange, 6.9:1 on the background */
+    --accent-hover-rgb: 244 146 78;
+    --on-accent: #1a0c02;             /* text on the orange button, 6.6:1 */
+    --text-primary: #f6efe4;          /* cream white, 17:1 */
+    --text-secondary: #c8bcad;        /* warm grey, 10:1 */
+    --text-tertiary: #9d9182;         /* small captions, 6.3:1 */
+    --dot-rgb: 157 145 130;           /* the hero's dot wave: quiet, not accent */
   }
 
   * { box-sizing: border-box; }
@@ -154,10 +152,8 @@
 
   #root { min-height: 100vh; }
 
-  /* Keep section labels clear of the fixed 64px navbar on anchor jumps */
-  @media (max-width: 900px) {
-    section[id] { scroll-margin-top: 40px; }
-  }
+  /* Keep headings clear of the fixed 64px navbar on anchor jumps */
+  section[id] { scroll-margin-top: 24px; }
 
   :focus-visible {
     outline: 2px solid var(--color-accent);
@@ -175,90 +171,63 @@
   }
   a { color: inherit; text-decoration: none; }
   button { cursor: pointer; font-family: inherit; color: inherit; }
-  h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.1; }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.1; font-weight: 600; }
 
   ::selection {
     background: rgb(var(--accent-rgb) / 0.35);
-    color: white;
+    color: var(--text-primary);
   }
 }
 
 @layer components {
-  /* Entrance for the first screen: pure CSS, so it plays on the prerendered HTML too */
-  .rise { animation: rise 0.8s var(--ease-out-expo) var(--delay, 0s) both; }
+  /* Gentle entrance for the first screen: pure CSS, so it plays on the prerendered HTML too */
+  .rise { animation: rise 0.9s var(--ease-out-expo) var(--delay, 0s) both; }
   /* transform-only, for LCP elements that must be painted from the first frame */
   .settle { animation: settle 1.4s var(--ease-out-expo) both; }
 
   /* Scroll reveal (src/lib/reveal.ts). Hidden only once the inline script has set html.js. */
   [data-reveal] {
-    transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .js [data-reveal]:not([data-revealed]) {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(16px);
   }
 
-  /* Buttons: one filled accent action per screen, ghost for the secondary one */
+  /* The one filled action per screen */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 52px;
-    padding: 0 26px;
+    gap: 10px;
+    min-height: 54px;
+    padding: 0 28px;
     border-radius: 999px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     white-space: nowrap;
-    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s, background-color 0.3s, border-color 0.3s;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
   }
   .btn-primary {
-    background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 60%, rgb(var(--accent-mid-rgb)));
+    background: var(--color-accent);
     color: var(--on-accent);
-    box-shadow: 0 0 40px -10px rgb(var(--accent-rgb) / 0.55), 0 8px 28px -10px rgb(var(--accent-deep-rgb) / 0.45);
   }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 56px -8px rgb(var(--accent-rgb) / 0.7), 0 12px 36px -10px rgb(var(--accent-deep-rgb) / 0.5);
-  }
-  .btn-ghost {
-    color: var(--text-primary);
-    /* 40% tint keeps the outline above 3:1 against the page */
-    border: 1px solid rgb(var(--tint-rgb) / 0.4);
-  }
-  .btn-ghost:hover {
-    transform: translateY(-2px);
-    border-color: rgb(var(--accent-rgb) / 0.8);
-    background-color: rgb(var(--tint-rgb) / 0.06);
-  }
+  .btn-primary:hover { background: var(--color-accent-hover); }
 
-  /* "Available" dot with a slow ping */
-  .status-dot {
-    position: relative;
-    width: 8px;
-    height: 8px;
-    flex: none;
-    border-radius: 50%;
-    background: #5fd38a;
+  /* Links inside text: the accent, with a quiet underline that firms up on hover */
+  .link {
+    color: var(--color-accent);
+    text-decoration-line: underline;
+    text-decoration-color: rgb(var(--accent-rgb) / 0.4);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 0.2s, text-decoration-color 0.2s;
   }
-  .status-dot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  .link:hover {
+    color: var(--color-accent-hover);
+    text-decoration-color: currentColor;
   }
-
-  /* Accent gradient text (headline accents) */
-  .gradient-text-accent {
-    background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 55%, rgb(var(--accent-mid-rgb)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
 }
 
 @layer utilities {
@@ -273,23 +242,13 @@
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(14px);
   }
 }
 
 @keyframes settle {
-  from { transform: translateY(14px) scale(1.03); }
+  from { transform: translateY(12px) scale(1.02); }
 }
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2.6);
-    opacity: 0;
-  }
-}
-
-@keyframes scroll-bob { 50% { transform: translateY(6px); } }
-@keyframes scroll-wheel { 50% { transform: translateY(10px); opacity: 0.3; } }
 
 @keyframes fadeIn {
   from {

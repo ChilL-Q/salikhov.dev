@@ -13,7 +13,7 @@ const FOV = 60;
 const NEAR = 1;
 const FAR = 10000;
 /** wave phase advanced per second, independent of the display's refresh rate */
-const PHASE_PER_SECOND = 1.8;
+const PHASE_PER_SECOND = 0.9;
 
 const f = (n: number) => n.toFixed(1);
 
@@ -24,7 +24,7 @@ uniform float uPhase;
 void main() {
     float x = aGrid.x * ${f(SEPARATION)} - ${f(((AMOUNT_X - 1) * SEPARATION) / 2)};
     float z = aGrid.y * ${f(SEPARATION)} - ${f(((AMOUNT_Y - 1) * SEPARATION) / 2)};
-    float y = sin((aGrid.x + uPhase) * 0.3) * 50.0 + sin((aGrid.y + uPhase) * 0.5) * 50.0;
+    float y = sin((aGrid.x + uPhase) * 0.3) * 36.0 + sin((aGrid.y + uPhase) * 0.5) * 36.0;
     vec4 view = vec4(x, y - ${f(CAMERA_Y)}, z - ${f(CAMERA_Z)}, 1.0);
     gl_PointSize = 24.0 * (300.0 / -view.z);
     gl_Position = uProjection * view;
@@ -58,9 +58,9 @@ function compile(gl: WebGLRenderingContext, type: number, source: string): WebGL
     return shader;
 }
 
-/** Dot colour = the palette's light accent (--accent-light-rgb in index.css). */
+/** Dot colour: a quiet warm grey from the palette (--dot-rgb in index.css). */
 function dotColor(): [number, number, number] {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--accent-light-rgb');
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--dot-rgb');
     const rgb = raw.trim().split(/\s+/).map(Number);
     return rgb.length === 3 && rgb.every(Number.isFinite) ? [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255] : [1, 1, 1];
 }

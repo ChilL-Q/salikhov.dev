@@ -66,51 +66,28 @@ export function Navbar() {
                 {d.nav.skip}
             </a>
             <nav aria-label={d.nav.main} className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-5 lg:px-10">
-                <a href={home || '#top'} className="shrink-0 font-mono text-[14px] font-semibold tracking-tight min-[380px]:text-[15px]">
-                    ~/salikhov<span className="text-accent">.dev</span>
+                <a href={home || '#top'} className="shrink-0 font-display text-[17px] font-semibold tracking-[-0.02em]">
+                    Chingiz Salikhov
                 </a>
 
-                <div className="hidden items-center gap-8 lg:flex">
-                    <ul className="flex gap-7 text-sm">
+                <div className="hidden items-center gap-10 lg:flex">
+                    <ul className="flex gap-8 text-[15px]">
                         {SECTIONS.map(id => (
                             <li key={id}>
                                 <a
                                     href={`${home}#${id}`}
                                     aria-current={current === id ? 'true' : undefined}
-                                    className={`relative py-2 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-300 ${
-                                        current === id ? 'text-ink after:scale-x-100' : 'text-ink-2 after:scale-x-0 hover:text-ink'
-                                    }`}
+                                    className={`py-2 transition-colors ${current === id ? 'text-ink' : 'text-ink-2 hover:text-ink'}`}
                                 >
                                     {d.nav[id]}
                                 </a>
                             </li>
                         ))}
                     </ul>
-                    <div className="flex items-center gap-3">
-                        <button
-                            type="button"
-                            onClick={palette.show}
-                            aria-keyshortcuts="Meta+K Control+K /"
-                            className="inline-flex items-center gap-1 rounded-md border border-tint/15 px-2 py-1 font-mono text-xs text-ink-2 transition-colors hover:border-tint/35 hover:text-ink"
-                        >
-                            {/* the visible keys stay part of the accessible name (WCAG 2.5.3) */}
-                            <span className="sr-only">{d.palette.open}: </span>
-                            <kbd className="font-mono">{palette.shortcut}</kbd>
-                            <kbd className="font-mono">K</kbd>
-                        </button>
-                        <LangSwitch />
-                    </div>
+                    <LangSwitch />
                 </div>
 
-                <div className="flex items-center gap-0.5 lg:hidden">
-                    <button
-                        type="button"
-                        onClick={palette.show}
-                        aria-label={d.palette.open}
-                        className="grid h-11 w-9 place-items-center font-mono text-sm text-ink-2 transition-colors hover:text-ink min-[380px]:w-11"
-                    >
-                        <span aria-hidden="true">›_</span>
-                    </button>
+                <div className="flex items-center gap-3 lg:hidden">
                     <LangSwitch />
                     <button
                         type="button"
@@ -126,25 +103,23 @@ export function Navbar() {
             </nav>
 
             {open && (
-                <div id="mobile-menu" className="animate-[fadeIn_0.2s_ease-out] border-t border-tint/10 px-5 pt-3 pb-7 lg:hidden">
+                <div id="mobile-menu" className="animate-[fadeIn_0.2s_ease-out] border-t border-tint/10 px-5 pt-3 pb-8 lg:hidden">
                     <ul className="flex flex-col">
                         {SECTIONS.map(id => (
                             <li key={id}>
                                 <a
                                     href={`${home}#${id}`}
                                     onClick={() => setOpen(false)}
-                                    className={`block py-3 font-display text-3xl font-semibold tracking-[-0.03em] ${current === id ? 'text-accent' : 'text-ink'}`}
+                                    className={`block py-3 font-display text-3xl tracking-[-0.03em] ${current === id ? 'text-ink' : 'text-ink-2'}`}
                                 >
                                     {d.nav[id]}
                                 </a>
                             </li>
                         ))}
                     </ul>
-                    <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm text-ink-2">
-                        <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="py-1 hover:text-ink">Telegram ↗</a>
-                        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer" className="py-1 hover:text-ink">WhatsApp ↗</a>
-                        <a href={`mailto:${CONTACTS.email}`} className="py-1 hover:text-ink">Email</a>
-                    </div>
+                    <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-6 w-full">
+                        {d.hero.cta}
+                    </a>
                 </div>
             )}
             {palette.palette}

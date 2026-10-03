@@ -5,19 +5,21 @@ export function NotFoundPage() {
     const { en, ru } = NOT_FOUND;
 
     return (
-        <main className="mx-auto flex min-h-svh max-w-xl flex-col justify-center gap-8 px-6 py-24">
-            <p className="font-mono text-sm text-accent">~/salikhov.dev $ 404</p>
+        <main className="mx-auto flex min-h-svh max-w-xl flex-col justify-center gap-12 px-6 py-24">
+            <a href="/" className="font-display text-[17px] font-semibold tracking-[-0.01em]">
+                Chingiz Salikhov
+            </a>
             <div>
-                <h1 className="text-4xl font-bold tracking-tight">{en.title}</h1>
-                <p className="mt-3 text-ink-2">{en.text}</p>
-                <a href="/" className="mt-4 inline-block font-medium text-accent-light underline underline-offset-4 hover:text-ink">
+                <h1 className="font-display text-5xl leading-none tracking-[-0.04em]">{en.title}</h1>
+                <p className="mt-4 text-lg text-ink-2">{en.text}</p>
+                <a href="/" className="link mt-5 inline-block">
                     {en.home}
                 </a>
             </div>
-            <div lang="ru">
-                <p className="text-xl font-semibold">{ru.title}</p>
-                <p className="mt-2 text-ink-2">{ru.text}</p>
-                <a href="/ru" className="mt-4 inline-block font-medium text-accent-light underline underline-offset-4 hover:text-ink">
+            <div lang="ru" className="border-t border-tint/10 pt-10">
+                <p className="font-display text-2xl tracking-[-0.03em]">{ru.title}</p>
+                <p className="mt-3 text-ink-2">{ru.text}</p>
+                <a href="/ru" className="link mt-5 inline-block">
                     {ru.home}
                 </a>
             </div>
