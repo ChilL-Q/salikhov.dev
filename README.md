@@ -1,73 +1,30 @@
-# React + TypeScript + Vite
+# salikhov.dev
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal site of Chingiz Salikhov — React 19 + Vite + TypeScript + Tailwind v4, prerendered to static HTML.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm run dev      # vite dev server (client-side render)
+npm run build    # typecheck → client build → SSR build → prerender into dist/
+npm run preview  # serve dist/
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## How pages are built
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `src/routes.ts` — every page and its URL. EN lives at `/`, RU at `/ru`.
+- `src/entry-server.tsx` renders a route to HTML; `scripts/prerender.mjs` writes it into
+  `dist/<path>/index.html` together with its `<head>` (`src/seo.ts`), font preloads and the inlined CSS,
+  plus a single bilingual `dist/404.html`.
+- `src/entry-client.tsx` hydrates the prerendered markup (or renders from scratch under `vite dev`).
+- Texts: `src/i18n/en.ts` (source of the `Dictionary` type) and `ru.ts`. `kz.ts` is kept for later and not wired up.
+- Contacts and the canonical origin: `src/site.ts`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Assets
+
+- Fonts are self-hosted in `src/assets/fonts` (Onest, JetBrains Mono), one woff2 per script with `unicode-range`.
+- The hero portrait ships as AVIF + WebP in 480/720/960/1200 widths (`src/content/portrait.ts`).
+- The dot wave behind the hero is plain WebGL (`src/lib/dot-wave.ts`), loaded when the browser is idle.
+
+## Deploy
+
+Vercel, `vercel.json`: clean URLs without trailing slashes, immutable caching for `/assets/*`.

@@ -1,10 +1,12 @@
-import { useLanguage } from '@/context/LanguageContext';
+import { useI18n } from '../i18n/useI18n';
+import { CONTACTS } from '../site';
 
 const links = [
-    { label: 'Instagram', href: 'https://instagram.com/salikhov.dev' },
-    { label: 'WhatsApp', href: 'https://wa.me/77019813721' },
-    { label: 'Telegram', href: 'https://t.me/salikhov_dev' },
-    { label: 'Email', href: 'mailto:salikhovchingiz@gmail.com' },
+    { label: 'Telegram', href: CONTACTS.telegram },
+    { label: 'WhatsApp', href: CONTACTS.whatsapp },
+    { label: 'Email', href: `mailto:${CONTACTS.email}` },
+    { label: 'Instagram', href: CONTACTS.instagram },
+    { label: 'GitHub', href: CONTACTS.github },
 ];
 
 const FlipLink = ({ children, href }: { children: string; href: string }) => {
@@ -54,7 +56,7 @@ const FlipLink = ({ children, href }: { children: string; href: string }) => {
 };
 
 export const ContactSection = () => {
-    const { t } = useLanguage();
+    const { t } = useI18n();
 
     return (
         <section id="contact" className="contact-section">

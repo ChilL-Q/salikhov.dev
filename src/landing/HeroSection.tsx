@@ -1,19 +1,16 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { useLanguage } from '../context/LanguageContext';
-import portrait from '../assets/portrait.webp';
+import { useState, useEffect, type CSSProperties } from 'react';
+import { useI18n } from '../i18n/useI18n';
+import { DottedSurface } from '../components/DottedSurface';
+import { PORTRAIT } from '../content/portrait';
 
-// three.js is ~500 kB — keep it out of the main bundle so the hero text paints first
-const DottedSurface = lazy(() => import('../components/DottedSurface').then(m => ({ default: m.DottedSurface })));
+/** rendered width of the portrait: see .hero-portrait (72svh tall at 4:5, capped at 760px; 78vw on phones) */
+const PORTRAIT_SIZES = '(max-width: 900px) min(78vw, 340px), min(58vh, 608px)';
 
-const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-});
+/** stagger for the CSS entrance (.rise in index.css) */
+const delay = (seconds: number) => ({ '--delay': `${seconds}s` }) as CSSProperties;
 
 export const HeroSection = () => {
-    const { t } = useLanguage();
+    const { d } = useI18n();
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -24,93 +21,56 @@ export const HeroSection = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Subtle pointer parallax on the portrait
-    const pointerX = useMotionValue(0);
-    const pointerY = useMotionValue(0);
-    const springX = useSpring(pointerX, { stiffness: 60, damping: 18 });
-    const springY = useSpring(pointerY, { stiffness: 60, damping: 18 });
-    const portraitX = useTransform(springX, v => v * -10);
-    const portraitY = useTransform(springY, v => v * -6);
-
-    const handlePointerMove = (e: React.PointerEvent) => {
-        if (e.pointerType !== 'mouse') return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
-        pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
-    };
-
     return (
-        <section className="hero-section" onPointerMove={handlePointerMove}>
+        <section className="hero-section">
             {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
                 The dots drift over the shirt, so the figure sits *in* the wave. */}
-            <Suspense fallback={null}>
-                <DottedSurface className="hero-dots" />
-            </Suspense>
+            <DottedSurface className="hero-dots" />
 
             <div className="hero-inner">
                 <div className="hero-copy">
-                    <motion.p {...fadeUp(0.2)} className="hero-greeting">
-                        <span className="gradient-text">{t('hero.greeting')}</span>
-                    </motion.p>
+                    <p className="hero-greeting rise" style={delay(0.2)}>
+                        <span className="gradient-text">{d.hero.greeting}</span>
+                    </p>
 
-                    <motion.h1 {...fadeUp(0.3)} className="hero-name">
-                        <span className="shimmer-text">{t('hero.name')}</span>
-                    </motion.h1>
+                    <h1 className="hero-name rise" style={delay(0.3)}>
+                        <span className="shimmer-text">{d.hero.name}</span>
+                    </h1>
 
-                    <motion.p {...fadeUp(0.4)} className="hero-role">
-                        {t('about.role')}
-                    </motion.p>
+                    <p className="hero-role rise" style={delay(0.4)}>
+                        {d.hero.role}
+                    </p>
 
-                    <motion.div {...fadeUp(0.5)} className="hero-actions">
-                        <a href="#projects" className="hero-btn hero-btn-primary">{t('nav.projects')}</a>
-                        <a href="#contact" className="hero-btn hero-btn-ghost">{t('nav.contact')}</a>
-                    </motion.div>
+                    <div className="hero-actions rise" style={delay(0.5)}>
+                        <a href="#projects" className="hero-btn hero-btn-primary">{d.nav.projects}</a>
+                        <a href="#contact" className="hero-btn hero-btn-ghost">{d.nav.contact}</a>
+                    </div>
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.94, y: 30 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ delay: 0.15, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="hero-portrait"
-                >
-                    <motion.div style={{ x: portraitX, y: portraitY }}>
+                <div className="hero-portrait rise">
+                    <picture>
+                        <source type="image/avif" srcSet={PORTRAIT.avif} sizes={PORTRAIT_SIZES} />
                         <img
-                            src={portrait}
-                            alt={t('hero.name')}
-                            width={1200}
-                            height={1500}
+                            src={PORTRAIT.fallback}
+                            srcSet={PORTRAIT.webp}
+                            sizes={PORTRAIT_SIZES}
+                            alt={d.hero.name}
+                            width={PORTRAIT.width}
+                            height={PORTRAIT.height}
+                            fetchPriority="high"
                             className="hero-portrait-img"
                             draggable={false}
                         />
-                    </motion.div>
-                </motion.div>
+                    </picture>
+                </div>
             </div>
 
-            <AnimatePresence>
-                {!scrolled && (
-                    <motion.div
-                        key="hero-scroll"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.8 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="hero-scroll"
-                    >
-                        <motion.div
-                            animate={{ y: [0, 6, 0] }}
-                            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                            style={{ width: '24px', height: '40px', border: '1.5px solid var(--text-tertiary)', borderRadius: '12px', position: 'relative' }}
-                        >
-                            <motion.div
-                                animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
-                                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                                style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', marginLeft: '-1.5px' }}
-                            />
-                        </motion.div>
-                        {t('hero.scroll')}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <div className={`hero-scroll${scrolled ? ' is-hidden' : ''}`} aria-hidden="true">
+                <div className="hero-scroll-mouse">
+                    <div className="hero-scroll-wheel" />
+                </div>
+                {d.hero.scroll}
+            </div>
 
             <style>{`
                 .hero-section {
@@ -219,7 +179,31 @@ export const HeroSection = () => {
                     text-transform: uppercase;
                     z-index: 2;
                     pointer-events: none;
+                    opacity: 0.8;
+                    transition: opacity 0.3s;
                 }
+                .hero-scroll.is-hidden { opacity: 0; }
+                .hero-scroll-mouse {
+                    position: relative;
+                    width: 24px;
+                    height: 40px;
+                    border: 1.5px solid var(--text-tertiary);
+                    border-radius: 12px;
+                    animation: scroll-bob 1.8s ease-in-out infinite;
+                }
+                .hero-scroll-wheel {
+                    position: absolute;
+                    top: 6px;
+                    left: 50%;
+                    width: 3px;
+                    height: 6px;
+                    margin-left: -1.5px;
+                    border-radius: 2px;
+                    background: var(--text-tertiary);
+                    animation: scroll-wheel 1.8s ease-in-out infinite;
+                }
+                @keyframes scroll-bob { 50% { transform: translateY(6px); } }
+                @keyframes scroll-wheel { 50% { transform: translateY(10px); opacity: 0.3; } }
 
                 /* short laptop screens: the scroll hint would crowd the buttons */
                 @media (max-height: 760px) {

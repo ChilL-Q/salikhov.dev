@@ -1,7 +1,7 @@
-import { useLanguage } from '../context/LanguageContext';
+import { useI18n } from '../i18n/useI18n';
 
 export const Footer = () => {
-    const { t } = useLanguage();
+    const { t } = useI18n();
 
     return (
         <footer style={{

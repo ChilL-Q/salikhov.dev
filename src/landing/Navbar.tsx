@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Instagram, MessageCircle, Mail, Menu, X } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
-import { LanguageSelector } from '../components/LanguageSelector';
+import { Send, Instagram, MessageCircle, Mail, Github, Menu, X } from 'lucide-react';
+import { useI18n } from '../i18n/useI18n';
+import { LangSwitch } from '../components/LangSwitch';
+import { CONTACTS } from '../site';
 
 const navLinks = [
     { key: 'about', href: '#about' },
@@ -11,7 +11,7 @@ const navLinks = [
 ];
 
 export const Navbar = () => {
-    const { t } = useLanguage();
+    const { t, d } = useI18n();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,10 +37,8 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <motion.nav
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        <nav
+            className="site-nav"
             style={{
                 position: 'fixed',
                 top: 0,
@@ -82,67 +80,64 @@ export const Navbar = () => {
                         </a>
                     ))}
                 </div>
-                <LanguageSelector />
+                <LangSwitch />
             </div>
 
             <button
                 className="nav-mobile-btn"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Menu"
+                aria-label={mobileMenuOpen ? d.nav.closeMenu : d.nav.openMenu}
                 aria-expanded={mobileMenuOpen}
                 style={{ display: 'none', padding: '8px', color: 'var(--text-primary)' }}
             >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="nav-mobile-menu"
-                        style={{
-                            position: 'absolute',
-                            top: '64px',
-                            left: 0,
-                            right: 0,
-                            background: 'rgb(var(--bg-rgb) / 0.95)',
-                            backdropFilter: 'blur(20px)',
-                            borderBottom: '1px solid var(--border-subtle)',
-                            padding: '16px 24px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '8px',
-                        }}
-                    >
-                        {navLinks.map(link => (
-                            <a
-                                key={link.key}
-                                href={link.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                style={{
-                                    padding: '12px 0',
-                                    fontSize: '16px',
-                                    color: activeSection === link.key ? 'var(--accent-orange)' : 'var(--text-secondary)',
-                                    fontWeight: 500,
-                                }}
-                            >
-                                {t(`nav.${link.key}`)}
-                            </a>
-                        ))}
-                        <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                            <a href="https://t.me/salikhov_dev" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
-                            <a href="https://wa.me/77019813721" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
-                            <a href="https://instagram.com/salikhov.dev" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
-                            <a href="mailto:salikhovchingiz@gmail.com" aria-label="Email" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
-                        </div>
-                        <div style={{ marginTop: '8px' }}>
-                            <LanguageSelector />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {mobileMenuOpen && (
+                <div
+                    className="nav-mobile-menu"
+                    style={{
+                        position: 'absolute',
+                        top: '64px',
+                        left: 0,
+                        right: 0,
+                        background: 'rgb(var(--bg-rgb) / 0.95)',
+                        backdropFilter: 'blur(20px)',
+                        borderBottom: '1px solid var(--border-subtle)',
+                        padding: '16px 24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                        animation: 'fadeIn 0.2s ease-out',
+                    }}
+                >
+                    {navLinks.map(link => (
+                        <a
+                            key={link.key}
+                            href={link.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            style={{
+                                padding: '12px 0',
+                                fontSize: '16px',
+                                color: activeSection === link.key ? 'var(--accent-orange)' : 'var(--text-secondary)',
+                                fontWeight: 500,
+                            }}
+                        >
+                            {t(`nav.${link.key}`)}
+                        </a>
+                    ))}
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                        <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
+                        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
+                        <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
+                        <a href={CONTACTS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Github size={20} /></a>
+                        <a href={`mailto:${CONTACTS.email}`} aria-label="Email" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
+                    </div>
+                    <div style={{ marginTop: '8px' }}>
+                        <LangSwitch />
+                    </div>
+                </div>
+            )}
 
             <style>{`
                 .nav-link { color: var(--text-secondary); position: relative; }
@@ -159,6 +154,8 @@ export const Navbar = () => {
                     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
                 }
                 .nav-link.active::after { transform: scaleX(1); }
+                .site-nav { animation: nav-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+                @keyframes nav-in { from { transform: translateY(-100%); } }
                 @media (max-width: 768px) {
                     .nav-desktop { display: none !important; }
                     .nav-mobile-btn { display: flex !important; }
@@ -168,6 +165,6 @@ export const Navbar = () => {
                     .nav-mobile-btn { display: none !important; }
                 }
             `}</style>
-        </motion.nav>
+        </nav>
     );
 };
