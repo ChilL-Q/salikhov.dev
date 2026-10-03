@@ -76,6 +76,26 @@
   unicode-range: U+0400-045F;
 }
 
+/* Fallbacks shaped like the web fonts (metrics measured with fontTools against Arial, between the latin
+   and cyrillic ratios), so the swap to Onest / Geologica doesn't reflow the page. */
+@font-face {
+  font-family: "Onest Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 104%;
+  ascent-override: 93.3%;
+  descent-override: 29.3%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Geologica Fallback";
+  font-weight: 500 800;
+  src: local("Arial Bold"), local("Arial-BoldMT");
+  size-adjust: 103%;
+  ascent-override: 94.7%;
+  descent-override: 26.7%;
+  line-gap-override: 0%;
+}
+
 /* ── Design tokens for Tailwind utilities (bg-bg, text-ink-2, border-tint/10, font-mono…).
    Colours point at the palette channels below, which stay the single source. ── */
 @theme {
@@ -91,9 +111,9 @@
   --color-accent-deep: rgb(var(--accent-deep-rgb));
   --color-on-accent: var(--on-accent);
 
-  --font-sans: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Onest", "Onest Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --font-display: "Geologica", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Geologica", "Geologica Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
