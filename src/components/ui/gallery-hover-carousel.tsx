@@ -6,9 +6,9 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import qarauLogo from '@/assets/projects-logos/qarau.svg';
-import kassimovaLogo from '@/assets/projects-logos/kassimova-design.png';
-import abaiLogo from '@/assets/projects-logos/ab-ai.png';
-import azharLogo from '@/assets/projects-logos/azhar-trading.png';
+import kassimovaLogo from '@/assets/projects-logos/kassimova-design.webp';
+import abaiLogo from '@/assets/projects-logos/ab-ai.webp';
+import azharLogo from '@/assets/projects-logos/azhar-trading.webp';
 import thirdTimeLogo from '@/assets/projects-logos/3time.webp';
 import breakfastLogo from '@/assets/projects-logos/the-breakfast.svg';
 
@@ -33,11 +33,13 @@ const projects: ProjectCard[] = [
 
 export default function GalleryHoverCarousel() {
     const { t } = useLanguage();
-    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+    // Starts as desktop, like the prerendered HTML, and is measured once the page is live
+    const [isMobile, setIsMobile] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);

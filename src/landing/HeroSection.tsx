@@ -1,10 +1,15 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useSyncExternalStore, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import portrait from '../assets/portrait.webp';
+import { PORTRAIT } from '../content/portrait';
 
 // three.js is ~500 kB — keep it out of the main bundle so the hero text paints first
 const DottedSurface = lazy(() => import('../components/DottedSurface').then(m => ({ default: m.DottedSurface })));
+
+/** Rendered portrait width, mirroring .hero-portrait below: 4:5 at min(72svh, 760px) tall, on phones --portrait-w. */
+const PORTRAIT_SIZES = '(max-width: 900px) min(78vw, 340px), min(57.6vh, 608px)';
+
+const noSubscribe = () => () => {};
 
 const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
@@ -15,6 +20,8 @@ const fadeUp = (delay: number) => ({
 export const HeroSection = () => {
     const { t } = useLanguage();
     const [scrolled, setScrolled] = useState(false);
+    // The wave is client-only: false in the prerendered HTML and while hydrating, true right after
+    const mounted = useSyncExternalStore(noSubscribe, () => true, () => false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -43,9 +50,11 @@ export const HeroSection = () => {
         <section className="hero-section" onPointerMove={handlePointerMove}>
             {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
                 The dots drift over the shirt, so the figure sits *in* the wave. */}
-            <Suspense fallback={null}>
-                <DottedSurface className="hero-dots" />
-            </Suspense>
+            {mounted && (
+                <Suspense fallback={null}>
+                    <DottedSurface className="hero-dots" />
+                </Suspense>
+            )}
 
             <div className="hero-inner">
                 <div className="hero-copy">
@@ -74,14 +83,20 @@ export const HeroSection = () => {
                     className="hero-portrait"
                 >
                     <motion.div style={{ x: portraitX, y: portraitY }}>
-                        <img
-                            src={portrait}
-                            alt={t('hero.name')}
-                            width={1200}
-                            height={1500}
-                            className="hero-portrait-img"
-                            draggable={false}
-                        />
+                        <picture>
+                            <source type="image/avif" srcSet={PORTRAIT.avif} sizes={PORTRAIT_SIZES} />
+                            <img
+                                src={PORTRAIT.fallback}
+                                srcSet={PORTRAIT.webp}
+                                sizes={PORTRAIT_SIZES}
+                                alt={t('hero.name')}
+                                width={PORTRAIT.width}
+                                height={PORTRAIT.height}
+                                fetchPriority="high"
+                                className="hero-portrait-img"
+                                draggable={false}
+                            />
+                        </picture>
                     </motion.div>
                 </motion.div>
             </div>

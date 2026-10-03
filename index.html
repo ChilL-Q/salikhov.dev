@@ -3,25 +3,25 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
+  <!-- Each language has its own page (src/i18n/langs.ts). A visitor who picked English or Kazakh before
+       keeps it: on the root page the saved choice redirects before anything is drawn. -->
+  <script>
+    try {
+      var saved = localStorage.getItem('app_language');
+      if (location.pathname === '/' && (saved === 'en' || saved === 'kz')) location.replace('/' + saved + location.search + location.hash);
+    } catch (e) {}
+  </script>
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0704" />
   <meta name="color-scheme" content="dark" />
-  <title>Chingiz Salikhov | Full Stack Developer & AI</title>
-  <meta name="description" content="Chingiz Salikhov — Full Stack developer and AI enthusiast from Astana. Web products, AI agents and design: Qarau AI, AB AI, Kassimova Design, Azhar Trading." />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Chingiz Salikhov | Full Stack Developer & AI" />
-  <meta property="og:description" content="If you can imagine it, I can code it. Full Stack development and AI solutions." />
-  <meta property="og:image" content="/favicon.png" />
-  <meta name="twitter:card" content="summary" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!--app-head-->
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root"><!--app-html--></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 

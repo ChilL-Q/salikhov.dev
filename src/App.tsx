@@ -1,9 +1,10 @@
 import { LanguageProvider } from './context/LanguageContext';
 import { MainLayout } from './landing/MainLayout';
+import type { LanguageCode } from './i18n/dictionaries';
 
-function App() {
+function App({ initialLanguage }: { initialLanguage: LanguageCode }) {
     return (
-        <LanguageProvider>
+        <LanguageProvider initialLanguage={initialLanguage}>
             <MainLayout />
         </LanguageProvider>
     );
