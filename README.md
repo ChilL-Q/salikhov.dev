@@ -13,22 +13,36 @@ npm run lint
 
 - `src/routes.ts` — every page and its URL. EN lives at `/`, RU at `/ru`; case studies at `/work/<slug>` and `/ru/work/<slug>`.
 - `src/entry-server.tsx` renders a route to HTML; `scripts/prerender.mjs` writes it into
-  `dist/<path>/index.html` together with its `<head>` (`src/seo.ts`), font preloads and the inlined CSS,
-  plus a single bilingual `dist/404.html`.
-- `src/entry-client.tsx` hydrates the prerendered markup (or renders from scratch under `vite dev`).
-- Texts: `src/i18n/en.ts` (source of the `Dictionary` type) and `ru.ts`; work and case studies in `work.en.ts` / `work.ru.ts`.
-  `kz.ts` is kept for later and not wired up.
-- Case data that isn't text (links, stack from each project's repo, visuals): `src/content/cases.ts`.
+  `dist/<path>/index.html` together with its `<head>` (`src/head.ts`), font and dictionary preloads and the
+  inlined CSS, plus a single bilingual `dist/404.html` and `dist/sitemap.xml`.
+- `src/entry-client.tsx` loads the page's dictionary and hydrates the prerendered markup (or renders from
+  scratch under `vite dev`).
+- Home sections in order: Hero → Work → Services → Process → Stack → About → Contact (`src/pages/HomePage.tsx`).
+
+## Content
+
+- Texts: `src/i18n/en.ts` (source of the `Dictionary` type) and `ru.ts`; work and case studies in
+  `work.en.ts` / `work.ru.ts`; the bilingual 404 lines in `not-found.ts`. The browser gets only its own
+  language (`loadDictionary`); the build uses `i18n/all.ts`. `kz.ts` is kept for later and not wired up.
+- Data that isn't text: `src/content/` — case studies (links, stack taken from each project's repository,
+  visuals), services, stack, portrait and badge images.
 - Contacts and the canonical origin: `src/site.ts`.
+- Rule for case studies: no invented results. Screens with made-up numbers carry a "demo data" badge.
 
 ## Assets
 
 - Fonts are self-hosted in `src/assets/fonts` (Geologica for display, Onest for text, JetBrains Mono), one woff2
   per script with `unicode-range`; variable axes are trimmed to the weights in use, the mono face is subset.
-- The hero portrait ships as AVIF + WebP in 480/720/960/1200 widths (`src/content/portrait.ts`).
-- Case visuals in `src/assets/work/<case>/` (AVIF + WebP, sizes in `manifest.json`) are captured from the live sites;
-  menus are cropped so the guest Wi-Fi password never shows. Screens with made-up numbers are labelled as demo data.
+  Arial-based fallbacks with matched metrics keep the font swap from shifting the layout.
+- Images ship as AVIF + WebP in several widths through `components/Picture` (`lib/responsive.ts` builds the srcsets).
+- Case visuals in `src/assets/work/<case>/` (sizes in `manifest.json`) are captured from the live sites;
+  menus are cropped so the guest Wi-Fi password never shows.
 - The dot wave behind the hero is plain WebGL (`src/lib/dot-wave.ts`), loaded when the browser is idle.
+
+## ⌘K
+
+`src/components/palette/` — a terminal-style command palette: ⌘K / Ctrl+K or "/" (and the ›_ button on phones).
+Navigation, case studies, contacts, language, `help` and one easter egg. Loaded as its own chunk on idle.
 
 ## SEO
 
@@ -41,3 +55,4 @@ npm run lint
 ## Deploy
 
 Vercel, `vercel.json`: clean URLs without trailing slashes, immutable caching for `/assets/*`.
+The primary domain is `salikhov.dev`; `www` should 308-redirect to it (Vercel → Settings → Domains).
