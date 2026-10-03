@@ -117,13 +117,13 @@ export const HeroSection = () => {
                     min-height: 100svh;
                     position: relative;
                     display: flex;
-                    padding: 88px 40px 0;
+                    padding: 88px 24px 0;
                     overflow: hidden;
                 }
                 .hero-dots { z-index: 1; }
                 .hero-inner {
                     width: 100%;
-                    max-width: 1200px;
+                    max-width: 1120px; /* the navbar's column: the name lines up with the logo */
                     margin: 0 auto;
                     /* copy on the left; the portrait stands on the hero's bottom edge, head level with the name */
                     display: grid;
@@ -175,15 +175,15 @@ export const HeroSection = () => {
                     box-shadow: 0 0 60px -8px rgb(var(--accent-rgb) / 0.75), 0 12px 40px -8px rgb(var(--accent-deep-rgb) / 0.5);
                 }
                 .hero-btn-ghost {
-                    background: rgb(var(--tint-rgb) / 0.06);
-                    border: 1px solid rgb(var(--tint-rgb) / 0.18);
+                    background: rgb(var(--tint-rgb) / 0.08);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.26);
                     color: var(--text-primary);
                     backdrop-filter: blur(8px);
                     -webkit-backdrop-filter: blur(8px);
                 }
                 .hero-btn-ghost:hover {
                     transform: translateY(-2px);
-                    background: rgb(var(--tint-rgb) / 0.12);
+                    background: rgb(var(--tint-rgb) / 0.14);
                     border-color: rgb(var(--accent-rgb) / 0.5);
                 }
 

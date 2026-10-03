@@ -5,7 +5,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
-import iffaLogo from '@/assets/projects-logos/iffatech.png';
+import qarauLogo from '@/assets/projects-logos/qarau.svg';
 import kassimovaLogo from '@/assets/projects-logos/kassimova-design.png';
 import abaiLogo from '@/assets/projects-logos/ab-ai.png';
 import azharLogo from '@/assets/projects-logos/azhar-trading.png';
@@ -23,9 +23,9 @@ interface ProjectCard {
 }
 
 const projects: ProjectCard[] = [
+    { id: 'qarau', url: 'https://qarau.kz', logo: qarauLogo, bg: '#0f1820', tags: ['AI', 'iiko', 'Telegram'] },
     { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
     { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
-    { id: 'iffa', url: 'https://iffatech.com', logo: iffaLogo, bg: '#07080d', tags: ['TypeScript', 'Cloud', 'Node.js'] },
     { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
     { id: 'thirdtime', url: 'https://3time.kz', logo: thirdTimeLogo, bg: '#0d2118', tags: ['QR Menu', 'React', 'Admin'], logoMaxWidth: 170 },
     { id: 'breakfast', url: 'https://thebreakfast.kz', logo: breakfastLogo, bg: '#faf5ec', tags: ['QR Menu', 'HoReCa', 'Node.js'] },
@@ -225,7 +225,7 @@ export default function GalleryHoverCarousel() {
                     justify-content: center;
                     color: var(--text-primary);
                     background: rgb(var(--tint-rgb) / 0.06);
-                    border: 1px solid rgb(var(--tint-rgb) / 0.16);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.22);
                     transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
                 }
                 .projects-arrow:hover {
@@ -245,7 +245,7 @@ export default function GalleryHoverCarousel() {
                     padding: 0;
                     border: none;
                     border-radius: 100px;
-                    background: rgb(var(--tint-rgb) / 0.2);
+                    background: rgb(var(--tint-rgb) / 0.28);
                     transition: width 0.3s ease, background 0.3s ease;
                 }
                 .projects-dot.active {
@@ -263,7 +263,7 @@ export default function GalleryHoverCarousel() {
                     text-decoration: none;
                     color: inherit;
                     background: transparent;
-                    border: 1px solid rgb(var(--tint-rgb) / 0.1);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.16);
                     transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
@@ -316,7 +316,7 @@ export default function GalleryHoverCarousel() {
                     background: rgb(var(--bg-rgb) / 0.95);
                     backdrop-filter: blur(20px);
                     -webkit-backdrop-filter: blur(20px);
-                    border-top: 1px solid rgba(255,255,255,0.08);
+                    border-top: 1px solid rgba(255,255,255,0.12);
                     transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
                     z-index: 3;
                 }
@@ -334,7 +334,7 @@ export default function GalleryHoverCarousel() {
                     font-size: 13px;
                     line-height: 1.6;
                     margin-bottom: 14px;
-                    color: rgba(255,255,255,0.65);
+                    color: rgba(255,255,255,0.75);
                 }
 
                 .project-card-arrow {

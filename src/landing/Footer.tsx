@@ -12,7 +12,7 @@ export const Footer = () => {
         }}>
             <div style={{
                 height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent)',
                 marginBottom: '32px',
             }} />
             <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', letterSpacing: '0.02em' }}>

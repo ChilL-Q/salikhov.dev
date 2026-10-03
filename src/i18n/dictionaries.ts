@@ -33,7 +33,7 @@ export const translations = {
             title: 'Projects',
             subtitle: 'Experience',
             items: {
-                iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
+                qarau: { title: 'Qarau AI', desc: 'AI analytics for cafés on iiko: checks every receipt and reports to the owner in Telegram.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
                 abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
                 azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' },
@@ -81,7 +81,7 @@ export const translations = {
             title: 'Проекты',
             subtitle: 'Опыт',
             items: {
-                iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
+                qarau: { title: 'Qarau AI', desc: 'ИИ-аналитика для кафе на iiko: проверяет каждый чек и пишет владельцу в Telegram.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
                 abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
                 azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' },
@@ -129,7 +129,7 @@ export const translations = {
             title: 'Жобалар',
             subtitle: 'Тәжірибе',
             items: {
-                iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
+                qarau: { title: 'Qarau AI', desc: 'iiko жүйесіндегі кафелерге арналған ИИ-аналитика: әр чекті тексеріп, иесіне Telegram-ға есеп жібереді.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
                 abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },
                 azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' },

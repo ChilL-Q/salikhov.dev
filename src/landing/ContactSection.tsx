@@ -3,7 +3,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const links = [
     { label: 'Instagram', href: 'https://instagram.com/salikhov.dev' },
     { label: 'WhatsApp', href: 'https://wa.me/77019813721' },
-    { label: 'Telegram', href: 'https://t.me/salikhov_dev' },
+    { label: 'Telegram', href: 'https://t.me/mr_vibecoder' },
     { label: 'Email', href: 'mailto:salikhovchingiz@gmail.com' },
 ];
 

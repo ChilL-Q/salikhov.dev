@@ -56,7 +56,7 @@ export const Navbar = () => {
                 background: scrolled ? 'rgb(var(--bg-rgb) / 0.7)' : 'transparent',
                 backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
                 WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
+                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
                 transition: 'background 0.3s, border-color 0.3s, backdrop-filter 0.3s',
             }}
         >
@@ -132,7 +132,7 @@ export const Navbar = () => {
                             </a>
                         ))}
                         <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                            <a href="https://t.me/salikhov_dev" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
+                            <a href="https://t.me/mr_vibecoder" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
                             <a href="https://wa.me/77019813721" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
                             <a href="https://instagram.com/salikhov.dev" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
                             <a href="mailto:salikhovchingiz@gmail.com" aria-label="Email" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
