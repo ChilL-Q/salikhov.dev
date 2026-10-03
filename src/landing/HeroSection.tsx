@@ -42,7 +42,7 @@ export const HeroSection = () => {
     return (
         <section className="hero-section" onPointerMove={handlePointerMove}>
             {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
-                The dots drift over the jacket, so the figure sits *in* the wave. */}
+                The dots drift over the shirt, so the figure sits *in* the wave. */}
             <Suspense fallback={null}>
                 <DottedSurface className="hero-dots" />
             </Suspense>
@@ -73,19 +73,15 @@ export const HeroSection = () => {
                     transition={{ delay: 0.15, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
                     className="hero-portrait"
                 >
-                    <motion.div className="hero-portrait-figure" style={{ x: portraitX, y: portraitY }}>
+                    <motion.div style={{ x: portraitX, y: portraitY }}>
                         <img
                             src={portrait}
                             alt={t('hero.name')}
                             width={1200}
-                            height={949}
+                            height={1500}
                             className="hero-portrait-img"
                             draggable={false}
                         />
-                        {/* Scene lighting: palette-coloured light cast onto the figure (clipped to its
-                            silhouette) so the daylight photo shares the page's light instead of sitting on top of it */}
-                        <div className="hero-portrait-light" style={{ '--portrait-url': `url(${portrait})` } as React.CSSProperties} />
-                        <div className="hero-portrait-tone" style={{ '--portrait-url': `url(${portrait})` } as React.CSSProperties} />
                     </motion.div>
                 </motion.div>
             </div>
@@ -121,29 +117,28 @@ export const HeroSection = () => {
                     min-height: 100svh;
                     position: relative;
                     display: flex;
-                    align-items: center;
-                    padding: 88px 24px 104px;
+                    padding: 88px 40px 0;
                     overflow: hidden;
                 }
                 .hero-dots { z-index: 1; }
                 .hero-inner {
                     width: 100%;
-                    max-width: 1120px;
+                    max-width: 1200px;
                     margin: 0 auto;
-                    /* one centred column: portrait on top, copy overlapping its dissolving lower edge */
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+                    /* copy on the left; the portrait stands on the hero's bottom edge, head level with the name */
+                    display: grid;
+                    grid-template-columns: minmax(0, 1fr) auto;
+                    column-gap: clamp(32px, 5vw, 80px);
                 }
 
                 /* ── Copy ── */
-                .hero-copy { position: relative; z-index: 2; text-align: center; }
+                .hero-copy { position: relative; z-index: 2; align-self: center; padding-bottom: 88px; }
                 .hero-greeting {
                     font-size: clamp(18px, 1.9vw, 26px);
                     font-weight: 600;
                     letter-spacing: -0.4px;
                     line-height: 1.3;
-                    margin: 0 auto 14px;
+                    margin-bottom: 14px;
                     text-wrap: balance;
                 }
                 .hero-name {
@@ -152,6 +147,7 @@ export const HeroSection = () => {
                     letter-spacing: -0.035em;
                     line-height: 1.05;
                     margin-bottom: 20px;
+                    text-wrap: balance;
                 }
                 .hero-role {
                     font-size: clamp(15px, 1.5vw, 19px);
@@ -159,7 +155,7 @@ export const HeroSection = () => {
                     line-height: 1.6;
                     margin-bottom: 36px;
                 }
-                .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+                .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
                 .hero-btn {
                     display: inline-flex;
                     align-items: center;
@@ -195,59 +191,18 @@ export const HeroSection = () => {
                 .hero-portrait {
                     position: relative;
                     z-index: 0;
-                    order: -1;
-                    /* sized by height too, so the whole hero still fits short laptop screens */
-                    width: min(440px, 72vw, 44svh);
-                    margin-bottom: clamp(-64px, -6svh, -28px);
-                    aspect-ratio: 1200 / 949;
+                    align-self: end;
+                    justify-self: end;
+                    /* sized by height, so the whole figure fits short laptop screens too */
+                    height: min(72svh, 760px);
+                    aspect-ratio: 4 / 5;
                 }
-                .hero-portrait-figure {
-                    position: relative;
-                    isolation: isolate;
-                    /* the image height is fractional, and the mask leaves its last sub-pixel row
-                       unmasked — a hairline under the portrait. Clip that row off. */
-                    clip-path: inset(0 0 3px 0);
-                    /* dissolve the photo's cut-off edges (bottom + both arms) into the background */
-                    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 96%), linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
-                    -webkit-mask-composite: source-in;
-                    mask-image: linear-gradient(to bottom, #000 45%, transparent 96%), linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
-                    mask-composite: intersect;
-                }
+                /* colour grade, black point and the dissolve of the bottom and side edges are baked into the file */
                 .hero-portrait-img {
-                    position: relative;
                     display: block;
                     width: 100%;
                     height: auto;
                     user-select: none;
-                    /* colour grade (white balance, black hair, vibrance) is baked into the file */
-                    filter: brightness(0.97) saturate(1.06);
-                }
-                .hero-portrait-light,
-                .hero-portrait-tone {
-                    position: absolute;
-                    inset: 0;
-                    pointer-events: none;
-                    /* silhouette ∩ vertical ramp: the hair (top of the frame) gets only a hint of the
-                       coloured light, otherwise black hair picks up the accent hue */
-                    -webkit-mask-image: var(--portrait-url), linear-gradient(to bottom, rgb(0 0 0 / 0.2) 10%, #000 38%);
-                    -webkit-mask-size: 100% 100%;
-                    -webkit-mask-repeat: no-repeat;
-                    -webkit-mask-composite: source-in;
-                    mask-image: var(--portrait-url), linear-gradient(to bottom, rgb(0 0 0 / 0.2) 10%, #000 38%);
-                    mask-size: 100% 100%;
-                    mask-repeat: no-repeat;
-                    mask-composite: intersect;
-                }
-                /* key light: warm accent from the side of the headline/buttons, deep accent shadow on the far side */
-                .hero-portrait-light {
-                    background: linear-gradient(100deg, rgb(var(--accent-light-rgb) / 0.75) 0%, rgb(var(--accent-rgb) / 0.35) 38%, transparent 60%, rgb(var(--accent-deep-rgb) / 0.55) 100%);
-                    mix-blend-mode: soft-light;
-                }
-                /* overall tone: nudge every hue a little toward the palette */
-                .hero-portrait-tone {
-                    background: rgb(var(--accent-mid-rgb));
-                    mix-blend-mode: color;
-                    opacity: 0.1;
                 }
                 .hero-scroll {
                     position: absolute;
@@ -271,11 +226,18 @@ export const HeroSection = () => {
                     .hero-scroll { display: none; }
                 }
                 @media (max-width: 900px) {
-                    .hero-section {
-                        align-items: flex-start;
-                        padding: 84px 24px 56px;
+                    .hero-section { padding: 84px 20px 56px; }
+                    /* one centred column: portrait on top, copy over its dissolving lower edge */
+                    .hero-inner { display: flex; flex-direction: column; align-items: center; }
+                    .hero-copy { text-align: center; padding-bottom: 0; }
+                    .hero-actions { justify-content: center; }
+                    .hero-portrait {
+                        --portrait-w: min(78vw, 340px);
+                        order: -1;
+                        width: var(--portrait-w);
+                        height: auto;
+                        margin-bottom: calc(var(--portrait-w) * -0.22);
                     }
-                    .hero-portrait { width: min(70%, 290px); margin-bottom: -28px; }
                     .hero-greeting { margin-bottom: 12px; }
                     .hero-name { margin-bottom: 16px; }
                     .hero-role { margin-bottom: 28px; }
