@@ -4,6 +4,7 @@ import { useI18n } from '../i18n/useI18n';
 import { LangSwitch } from '../components/LangSwitch';
 import { pathFor } from '../routes';
 import { CONTACTS } from '../site';
+import { useCommandPalette } from '../components/palette/useCommandPalette';
 
 const SECTIONS = ['work', 'services', 'process', 'about', 'contact'] as const;
 
@@ -12,6 +13,7 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
     const [active, setActive] = useState<string | null>(null);
+    const palette = useCommandPalette();
 
     // section links work from any page: on the home page they're plain anchors
     const home = route.page === 'home' ? '' : pathFor({ page: 'home', lang });
@@ -77,10 +79,31 @@ export function Navbar() {
                             </li>
                         ))}
                     </ul>
-                    <LangSwitch />
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={palette.show}
+                            aria-keyshortcuts="Meta+K Control+K /"
+                            className="inline-flex items-center gap-1 rounded-md border border-tint/15 px-2 py-1 font-mono text-xs text-ink-2 transition-colors hover:border-tint/35 hover:text-ink"
+                        >
+                            {/* the visible keys stay part of the accessible name (WCAG 2.5.3) */}
+                            <span className="sr-only">{d.palette.open}: </span>
+                            <kbd className="font-mono">{palette.shortcut}</kbd>
+                            <kbd className="font-mono">K</kbd>
+                        </button>
+                        <LangSwitch />
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-1 lg:hidden">
+                    <button
+                        type="button"
+                        onClick={palette.show}
+                        aria-label={d.palette.open}
+                        className="grid size-11 place-items-center font-mono text-sm text-ink-2 transition-colors hover:text-ink"
+                    >
+                        <span aria-hidden="true">›_</span>
+                    </button>
                     <LangSwitch />
                     <button
                         type="button"
@@ -117,6 +140,7 @@ export function Navbar() {
                     </div>
                 </div>
             )}
+            {palette.palette}
         </header>
     );
 }
