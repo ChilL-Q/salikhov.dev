@@ -8,8 +8,10 @@ import { CONTACTS } from '../site';
 import { Navbar } from '../landing/Navbar';
 import { Footer } from '../landing/Footer';
 import { CaseStage } from '../components/work/CaseStage';
+import { CaseStatus } from '../components/work/CaseStatus';
 import { BrowserFrame, DemoBadge, PhoneFrame } from '../components/work/Frames';
 import { Picture } from '../components/Picture';
+import { CtaBanner } from '../components/CtaBanner';
 
 const STAGE_SIZES = { browser: '(min-width: 1200px) 900px, 80vw', phone: '(min-width: 1200px) 300px, 27vw' };
 
@@ -34,12 +36,7 @@ export function CasePage({ slug }: { slug: CaseSlug }) {
                         <p className="mt-10 font-mono text-[13px] text-accent">{t.type}</p>
                         <h1 className="mt-3 font-display text-[clamp(2.75rem,1rem+5vw,6rem)] leading-[0.95] font-bold tracking-[-0.045em]">{t.title}</h1>
                         <p className="mt-6 max-w-[52ch] text-[clamp(1.125rem,1rem+0.45vw,1.375rem)] leading-relaxed text-pretty text-ink-2">{t.summary}</p>
-                        {data.pilot && (
-                            <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-accent/35 bg-accent/10 px-3.5 py-1.5 font-mono text-xs text-accent-light">
-                                <span className="status-dot" aria-hidden="true" />
-                                {t.status}
-                            </p>
-                        )}
+                        {data.pilot && <CaseStatus status={t.status} className="mt-6" />}
 
                         <dl className="mt-10 grid gap-x-10 gap-y-5 border-t border-tint/10 pt-6 sm:grid-cols-3">
                             <Meta label={d.work.role}>{t.role}</Meta>
@@ -133,16 +130,7 @@ export function CasePage({ slug }: { slug: CaseSlug }) {
                     </CaseSection>
 
                     <section className="mx-auto max-w-[1200px] px-5 pt-6 pb-20 lg:px-10 lg:pb-28">
-                        <div data-reveal className="flex flex-col gap-6 rounded-[28px] border border-tint/10 bg-raised p-7 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
-                            <div>
-                                <h2 className="font-display text-[clamp(1.75rem,1.3rem+1.4vw,2.5rem)] leading-tight font-bold tracking-[-0.03em]">{d.work.ctaTitle}</h2>
-                                <p className="mt-2 max-w-[48ch] leading-relaxed text-ink-2">{d.work.ctaText}</p>
-                            </div>
-                            <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary self-start lg:self-auto">
-                                {d.work.ctaButton}
-                                <ArrowUpRight size={18} aria-hidden="true" />
-                            </a>
-                        </div>
+                        <CtaBanner title={d.work.ctaTitle} text={d.work.ctaText} button={d.work.ctaButton} heading="h2" />
 
                         <a
                             href={pathFor({ page: 'case', lang, slug: next.slug })}

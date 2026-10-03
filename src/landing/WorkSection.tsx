@@ -5,6 +5,7 @@ import { CASES, type CaseData } from '../content/cases';
 import { pathFor } from '../routes';
 import { SectionHeader } from '../components/SectionHeader';
 import { CaseStage } from '../components/work/CaseStage';
+import { CaseStatus } from '../components/work/CaseStatus';
 
 // rendered widths (see CaseStage: browser 80cqw, phone 23cqw / 27cqw of the card or the visual column)
 const CARD_SIZES = { browser: '(min-width: 1024px) 440px, 80vw', phone: '(min-width: 1024px) 150px, 27vw' };
@@ -41,12 +42,7 @@ function CaseCard({ data, featured }: { data: CaseData; featured: boolean }) {
             <CaseStage stage={data.stage} sizes={featured ? FEATURED_SIZES : CARD_SIZES} className={featured ? 'lg:order-2 lg:h-full lg:aspect-auto lg:min-h-[420px]' : ''} />
 
             <div className={`flex flex-col p-6 sm:p-7 ${featured ? 'lg:justify-center lg:p-12' : ''}`}>
-                {data.pilot && (
-                    <p className="mb-5 inline-flex items-center gap-2.5 self-start rounded-full border border-accent/35 bg-accent/10 px-3 py-1.5 font-mono text-xs text-accent-light">
-                        <span className="status-dot" aria-hidden="true" />
-                        {t.status}
-                    </p>
-                )}
+                {data.pilot && <CaseStatus status={t.status} className="mb-5 self-start" />}
                 <p className="font-mono text-xs text-ink-3">{t.type}</p>
                 <h3 className={`mt-2 font-display leading-[1.05] font-bold tracking-[-0.03em] ${featured ? 'text-[clamp(2rem,1.2rem+2.4vw,3.25rem)]' : 'text-[26px]'}`}>
                     {t.title}

@@ -7,6 +7,7 @@ export const en = {
     },
     nav: {
         work: 'Work',
+        services: 'Services',
         about: 'About',
         contact: 'Contact',
         main: 'Main',
@@ -43,6 +44,42 @@ export const en = {
     },
     work,
     cases,
+    services: {
+        label: 'Services',
+        title: 'What I can do for your business',
+        intro: 'From a launch landing page to an AI agent that talks to your clients. You work directly with me — from the first call to launch.',
+        inPractice: 'In practice',
+        unsureTitle: 'Not sure what you need?',
+        unsureText: 'Describe the task in a couple of sentences — I’ll suggest the simplest way to solve it and what it would take.',
+        unsureButton: 'Discuss a project',
+        items: {
+            websites: {
+                title: 'Websites & landing pages',
+                benefit: 'A site that explains in seconds what you sell and turns visitors into requests — fast on a phone and easy to keep up to date.',
+                includes: ['Landing pages for launches and ads', 'Company and portfolio websites', 'Russian, Kazakh and English versions', 'Search-friendly pages and analytics from day one'],
+            },
+            apps: {
+                title: 'Web apps & dashboards',
+                benefit: 'Admin panels, dashboards and client portals instead of spreadsheets and manual reports — your team works in one place.',
+                includes: ['Admin panels the owner runs without a developer', 'Dashboards with the numbers that matter', 'Telegram Mini Apps', 'Client and staff accounts with roles'],
+            },
+            ai: {
+                title: 'AI agents & chatbots',
+                benefit: 'Agents that write to clients, remind them and bring them back in WhatsApp and Telegram — and answer questions about your own data.',
+                includes: ['WhatsApp and Telegram bots', 'Campaigns and reminders', 'Questions to your data, by text or voice', 'Safe by design: the system counts, the AI explains'],
+            },
+            automation: {
+                title: 'Business automation',
+                benefit: 'I connect the systems you already use — iiko, 1C, your CRM, messengers — so reports and routine checks happen without people.',
+                includes: ['iiko, 1C and StoCRM integrations', 'Automatic reports in Telegram', 'Alerts when something goes wrong', 'Data import and sync'],
+            },
+            design: {
+                title: 'UI/UX design',
+                benefit: 'Interfaces clients understand without instructions. I design and build them myself, so nothing gets lost between the mockup and the code.',
+                includes: ['Website and product design', 'Mobile-first layouts', 'A prototype we agree on before development', 'A look that fits your brand'],
+            },
+        },
+    },
     contact: {
         getInTouch: 'Get in Touch',
         description: "Have a project in mind or just want to say hi? I'd love to hear from you.",

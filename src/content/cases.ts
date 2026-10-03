@@ -5,7 +5,7 @@ export const CASE_SLUGS = ['qarau', 'ab-ai', 'digital-menus', 'kassimova-design'
 export type CaseSlug = (typeof CASE_SLUGS)[number];
 
 /** Key of a localized stack group label (`work.groups.<key>`). */
-export type StackGroup = 'product' | 'backend' | 'ai' | 'integrations' | 'web' | 'landing' | 'template' | 'breakfast' | 'site';
+export type StackGroup = 'product' | 'backend' | 'ai' | 'integrations' | 'web' | 'landing' | 'thirdtime' | 'breakfast' | 'site';
 
 /** The composition at the top of a card / case page. */
 export type Stage =
@@ -72,14 +72,13 @@ export const CASES: CaseData[] = [
             { label: 'thebreakfast.kz', url: 'https://thebreakfast.kz' },
         ],
         stack: [
-            { group: 'template', items: ['React 18', 'TypeScript', 'Vite', 'React Router', 'Express', 'Vercel Functions', 'Vercel Blob'] },
+            { group: 'thirdtime', items: ['React 18', 'TypeScript', 'Vite', 'React Router', 'Express', 'Vercel Functions', 'Vercel Blob'] },
             { group: 'breakfast', items: ['HTML', 'CSS', 'JavaScript', 'Node.js', 'Vercel Blob'] },
         ],
         stage: { kind: 'phones', phones: ['digital-menus/thirdtime', 'digital-menus/breakfast'] },
         shots: [
+            { image: 'digital-menus/thirdtime-bar', frame: 'phone', caption: 'bar' },
             { image: 'digital-menus/breakfast-en', frame: 'phone', caption: 'english' },
-            { image: 'digital-menus/magazine', frame: 'plain', caption: 'magazine' },
-            { image: 'digital-menus/print', frame: 'plain', caption: 'print', wide: true },
         ],
     },
     {

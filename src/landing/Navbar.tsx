@@ -5,7 +5,7 @@ import { LangSwitch } from '../components/LangSwitch';
 import { pathFor } from '../routes';
 import { CONTACTS } from '../site';
 
-const SECTIONS = ['work', 'about', 'contact'] as const;
+const SECTIONS = ['work', 'services', 'about', 'contact'] as const;
 
 export function Navbar() {
     const { d, lang, route } = useI18n();
