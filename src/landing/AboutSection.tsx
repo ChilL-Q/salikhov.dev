@@ -33,7 +33,7 @@ export function AboutSection() {
                     <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-tint/10 pt-6 sm:gap-8">
                         {stats.map(stat => (
                             // label first in the markup (dt before dd), value shown on top
-                            <div key={stat.label} className="flex flex-col-reverse">
+                            <div key={stat.label} className="flex flex-col-reverse justify-end">
                                 <dt className="mt-2 font-mono text-xs leading-snug text-ink-3">{stat.label}</dt>
                                 <dd className="font-display text-[clamp(2.25rem,1.6rem+2vw,3.5rem)] leading-none font-bold tracking-[-0.04em] text-accent-light">{stat.value}</dd>
                             </div>
