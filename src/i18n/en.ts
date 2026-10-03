@@ -139,9 +139,4 @@ export const en = {
     footer: {
         rights: '© 2026 Chingiz Salikhov',
     },
-    notFound: {
-        title: 'Page not found',
-        text: 'This page does not exist or has moved.',
-        home: 'Back to the home page',
-    },
 };

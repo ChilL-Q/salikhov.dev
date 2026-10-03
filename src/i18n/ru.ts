@@ -140,9 +140,4 @@ export const ru: Dictionary = {
     footer: {
         rights: '© 2026 Чингиз Салихов',
     },
-    notFound: {
-        title: 'Страница не найдена',
-        text: 'Такой страницы нет или она переехала.',
-        home: 'На главную',
-    },
 };

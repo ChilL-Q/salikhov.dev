@@ -14,6 +14,15 @@ const ssrDir = join(root, 'dist-ssr');
 const { render, sitemapXml, PRERENDER_ROUTES, NOT_FOUND_ROUTE, pathFor } = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
 
 const assets = await readdir(join(dist, 'assets'));
+const manifest = JSON.parse(await readFile(join(dist, '.vite', 'manifest.json'), 'utf8'));
+
+/** a source module's chunk and the chunks it imports, as /assets/… URLs */
+function chunkUrls(src, seen = new Set()) {
+    const entry = manifest[src];
+    if (!entry || seen.has(src)) return [];
+    seen.add(src);
+    return [`/${entry.file}`, ...(entry.imports ?? []).flatMap(dep => chunkUrls(dep, seen))];
+}
 
 // The whole stylesheet is ~9 KB gzipped: inline it instead of a render-blocking request.
 const stylesheet = /<link rel="stylesheet" crossorigin href="\/assets\/([\w.-]+\.css)">/;
@@ -31,8 +40,12 @@ function fontUrl(name) {
 }
 
 function page(route) {
-    const { html, head, fonts, lang } = render(route);
-    const preloads = fonts.map(name => `<link rel="preload" href="${fontUrl(name)}" as="font" type="font/woff2" crossorigin>`);
+    const { html, head, fonts, lang, dictionary } = render(route);
+    const preloads = [
+        ...fonts.map(name => `<link rel="preload" href="${fontUrl(name)}" as="font" type="font/woff2" crossorigin>`),
+        // the client loads this language's dictionary before hydrating
+        ...chunkUrls(dictionary).filter(url => !template.includes(url)).map(url => `<link rel="modulepreload" crossorigin href="${url}">`),
+    ];
     return template
         .replace('<html lang="en">', `<html lang="${lang}">`)
         .replace('<!--app-head-->', [head, ...preloads].join('\n    '))
@@ -53,3 +66,4 @@ await write(join(dist, '404.html'), page(NOT_FOUND_ROUTE));
 await write(join(dist, 'sitemap.xml'), sitemapXml(new Date().toISOString().slice(0, 10)));
 
 await rm(ssrDir, { recursive: true, force: true });
+await rm(join(dist, '.vite'), { recursive: true, force: true });

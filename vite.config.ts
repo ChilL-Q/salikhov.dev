@@ -16,5 +16,7 @@ export default defineConfig({
   },
   build: {
     reportCompressedSize: false,
+    // read by scripts/prerender.mjs to preload each page's dictionary chunk
+    manifest: true,
   },
 })

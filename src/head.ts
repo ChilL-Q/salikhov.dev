@@ -2,7 +2,8 @@
  * Build-time only (entry-server → scripts/prerender.mjs): everything a prerendered page carries in
  * <head> — meta, Open Graph / Twitter cards, hreflang, JSON-LD — and the sitemap.
  */
-import { dictionaries, LANGS, type Lang } from './i18n';
+import { LANGS, type Lang } from './i18n';
+import { dictionaries } from './i18n/all';
 import { alternates, pathFor, PRERENDER_ROUTES, type Route } from './routes';
 import { pageMeta } from './meta';
 import { CONTACTS, SITE_URL } from './site';
@@ -126,7 +127,7 @@ function jsonLd(route: Route): object {
 
 /** <head> tags of a prerendered page. */
 export function headTags(route: Route): string {
-    const { title, description } = pageMeta(route);
+    const { title, description } = pageMeta(route, dictionaries[route.lang]);
 
     if (route.page === 'not-found') {
         return [`<title>${escape(title)}</title>`, '<meta name="robots" content="noindex">'].join('\n    ');

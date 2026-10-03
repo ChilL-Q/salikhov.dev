@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { App } from './App';
 import { fontPreloads, headTags } from './head';
 import type { Route } from './routes';
+import { dictionaries } from './i18n/all';
 
 export { PRERENDER_ROUTES, NOT_FOUND_ROUTE, pathFor } from './routes';
 export { sitemapXml } from './head';
@@ -12,11 +13,13 @@ export function render(route: Route) {
     return {
         html: renderToString(
             <StrictMode>
-                <App route={route} />
+                <App route={route} dict={dictionaries[route.lang]} />
             </StrictMode>,
         ),
         head: headTags(route),
         fonts: fontPreloads(route),
         lang: route.lang,
+        /** source of the page's dictionary chunk, for its modulepreload */
+        dictionary: `src/i18n/${route.lang}.ts`,
     };
 }
