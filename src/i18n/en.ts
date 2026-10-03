@@ -8,6 +8,7 @@ export const en = {
     nav: {
         work: 'Work',
         services: 'Services',
+        process: 'Process',
         about: 'About',
         contact: 'Contact',
         main: 'Main',
@@ -79,6 +80,17 @@ export const en = {
                 includes: ['Website and product design', 'Mobile-first layouts', 'A prototype we agree on before development', 'A look that fits your brand'],
             },
         },
+    },
+    process: {
+        label: 'Process',
+        title: 'How we’ll work together',
+        intro: 'No black box: at every step you know what’s happening and what comes next.',
+        steps: [
+            { title: 'Call', meta: '20–30 min · free', text: 'We go through the task, your business and the result you need. Free of charge.' },
+            { title: 'Estimate & plan', meta: 'fixed before start', text: 'Timeline, cost and exactly what’s included — agreed and fixed before work starts.' },
+            { title: 'Build with demos', meta: 'regular demos', text: 'I show working versions along the way, so you see progress instead of waiting in the dark.' },
+            { title: 'Launch & support', meta: 'after launch too', text: 'Deployment, domain and analytics — and fixes after the launch.' },
+        ],
     },
     contact: {
         getInTouch: 'Get in Touch',
