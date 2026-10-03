@@ -183,11 +183,11 @@ export const HeroSection = () => {
                 .hero-btn-primary {
                     background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 60%, rgb(var(--accent-mid-rgb)));
                     color: var(--on-accent);
-                    box-shadow: 0 0 40px -8px rgb(var(--accent-rgb) / 0.6), 0 8px 32px -8px rgb(var(--accent-deep-rgb) / 0.4);
+                    box-shadow: 0 0 40px -8px rgb(var(--accent-rgb) / 0.6), 0 8px 32px -8px rgb(0 0 0 / 0.5);
                 }
                 .hero-btn-primary:hover {
                     transform: translateY(-2px) scale(1.02);
-                    box-shadow: 0 0 60px -8px rgb(var(--accent-rgb) / 0.75), 0 12px 40px -8px rgb(var(--accent-deep-rgb) / 0.5);
+                    box-shadow: 0 0 60px -8px rgb(var(--accent-rgb) / 0.75), 0 12px 40px -8px rgb(0 0 0 / 0.6);
                 }
                 .hero-btn-ghost {
                     background: rgb(var(--tint-rgb) / 0.08);
@@ -199,7 +199,7 @@ export const HeroSection = () => {
                 .hero-btn-ghost:hover {
                     transform: translateY(-2px);
                     background: rgb(var(--tint-rgb) / 0.14);
-                    border-color: rgb(var(--accent-rgb) / 0.5);
+                    border-color: rgb(var(--accent-rgb) / 0.65);
                 }
 
                 /* ── Portrait ── */
@@ -248,7 +248,14 @@ export const HeroSection = () => {
                     .hero-actions { justify-content: center; }
                     .hero-portrait {
                         --portrait-w: min(78vw, 340px);
+                        /* the face's centre in the image as a share of its width: the centroid of the skin
+                           pixels between brow and chin in the 1200px file (0.488) */
+                        --face-x: 0.49;
                         order: -1;
+                        /* centred in the column (the desktop end-alignment pushed it right), then nudged so
+                           the face, not the image frame, sits on the page's centre line */
+                        align-self: center;
+                        left: calc((0.5 - var(--face-x)) * var(--portrait-w));
                         width: var(--portrait-w);
                         height: auto;
                         margin-bottom: calc(var(--portrait-w) * -0.22);

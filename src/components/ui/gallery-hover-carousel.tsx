@@ -231,8 +231,8 @@ export default function GalleryHoverCarousel() {
                     transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
                 }
                 .projects-arrow:hover {
-                    background: rgb(var(--accent-rgb) / 0.14);
-                    border-color: rgb(var(--accent-rgb) / 0.55);
+                    background: rgb(var(--tint-rgb) / 0.1);
+                    border-color: rgb(var(--accent-rgb) / 0.7);
                     color: var(--accent-orange);
                 }
                 .projects-arrow:active { transform: scale(0.94); }
@@ -270,7 +270,7 @@ export default function GalleryHoverCarousel() {
                 }
 
                 .project-card:hover {
-                    border-color: rgb(var(--accent-rgb) / 0.45);
+                    border-color: rgb(var(--accent-rgb) / 0.65);
                     box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.7), 0 0 60px -18px rgb(var(--accent-rgb) / 0.35);
                     transform: translateY(-4px);
                 }
@@ -343,7 +343,7 @@ export default function GalleryHoverCarousel() {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
-                    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+                    border: 1px solid rgb(var(--accent-rgb) / 0.7);
                     color: var(--accent-orange);
                     flex-shrink: 0;
                     display: flex;
@@ -453,7 +453,7 @@ export default function GalleryHoverCarousel() {
                         padding: 14px 16px !important;
                     }
                     .embla-slide.active-slide .project-card {
-                        border-color: rgb(var(--accent-rgb) / 0.4) !important;
+                        border-color: rgb(var(--accent-rgb) / 0.7) !important;
                         box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8) !important;
                     }
                     

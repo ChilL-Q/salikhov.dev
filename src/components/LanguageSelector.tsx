@@ -92,7 +92,7 @@ export const LanguageSelector = () => {
                                 fontSize: '14px',
                                 fontWeight: lang.code === language ? 600 : 400,
                                 color: lang.code === language ? 'var(--accent-orange)' : 'var(--text-secondary)',
-                                background: lang.code === language ? 'rgb(var(--accent-rgb) / 0.12)' : 'transparent',
+                                background: lang.code === language ? 'rgba(255,255,255,0.08)' : 'transparent',
                                 border: 'none',
                                 cursor: 'pointer',
                                 transition: 'background 0.15s ease',

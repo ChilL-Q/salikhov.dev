@@ -16,7 +16,9 @@ npm run lint
 - `src/i18n/langs.ts` — one page per language: Russian at `/`, English at `/en`, Kazakh at `/kz`. The switcher
   changes the text in place and moves the address to that language's page; the choice is saved, and on `/` a saved
   English or Kazakh choice redirects before anything is drawn (inline script in `index.html`).
-- `src/index.css` — the palette (the only place colours are defined) and shared components.
+- `src/index.css` — the palette (the only place colours are defined) and shared components: true black,
+  neutral greys and white for text, cards and borders, orange as the only warm colour. Orange is used bright
+  (text, strong borders, glows): at low opacity on black it turns brown.
 
 ## Build
 
@@ -29,7 +31,9 @@ the HTML. Unknown addresses get `404.html` (the Russian page with a 404 status a
 
 - Inter is self-hosted in `src/assets/fonts` (the same variable files Google Fonts served: latin, latin-ext,
   cyrillic, cyrillic-ext for Kazakh letters), with an Arial fallback stretched to Inter's metrics.
-- The hero portrait ships as AVIF + WebP in 480–1200w (`src/content/portrait.ts`, `src/lib/responsive.ts`).
+- The hero portrait ships as AVIF + WebP in 480–1200w (`src/content/portrait.ts`, `src/lib/responsive.ts`), built
+  by `scripts/portrait/build.py` from `scripts/portrait/portrait-master.png`, with its black point set to the
+  page's black.
 - Project logos are WebP or SVG in `src/assets/projects-logos/`.
 - The dot wave in the hero is three.js (`src/components/DottedSurface.tsx`), loaded as its own chunk after hydration.
 

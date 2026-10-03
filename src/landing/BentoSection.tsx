@@ -221,9 +221,9 @@ export const BentoSection = () => {
                     className="bento-card bento-card-compact"
                     gridClassName="col-span-1 bento-grid-item"
                     style={{
-                        background: 'linear-gradient(135deg, rgb(var(--accent-rgb) / 0.2), rgb(var(--accent-deep-rgb) / 0.07))',
+                        // neutral like the other cards: dim orange on black turns brown, so the orange is the frame and the label
                         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-                        border: '1px solid rgb(var(--accent-rgb) / 0.3)',
+                        border: '1px solid rgb(var(--accent-rgb) / 0.6)',
                     }}
                 >
                     <div style={{ fontSize: '14px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>{t('about.focusLabel')}</div>
@@ -308,14 +308,14 @@ export const BentoSection = () => {
                     font-size: 13px;
                     font-weight: 500;
                     color: var(--accent-orange);
-                    border: 1px solid rgb(var(--accent-rgb) / 0.35);
+                    border: 1px solid rgb(var(--accent-rgb) / 0.6);
                     transition: background 0.25s, border-color 0.25s;
                     position: relative;
                     z-index: 6; /* above the touch-glow overlay so it stays clickable */
                 }
                 .bento-ioai-link:hover {
-                    background: rgb(var(--accent-rgb) / 0.12);
-                    border-color: rgb(var(--accent-rgb) / 0.6);
+                    background: rgb(var(--tint-rgb) / 0.08);
+                    border-color: rgb(var(--accent-rgb) / 0.85);
                 }
 
                 /* Haptic/Tactile Active Tap Feedback */
