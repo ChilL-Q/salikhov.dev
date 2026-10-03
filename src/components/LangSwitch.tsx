@@ -6,7 +6,7 @@ export function LangSwitch() {
     const { lang, alt, d } = useI18n();
 
     return (
-        <nav aria-label={d.nav.language} className="flex items-center rounded-full border border-tint/15 p-0.5 font-mono text-xs">
+        <div role="group" aria-label={d.nav.language} className="flex items-center rounded-full border border-tint/15 p-0.5 font-mono text-xs">
             {LANGS.map(code => (
                 <a
                     key={code}
@@ -21,6 +21,6 @@ export function LangSwitch() {
                     {code}
                 </a>
             ))}
-        </nav>
+        </div>
     );
 }

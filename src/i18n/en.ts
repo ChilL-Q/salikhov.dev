@@ -95,11 +95,19 @@ export const en = {
         intro: 'Only what actually runs in the projects above.',
     },
     contact: {
-        getInTouch: 'Get in Touch',
-        description: "Have a project in mind or just want to say hi? I'd love to hear from you.",
+        label: 'Contact',
+        titleLead: 'Have an idea?',
+        titleAccent: 'Let’s talk.',
+        text: 'Telegram is the fastest way to reach me — tell me about the task and I’ll suggest how to build it.',
+        telegram: 'Message me on Telegram',
+        other: 'Other ways to reach me',
+        email: 'Email',
+        copy: 'Copy',
+        copied: 'Copied',
+        emailCopied: 'Email address copied',
     },
     footer: {
-        copyright: 'Designed & Developed by Chingiz Salikhov © 2026',
+        rights: '© 2026 Chingiz Salikhov',
     },
     notFound: {
         title: 'Page not found',

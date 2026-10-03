@@ -8,13 +8,3 @@ export type Dictionary = typeof en;
 export const LANGS: Lang[] = ['en', 'ru'];
 
 export const dictionaries: Record<Lang, Dictionary> = { en, ru };
-
-/** Dotted-path lookup ("hero.name"); returns the path itself when the key is missing. */
-export function translate(dict: Dictionary, path: string): string {
-    let node: unknown = dict;
-    for (const key of path.split('.')) {
-        if (!node || typeof node !== 'object') return path;
-        node = (node as Record<string, unknown>)[key];
-    }
-    return typeof node === 'string' ? node : path;
-}

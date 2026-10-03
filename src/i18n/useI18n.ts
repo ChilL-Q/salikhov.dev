@@ -6,8 +6,6 @@ export interface I18n {
     lang: Lang;
     /** typed dictionary of the current language */
     d: Dictionary;
-    /** dotted-path lookup, for keys built at runtime */
-    t: (path: string) => string;
     route: Route;
     /** this page's path in every language */
     alt: Record<Lang, string>;

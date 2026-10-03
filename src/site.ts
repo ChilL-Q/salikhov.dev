@@ -8,3 +8,11 @@ export const CONTACTS = {
     instagram: 'https://instagram.com/salikhov.dev',
     github: 'https://github.com/ChilL-Q',
 } as const;
+
+/** How each contact reads on the page. */
+export const HANDLES = {
+    telegram: '@mr_vibecoder',
+    whatsapp: '+7 701 981 37 21',
+    instagram: '@salikhov.dev',
+    github: 'ChilL-Q',
+} as const;

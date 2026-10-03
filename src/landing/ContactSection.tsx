@@ -1,125 +1,124 @@
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
+import { ArrowUpRight, Check, Copy } from 'lucide-react';
 import { useI18n } from '../i18n/useI18n';
-import { CONTACTS } from '../site';
+import { CONTACTS, HANDLES } from '../site';
+import { GitHubIcon, InstagramIcon, MailIcon, TelegramIcon, WhatsAppIcon } from '../components/icons';
 
-const links = [
-    { label: 'Telegram', href: CONTACTS.telegram },
-    { label: 'WhatsApp', href: CONTACTS.whatsapp },
-    { label: 'Email', href: `mailto:${CONTACTS.email}` },
-    { label: 'Instagram', href: CONTACTS.instagram },
-    { label: 'GitHub', href: CONTACTS.github },
-];
-
-const FlipLink = ({ children, href }: { children: string; href: string }) => {
-    // mailto: opened with target="_blank" leaves an empty tab behind
-    const isExternal = href.startsWith('http');
+export function ContactSection() {
+    const { d } = useI18n();
+    const c = d.contact;
 
     return (
-        <a
-            href={href}
-            target={isExternal ? '_blank' : undefined}
-            rel={isExternal ? 'noopener noreferrer' : undefined}
-            aria-label={children}
-            className="group relative block overflow-hidden whitespace-nowrap text-3xl font-black uppercase sm:text-4xl md:text-5xl lg:text-6xl"
-            style={{ lineHeight: 0.85, color: 'inherit', textDecoration: 'none' }}
-        >
-            <div className="flex" aria-hidden="true">
-                {children.split('').map((letter, i) => (
-                    <span
-                        key={i}
-                        className="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-[110%] mobile-flip-top"
-                        style={{
-                            transitionDelay: `${i * 25}ms`,
-                            '--letter-index': i,
-                        } as React.CSSProperties}
-                    >
-                        {letter === ' ' ? '\u00A0' : letter}
-                    </span>
-                ))}
-            </div>
-            <div className="absolute inset-0 flex" aria-hidden="true">
-                {children.split('').map((letter, i) => (
-                    <span
-                        key={i}
-                        className="inline-block translate-y-[110%] transition-transform duration-300 ease-in-out group-hover:translate-y-0 mobile-flip-bottom"
-                        style={{
-                            transitionDelay: `${i * 25}ms`,
-                            color: 'var(--accent-orange)',
-                            '--letter-index': i,
-                        } as React.CSSProperties}
-                    >
-                        {letter === ' ' ? '\u00A0' : letter}
-                    </span>
-                ))}
-            </div>
-        </a>
-    );
-};
+        <section id="contact" aria-labelledby="contact-title" className="mx-auto max-w-[1200px] px-5 py-24 lg:px-10 lg:py-36">
+            <p data-reveal className="font-mono text-[13px] text-accent">
+                06 / {c.label}
+            </p>
+            <h2 id="contact-title" data-reveal className="mt-5 font-display text-[clamp(3rem,1rem+7.4vw,8.5rem)] leading-[0.92] font-bold tracking-[-0.05em] text-balance">
+                {c.titleLead} <span className="gradient-text-accent block">{c.titleAccent}</span>
+            </h2>
 
-export const ContactSection = () => {
-    const { t } = useI18n();
-
-    return (
-        <section id="contact" className="contact-section">
-            <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-                <p style={{ color: 'var(--accent-orange)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '3px', marginBottom: 16 }}>
-                    {t('nav.contact')}
-                </p>
-                <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 16 }}>
-                    <span className="gradient-text">{t('contact.getInTouch')}</span>
-                </h2>
-                <p style={{ color: 'var(--text-secondary)', maxWidth: '480px', margin: '0 auto', fontSize: 15, lineHeight: 1.7 }}>{t('contact.description')}</p>
+            <div data-reveal className="mt-10 flex flex-col gap-8 lg:mt-12 lg:flex-row lg:items-end lg:justify-between">
+                <p className="max-w-[44ch] text-lg leading-relaxed text-pretty text-ink-2">{c.text}</p>
+                <div className="flex flex-col items-start gap-2.5">
+                    <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-[60px] px-8 text-base">
+                        <TelegramIcon size={20} />
+                        {c.telegram}
+                        <ArrowUpRight size={18} aria-hidden="true" />
+                    </a>
+                    <span className="pl-1 font-mono text-xs text-ink-3">{HANDLES.telegram}</span>
+                </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
-                {links.map((link) => (
-                    <FlipLink key={link.label} href={link.href}>
-                        {link.label}
-                    </FlipLink>
-                ))}
-            </div>
-
-            <style>{`
-                .contact-section {
-                    padding: 80px 24px 120px;
-                    max-width: 1168px; /* 1120 content + 2×24 padding */
-                    margin: 0 auto;
-                    transition: padding 0.3s ease;
-                }
-                
-                @media (max-width: 768px) {
-                    .contact-section {
-                        padding: 50px 24px 60px !important;
-                    }
-                    .mobile-flip-top {
-                        animation: letter-flip-top 4.5s cubic-bezier(0.76, 0, 0.24, 1) infinite;
-                        animation-delay: calc(var(--letter-index) * 35ms);
-                        translate: none !important;
-                    }
-                    .mobile-flip-bottom {
-                        animation: letter-flip-bottom 4.5s cubic-bezier(0.76, 0, 0.24, 1) infinite;
-                        animation-delay: calc(var(--letter-index) * 35ms);
-                        translate: none !important;
-                    }
-                }
-
-                @keyframes letter-flip-top {
-                    0%, 20%, 80%, 100% {
-                        transform: translateY(0);
-                    }
-                    35%, 65% {
-                        transform: translateY(-110%);
-                    }
-                }
-
-                @keyframes letter-flip-bottom {
-                    0%, 20%, 80%, 100% {
-                        transform: translateY(110%);
-                    }
-                    35%, 65% {
-                        transform: translateY(0);
-                    }
-                }
-            `}</style>
+            <h3 className="sr-only">{c.other}</h3>
+            {/* 1px gaps over a tinted background draw the dividers between the cells */}
+            <ul data-reveal className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-tint/10 bg-tint/10 sm:grid-cols-2 lg:mt-20">
+                <li className="bg-bg">
+                    <ContactLink href={CONTACTS.whatsapp} icon={WhatsAppIcon} label="WhatsApp" value={HANDLES.whatsapp} />
+                </li>
+                <li className="bg-bg">
+                    <CopyEmail />
+                </li>
+                <li className="bg-bg">
+                    <ContactLink href={CONTACTS.instagram} icon={InstagramIcon} label="Instagram" value={HANDLES.instagram} />
+                </li>
+                <li className="bg-bg">
+                    <ContactLink href={CONTACTS.github} icon={GitHubIcon} label="GitHub" value={HANDLES.github} />
+                </li>
+            </ul>
         </section>
     );
-};
+}
+
+const ROW = 'group flex w-full items-center gap-4 px-5 py-5 text-left transition-colors hover:bg-tint/[0.03] sm:px-6 sm:py-6';
+
+function RowBody({ icon: Icon, label, value, trailing }: { icon: ComponentType<{ size?: number }>; label: string; value: ReactNode; trailing: ReactNode }) {
+    return (
+        <>
+            <span className="grid size-11 shrink-0 place-items-center rounded-full border border-tint/15 text-ink-2 transition-colors group-hover:border-accent/60 group-hover:text-accent-light">
+                <Icon size={20} />
+            </span>
+            <span className="min-w-0 flex-1">
+                <span className="block font-mono text-xs text-ink-3">{label}</span>
+                <span className="mt-0.5 block truncate text-[15px] text-ink">{value}</span>
+            </span>
+            {trailing}
+        </>
+    );
+}
+
+function ContactLink({ href, icon, label, value }: { href: string; icon: ComponentType<{ size?: number }>; label: string; value: string }) {
+    return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={ROW}>
+            <RowBody
+                icon={icon}
+                label={label}
+                value={value}
+                trailing={<ArrowUpRight size={18} aria-hidden="true" className="shrink-0 text-ink-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-light" />}
+            />
+        </a>
+    );
+}
+
+/** One tap copies the address; the row confirms, and a live region announces it. */
+function CopyEmail() {
+    const { d } = useI18n();
+    const c = d.contact;
+    const [copied, setCopied] = useState(false);
+    const timer = useRef<number | undefined>(undefined);
+
+    useEffect(() => () => window.clearTimeout(timer.current), []);
+
+    const copy = async () => {
+        try {
+            await navigator.clipboard.writeText(CONTACTS.email);
+            setCopied(true);
+            window.clearTimeout(timer.current);
+            timer.current = window.setTimeout(() => setCopied(false), 2400);
+        } catch {
+            // no clipboard access (insecure context, permissions): fall back to the mail app
+            window.location.href = `mailto:${CONTACTS.email}`;
+        }
+    };
+
+    return (
+        <>
+            <button type="button" onClick={copy} className={ROW}>
+                <RowBody
+                    icon={MailIcon}
+                    label={c.email}
+                    // the confirmation takes the address's place, so it's visible on the narrowest screen
+                    value={copied ? <span className="text-accent-light">{c.copied}</span> : CONTACTS.email}
+                    trailing={
+                        <span className={`inline-flex shrink-0 items-center gap-1.5 font-mono text-xs transition-colors ${copied ? 'text-accent-light' : 'text-ink-3 group-hover:text-ink'}`}>
+                            {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
+                            <span className="max-sm:sr-only">{copied ? c.copied : c.copy}</span>
+                        </span>
+                    }
+                />
+            </button>
+            <span aria-live="polite" className="sr-only">
+                {copied ? c.emailCopied : ''}
+            </span>
+        </>
+    );
+}
