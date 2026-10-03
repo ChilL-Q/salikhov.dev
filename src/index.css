@@ -1,11 +1,36 @@
 @import "tailwindcss";
 
-/* ── Fonts: self-hosted, one file per script; a page downloads only the subsets it uses.
-   Preloads per language are added by scripts/prerender.mjs (see fontPreloads in seo.ts). ── */
+/* ── Fonts: self-hosted Geologica (display), Onest (text) and JetBrains Mono, one file per script, so a
+   page downloads only the subsets it uses. Variable axes are trimmed to the weights in use and the mono
+   face is subset to the glyphs it shows. Preloads per language: fontPreloads in seo.ts. ── */
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url("./assets/fonts/geologica-lat.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url("./assets/fonts/geologica-latx.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url("./assets/fonts/geologica-cyr.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
 @font-face {
   font-family: "Onest";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
   src: url("./assets/fonts/onest-lat.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -13,7 +38,7 @@
 @font-face {
   font-family: "Onest";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
   src: url("./assets/fonts/onest-latx.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -21,7 +46,7 @@
 @font-face {
   font-family: "Onest";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
   src: url("./assets/fonts/onest-cyr.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
@@ -29,15 +54,15 @@
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 400 600;
   font-display: swap;
   src: url("./assets/fonts/jbmono-lat.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2010-2027, U+2030-203A, U+20AC, U+2116, U+2122, U+2190-2199, U+21B5, U+21E7, U+2318, U+2325, U+2500, U+2502, U+2514, U+251C, U+25C6, U+25CF, U+2588, U+258C, U+2713, U+2717;
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 400 600;
   font-display: swap;
   src: url("./assets/fonts/jbmono-latx.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -45,10 +70,10 @@
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 400 600;
   font-display: swap;
   src: url("./assets/fonts/jbmono-cyr.woff2") format("woff2");
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  unicode-range: U+0400-045F;
 }
 
 /* ── Design tokens for Tailwind utilities (bg-bg, text-ink-2, border-tint/10, font-mono…).
@@ -68,8 +93,7 @@
 
   --font-sans: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  /* the display face (Unbounded or Geologica) arrives with the new hero */
-  --font-display: var(--font-sans);
+  --font-display: "Geologica", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -154,6 +178,8 @@
 @layer components {
   /* Entrance for the first screen: pure CSS, so it plays on the prerendered HTML too */
   .rise { animation: rise 0.8s var(--ease-out-expo) var(--delay, 0s) both; }
+  /* transform-only, for LCP elements that must be painted from the first frame */
+  .settle { animation: settle 1.4s var(--ease-out-expo) both; }
 
   /* Scroll reveal (src/lib/reveal.ts). Hidden only once the inline script has set html.js. */
   [data-reveal] {
@@ -163,6 +189,58 @@
   .js [data-reveal]:not([data-revealed]) {
     opacity: 0;
     transform: translateY(24px);
+  }
+
+  /* Buttons: one filled accent action per screen, ghost for the secondary one */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 26px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s, background-color 0.3s, border-color 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 60%, rgb(var(--accent-mid-rgb)));
+    color: var(--on-accent);
+    box-shadow: 0 0 40px -10px rgb(var(--accent-rgb) / 0.55), 0 8px 28px -10px rgb(var(--accent-deep-rgb) / 0.45);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 56px -8px rgb(var(--accent-rgb) / 0.7), 0 12px 36px -10px rgb(var(--accent-deep-rgb) / 0.5);
+  }
+  .btn-ghost {
+    color: var(--text-primary);
+    /* 40% tint keeps the outline above 3:1 against the page */
+    border: 1px solid rgb(var(--tint-rgb) / 0.4);
+  }
+  .btn-ghost:hover {
+    transform: translateY(-2px);
+    border-color: rgb(var(--accent-rgb) / 0.8);
+    background-color: rgb(var(--tint-rgb) / 0.06);
+  }
+
+  /* "Available" dot with a slow ping */
+  .status-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: #5fd38a;
+  }
+  .status-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
   /* Bento Card */
@@ -271,6 +349,20 @@
     transform: translateY(20px);
   }
 }
+
+@keyframes settle {
+  from { transform: translateY(14px) scale(1.03); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-bob { 50% { transform: translateY(6px); } }
+@keyframes scroll-wheel { 50% { transform: translateY(10px); opacity: 0.3; } }
 
 @keyframes shimmer {
   0% { background-position: -200% center; }

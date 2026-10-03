@@ -7,7 +7,7 @@ export const ProjectsSection = () => {
     const { d } = useI18n();
 
     return (
-        <section id="projects" className="mx-auto max-w-[1168px] px-6 py-12 md:py-20">
+        <section id="work" className="mx-auto max-w-[1168px] px-6 py-12 md:py-20">
             <div data-reveal className="mb-8 text-center md:mb-14">
                 <p className="mb-4 text-[13px] font-semibold uppercase tracking-[3px] text-accent">{d.projects.subtitle}</p>
                 <h2 className="text-[clamp(32px,5vw,48px)] font-extrabold tracking-[-1.5px]">

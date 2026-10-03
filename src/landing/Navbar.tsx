@@ -1,170 +1,120 @@
-import { useState, useEffect } from 'react';
-import { Send, Instagram, MessageCircle, Mail, Github, Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { useI18n } from '../i18n/useI18n';
 import { LangSwitch } from '../components/LangSwitch';
+import { pathFor } from '../routes';
 import { CONTACTS } from '../site';
 
-const navLinks = [
-    { key: 'about', href: '#about' },
-    { key: 'projects', href: '#projects' },
-    { key: 'contact', href: '#contact' },
-];
+const SECTIONS = ['work', 'about', 'contact'] as const;
 
-export const Navbar = () => {
-    const { t, d } = useI18n();
+export function Navbar() {
+    const { d, lang, route } = useI18n();
     const [scrolled, setScrolled] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [active, setActive] = useState<string | null>(null);
 
-    const [activeSection, setActiveSection] = useState<string | null>(null);
+    // section links work from any page: on the home page they're plain anchors
+    const home = route.page === 'home' ? '' : pathFor({ page: 'home', lang });
 
     useEffect(() => {
         const onScroll = () => {
             setScrolled(window.scrollY > 20);
-
-            // Highlight the last section whose top has passed the upper third of the viewport
+            // the last section whose top has passed the upper third of the viewport
             const threshold = window.innerHeight * 0.35;
             let current: string | null = null;
-            for (const link of navLinks) {
-                const el = document.getElementById(link.key);
-                if (el && el.getBoundingClientRect().top <= threshold) current = link.key;
+            for (const id of SECTIONS) {
+                const el = document.getElementById(id);
+                if (el && el.getBoundingClientRect().top <= threshold) current = id;
             }
             const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-            setActiveSection(atBottom ? navLinks[navLinks.length - 1].key : current);
+            setActive(atBottom ? SECTIONS[SECTIONS.length - 1] : current);
         };
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
+    useEffect(() => {
+        if (!open) return;
+        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+        const onResize = () => window.innerWidth >= 1024 && setOpen(false);
+        window.addEventListener('keydown', onKey);
+        window.addEventListener('resize', onResize);
+        return () => {
+            window.removeEventListener('keydown', onKey);
+            window.removeEventListener('resize', onResize);
+        };
+    }, [open]);
+
+    const solid = scrolled || open;
+
     return (
-        <nav
-            className="site-nav"
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-                // same 1120px column as the page content, so the logo lines up with the hero text
-                padding: '0 max(24px, calc((100% - 1120px) / 2))',
-                height: '64px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: scrolled ? 'rgb(var(--bg-rgb) / 0.7)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-                WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
-                transition: 'background 0.3s, border-color 0.3s, backdrop-filter 0.3s',
-            }}
+        <header
+            className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+                solid ? 'border-tint/10 bg-bg/95' : 'border-transparent'
+            }`}
         >
-            <a href="#" style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.5px' }}>
-                <span className="gradient-text-accent">CS</span>
-            </a>
+            <nav aria-label={d.nav.main} className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-5 lg:px-10">
+                <a href={home || '#top'} className="font-mono text-[15px] font-semibold tracking-tight">
+                    ~/salikhov<span className="text-accent">.dev</span>
+                </a>
 
-            <div className="nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                <div style={{ display: 'flex', gap: '32px' }}>
-                    {navLinks.map(link => (
-                        <a
-                            key={link.key}
-                            href={link.href}
-                            style={{
-                                fontSize: '14px',
-                                transition: 'color var(--transition-fast)',
-                                fontWeight: 500,
-                            }}
-                            className={`nav-link ${activeSection === link.key ? 'active' : ''}`}
-                            aria-current={activeSection === link.key ? 'true' : undefined}
-                        >
-                            {t(`nav.${link.key}`)}
-                        </a>
-                    ))}
+                <div className="hidden items-center gap-8 lg:flex">
+                    <ul className="flex gap-7 text-sm">
+                        {SECTIONS.map(id => (
+                            <li key={id}>
+                                <a
+                                    href={`${home}#${id}`}
+                                    aria-current={active === id ? 'true' : undefined}
+                                    className={`relative py-2 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-300 ${
+                                        active === id ? 'text-ink after:scale-x-100' : 'text-ink-2 after:scale-x-0 hover:text-ink'
+                                    }`}
+                                >
+                                    {d.nav[id]}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                    <LangSwitch />
                 </div>
-                <LangSwitch />
-            </div>
 
-            <button
-                className="nav-mobile-btn"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label={mobileMenuOpen ? d.nav.closeMenu : d.nav.openMenu}
-                aria-expanded={mobileMenuOpen}
-                style={{ display: 'none', padding: '8px', color: 'var(--text-primary)' }}
-            >
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+                <div className="flex items-center gap-1 lg:hidden">
+                    <LangSwitch />
+                    <button
+                        type="button"
+                        onClick={() => setOpen(o => !o)}
+                        aria-expanded={open}
+                        aria-controls="mobile-menu"
+                        aria-label={open ? d.nav.closeMenu : d.nav.openMenu}
+                        className="-mr-2 grid size-11 place-items-center text-ink"
+                    >
+                        {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
+                    </button>
+                </div>
+            </nav>
 
-            {mobileMenuOpen && (
-                <div
-                    className="nav-mobile-menu"
-                    style={{
-                        position: 'absolute',
-                        top: '64px',
-                        left: 0,
-                        right: 0,
-                        background: 'rgb(var(--bg-rgb) / 0.95)',
-                        backdropFilter: 'blur(20px)',
-                        borderBottom: '1px solid var(--border-subtle)',
-                        padding: '16px 24px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '8px',
-                        animation: 'fadeIn 0.2s ease-out',
-                    }}
-                >
-                    {navLinks.map(link => (
-                        <a
-                            key={link.key}
-                            href={link.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            style={{
-                                padding: '12px 0',
-                                fontSize: '16px',
-                                color: activeSection === link.key ? 'var(--accent-orange)' : 'var(--text-secondary)',
-                                fontWeight: 500,
-                            }}
-                        >
-                            {t(`nav.${link.key}`)}
-                        </a>
-                    ))}
-                    <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                        <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Send size={20} /></a>
-                        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style={{ padding: '8px', color: 'var(--text-secondary)' }}><MessageCircle size={20} /></a>
-                        <a href={CONTACTS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Instagram size={20} /></a>
-                        <a href={CONTACTS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Github size={20} /></a>
-                        <a href={`mailto:${CONTACTS.email}`} aria-label="Email" style={{ padding: '8px', color: 'var(--text-secondary)' }}><Mail size={20} /></a>
-                    </div>
-                    <div style={{ marginTop: '8px' }}>
-                        <LangSwitch />
+            {open && (
+                <div id="mobile-menu" className="animate-[fadeIn_0.2s_ease-out] border-t border-tint/10 px-5 pt-3 pb-7 lg:hidden">
+                    <ul className="flex flex-col">
+                        {SECTIONS.map(id => (
+                            <li key={id}>
+                                <a
+                                    href={`${home}#${id}`}
+                                    onClick={() => setOpen(false)}
+                                    className={`block py-3 font-display text-3xl font-semibold tracking-[-0.03em] ${active === id ? 'text-accent' : 'text-ink'}`}
+                                >
+                                    {d.nav[id]}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm text-ink-2">
+                        <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="py-1 hover:text-ink">Telegram ↗</a>
+                        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer" className="py-1 hover:text-ink">WhatsApp ↗</a>
+                        <a href={`mailto:${CONTACTS.email}`} className="py-1 hover:text-ink">Email</a>
                     </div>
                 </div>
             )}
-
-            <style>{`
-                .nav-link { color: var(--text-secondary); position: relative; }
-                .nav-link:hover { color: var(--text-primary); }
-                .nav-link.active { color: var(--accent-orange); }
-                .nav-link::after {
-                    content: '';
-                    position: absolute;
-                    left: 0; right: 0; bottom: -6px;
-                    height: 2px;
-                    border-radius: 2px;
-                    background: var(--accent-orange);
-                    transform: scaleX(0);
-                    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-                .nav-link.active::after { transform: scaleX(1); }
-                .site-nav { animation: nav-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-                @keyframes nav-in { from { transform: translateY(-100%); } }
-                @media (max-width: 768px) {
-                    .nav-desktop { display: none !important; }
-                    .nav-mobile-btn { display: flex !important; }
-                }
-                @media (min-width: 769px) {
-                    .nav-mobile-menu { display: none !important; }
-                    .nav-mobile-btn { display: none !important; }
-                }
-            `}</style>
-        </nav>
+        </header>
     );
-};
+}

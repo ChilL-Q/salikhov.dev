@@ -11,8 +11,8 @@ export function HomePage() {
             <Navbar />
             <main>
                 <HeroSection />
-                <BentoSection />
                 <ProjectsSection />
+                <BentoSection />
                 <ContactSection />
             </main>
             <Footer />

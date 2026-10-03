@@ -7,9 +7,13 @@ const OG_LOCALE = { en: 'en_US', ru: 'ru_RU' } as const;
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const url = (path: string) => SITE_URL + (path === '/' ? '/' : path);
 
-/** Font files (src/assets/fonts/<name>.woff2) the first screen needs, preloaded per language. */
+/**
+ * Font files (src/assets/fonts/<name>.woff2) preloaded per language: the headline's display face.
+ * Body fonts are found early anyway, since the CSS is inlined. Cyrillic text still needs the
+ * latin file for spaces, digits and punctuation.
+ */
 export function fontPreloads(route: Route): string[] {
-    return route.lang === 'ru' ? ['onest-cyr', 'onest-lat'] : ['onest-lat'];
+    return route.lang === 'ru' ? ['geologica-cyr', 'geologica-lat'] : ['geologica-lat'];
 }
 
 /** <head> tags of a prerendered page. */

@@ -1,53 +1,97 @@
-import { useState, useEffect, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '../i18n/useI18n';
 import { DottedSurface } from '../components/DottedSurface';
 import { PORTRAIT } from '../content/portrait';
+import { CONTACTS } from '../site';
 
-/** rendered width of the portrait: see .hero-portrait (72svh tall at 4:5, capped at 760px; 78vw on phones) */
-const PORTRAIT_SIZES = '(max-width: 900px) min(78vw, 340px), min(58vh, 608px)';
+/**
+ * Rendered portrait width, mirroring the classes below: on desktop 4:5 at min(72svh, 760px) tall,
+ * on phones --portrait-w.
+ */
+const PORTRAIT_SIZES = '(min-width: 1024px) min(58vh, 608px), min(88vw, 400px, 44vh)';
 
 /** stagger for the CSS entrance (.rise in index.css) */
 const delay = (seconds: number) => ({ '--delay': `${seconds}s` }) as CSSProperties;
 
-export const HeroSection = () => {
-    const { d } = useI18n();
+export function HeroSection() {
+    const { d, lang } = useI18n();
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 30);
-        };
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 30);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (
-        <section className="hero-section">
-            {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
-                The dots drift over the shirt, so the figure sits *in* the wave. */}
-            <DottedSurface className="hero-dots" />
+        <section
+            id="top"
+            className="relative overflow-hidden px-5 pt-[72px] pb-14 [--portrait-w:min(88vw,400px,44svh)] lg:flex lg:min-h-svh lg:px-10 lg:pt-22 lg:pb-0"
+        >
+            {/* Layers: dot wave (back) → portrait → copy (front). The wave is dimmed under the copy so
+                the dots don't flicker between the letters: the lower part on phones, the left column on desktop. */}
+            <DottedSurface className="[mask-image:linear-gradient(180deg,#000_42%,rgb(0_0_0/0.3)_58%)] lg:[mask-image:linear-gradient(90deg,rgb(0_0_0/0.3)_0%,rgb(0_0_0/0.3)_40%,#000_62%)]" />
 
-            <div className="hero-inner">
-                <div className="hero-copy">
-                    <p className="hero-greeting rise" style={delay(0.2)}>
-                        <span className="gradient-text">{d.hero.greeting}</span>
+            <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-stretch lg:gap-x-[clamp(32px,5vw,80px)]">
+                {/* Phones: the copy rides up over the portrait's dissolving lower edge.
+                    Desktop: copy on the left, head level with the headline. */}
+                <div className="relative z-[2] -mt-[calc(var(--portrait-w)*0.36)] flex flex-col items-center text-center lg:mt-0 lg:items-start lg:self-center lg:pb-16 lg:text-left">
+                    <p
+                        className="rise inline-flex items-center gap-2.5 rounded-full border border-tint/15 bg-bg/70 px-3.5 py-1.5 font-mono text-[11px] whitespace-nowrap text-ink-2 min-[400px]:text-xs sm:text-[13px]"
+                        style={delay(0.1)}
+                    >
+                        <span className="status-dot" aria-hidden="true" />
+                        {d.hero.status}
                     </p>
 
-                    <h1 className="hero-name rise" style={delay(0.3)}>
-                        <span className="shimmer-text">{d.hero.name}</span>
+                    {/* no entrance on the headline and the portrait: they're the LCP candidates, and an
+                        element that starts at opacity 0 delays (or drops out of) the LCP measurement */}
+                    <h1
+                        className={`mt-4 font-display leading-[0.98] font-bold tracking-[-0.04em] text-balance lg:mt-7 ${
+                            lang === 'ru'
+                                ? 'max-w-[16ch] text-[clamp(2.25rem,0.8rem+3.6vw,4.5rem)]'
+                                : 'max-w-[13ch] text-[clamp(2.75rem,0.9rem+4.6vw,5.75rem)]'
+                        }`}
+                    >
+                        {d.hero.titleLead} <span className="gradient-text-accent block">{d.hero.titleAccent}</span>
                     </h1>
 
-                    <p className="hero-role rise" style={delay(0.4)}>
-                        {d.hero.role}
+                    <p
+                        className="rise mt-4 font-display text-[clamp(1.25rem,0.95rem+0.8vw,1.75rem)] leading-tight font-semibold tracking-[-0.02em] lg:mt-7"
+                        style={delay(0.3)}
+                    >
+                        {d.hero.name}
+                        {/* the role joins the name line only where the column is wide enough not to break "AI-разработчик" */}
+                        <span className="hidden font-normal text-ink-3 xl:inline"> — </span>
+                        <span className="block text-base font-normal tracking-normal text-ink-3 xl:inline xl:text-[length:inherit] xl:tracking-[inherit]">{d.hero.role}</span>
                     </p>
 
-                    <div className="hero-actions rise" style={delay(0.5)}>
-                        <a href="#projects" className="hero-btn hero-btn-primary">{d.nav.projects}</a>
-                        <a href="#contact" className="hero-btn hero-btn-ghost">{d.nav.contact}</a>
+                    <p className="rise mt-2 max-w-[44ch] text-[clamp(1rem,0.9rem+0.35vw,1.1875rem)] leading-relaxed text-pretty text-ink-2" style={delay(0.35)}>
+                        {d.hero.lead}
+                    </p>
+
+                    <div className="rise mt-6 flex flex-wrap justify-center gap-3 lg:mt-9 lg:justify-start" style={delay(0.45)}>
+                        <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                            {d.hero.cta}
+                            <ArrowUpRight size={18} aria-hidden="true" />
+                        </a>
+                        <a href="#work" className="btn btn-ghost">
+                            {d.hero.ctaSecondary}
+                        </a>
                     </div>
+
+                    <a
+                        href="#about"
+                        className="rise mt-7 font-mono text-xs text-ink-3 transition-colors hover:text-ink lg:mt-9"
+                        style={delay(0.55)}
+                    >
+                        <span className="text-accent" aria-hidden="true">◆ </span>
+                        {d.hero.trust}
+                    </a>
                 </div>
 
-                <div className="hero-portrait rise">
+                <div className="settle relative z-[1] order-first aspect-[4/5] w-(--portrait-w) lg:order-none lg:h-[min(72svh,760px)] lg:w-auto lg:self-end lg:justify-self-end">
                     <picture>
                         <source type="image/avif" srcSet={PORTRAIT.avif} sizes={PORTRAIT_SIZES} />
                         <img
@@ -58,176 +102,23 @@ export const HeroSection = () => {
                             width={PORTRAIT.width}
                             height={PORTRAIT.height}
                             fetchPriority="high"
-                            className="hero-portrait-img"
                             draggable={false}
+                            className="block h-full w-full select-none"
                         />
                     </picture>
                 </div>
             </div>
 
-            <div className={`hero-scroll${scrolled ? ' is-hidden' : ''}`} aria-hidden="true">
-                <div className="hero-scroll-mouse">
-                    <div className="hero-scroll-wheel" />
+            {/* desktop with room to spare only */}
+            <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-x-0 bottom-8 z-[2] hidden flex-col items-center gap-2 text-[11px] tracking-[1px] text-ink-3 uppercase transition-opacity duration-300 [@media(min-height:800px)]:lg:flex ${scrolled ? 'opacity-0' : 'opacity-80'}`}
+            >
+                <div className="relative h-10 w-6 animate-[scroll-bob_1.8s_ease-in-out_infinite] rounded-xl border-[1.5px] border-ink-3">
+                    <div className="absolute top-1.5 left-1/2 -ml-[1.5px] h-1.5 w-[3px] animate-[scroll-wheel_1.8s_ease-in-out_infinite] rounded-sm bg-ink-3" />
                 </div>
                 {d.hero.scroll}
             </div>
-
-            <style>{`
-                .hero-section {
-                    min-height: 100svh;
-                    position: relative;
-                    display: flex;
-                    padding: 88px 40px 0;
-                    overflow: hidden;
-                }
-                .hero-dots { z-index: 1; }
-                .hero-inner {
-                    width: 100%;
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    /* copy on the left; the portrait stands on the hero's bottom edge, head level with the name */
-                    display: grid;
-                    grid-template-columns: minmax(0, 1fr) auto;
-                    column-gap: clamp(32px, 5vw, 80px);
-                }
-
-                /* ── Copy ── */
-                .hero-copy { position: relative; z-index: 2; align-self: center; padding-bottom: 88px; }
-                .hero-greeting {
-                    font-size: clamp(18px, 1.9vw, 26px);
-                    font-weight: 600;
-                    letter-spacing: -0.4px;
-                    line-height: 1.3;
-                    margin-bottom: 14px;
-                    text-wrap: balance;
-                }
-                .hero-name {
-                    font-size: clamp(36px, 7.4vw, 104px);
-                    font-weight: 800;
-                    letter-spacing: -0.035em;
-                    line-height: 1.05;
-                    margin-bottom: 20px;
-                    text-wrap: balance;
-                }
-                .hero-role {
-                    font-size: clamp(15px, 1.5vw, 19px);
-                    color: var(--text-secondary);
-                    line-height: 1.6;
-                    margin-bottom: 36px;
-                }
-                .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-                .hero-btn {
-                    display: inline-flex;
-                    align-items: center;
-                    padding: 13px 30px;
-                    border-radius: 100px;
-                    font-weight: 600;
-                    font-size: 14px;
-                    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, background 0.3s, border-color 0.3s;
-                }
-                .hero-btn-primary {
-                    background: linear-gradient(135deg, rgb(var(--accent-light-rgb)), rgb(var(--accent-rgb)) 60%, rgb(var(--accent-mid-rgb)));
-                    color: var(--on-accent);
-                    box-shadow: 0 0 40px -8px rgb(var(--accent-rgb) / 0.6), 0 8px 32px -8px rgb(var(--accent-deep-rgb) / 0.4);
-                }
-                .hero-btn-primary:hover {
-                    transform: translateY(-2px) scale(1.02);
-                    box-shadow: 0 0 60px -8px rgb(var(--accent-rgb) / 0.75), 0 12px 40px -8px rgb(var(--accent-deep-rgb) / 0.5);
-                }
-                .hero-btn-ghost {
-                    background: rgb(var(--tint-rgb) / 0.06);
-                    border: 1px solid rgb(var(--tint-rgb) / 0.18);
-                    color: var(--text-primary);
-                    backdrop-filter: blur(8px);
-                    -webkit-backdrop-filter: blur(8px);
-                }
-                .hero-btn-ghost:hover {
-                    transform: translateY(-2px);
-                    background: rgb(var(--tint-rgb) / 0.12);
-                    border-color: rgb(var(--accent-rgb) / 0.5);
-                }
-
-                /* ── Portrait ── */
-                .hero-portrait {
-                    position: relative;
-                    z-index: 0;
-                    align-self: end;
-                    justify-self: end;
-                    /* sized by height, so the whole figure fits short laptop screens too */
-                    height: min(72svh, 760px);
-                    aspect-ratio: 4 / 5;
-                }
-                /* colour grade, black point and the dissolve of the bottom and side edges are baked into the file */
-                .hero-portrait-img {
-                    display: block;
-                    width: 100%;
-                    height: auto;
-                    user-select: none;
-                }
-                .hero-scroll {
-                    position: absolute;
-                    bottom: 32px;
-                    left: 0;
-                    right: 0;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 8px;
-                    color: var(--text-tertiary);
-                    font-size: 11px;
-                    letter-spacing: 1px;
-                    text-transform: uppercase;
-                    z-index: 2;
-                    pointer-events: none;
-                    opacity: 0.8;
-                    transition: opacity 0.3s;
-                }
-                .hero-scroll.is-hidden { opacity: 0; }
-                .hero-scroll-mouse {
-                    position: relative;
-                    width: 24px;
-                    height: 40px;
-                    border: 1.5px solid var(--text-tertiary);
-                    border-radius: 12px;
-                    animation: scroll-bob 1.8s ease-in-out infinite;
-                }
-                .hero-scroll-wheel {
-                    position: absolute;
-                    top: 6px;
-                    left: 50%;
-                    width: 3px;
-                    height: 6px;
-                    margin-left: -1.5px;
-                    border-radius: 2px;
-                    background: var(--text-tertiary);
-                    animation: scroll-wheel 1.8s ease-in-out infinite;
-                }
-                @keyframes scroll-bob { 50% { transform: translateY(6px); } }
-                @keyframes scroll-wheel { 50% { transform: translateY(10px); opacity: 0.3; } }
-
-                /* short laptop screens: the scroll hint would crowd the buttons */
-                @media (max-height: 760px) {
-                    .hero-scroll { display: none; }
-                }
-                @media (max-width: 900px) {
-                    .hero-section { padding: 84px 20px 56px; }
-                    /* one centred column: portrait on top, copy over its dissolving lower edge */
-                    .hero-inner { display: flex; flex-direction: column; align-items: center; }
-                    .hero-copy { text-align: center; padding-bottom: 0; }
-                    .hero-actions { justify-content: center; }
-                    .hero-portrait {
-                        --portrait-w: min(78vw, 340px);
-                        order: -1;
-                        width: var(--portrait-w);
-                        height: auto;
-                        margin-bottom: calc(var(--portrait-w) * -0.22);
-                    }
-                    .hero-greeting { margin-bottom: 12px; }
-                    .hero-name { margin-bottom: 16px; }
-                    .hero-role { margin-bottom: 28px; }
-                    .hero-scroll { display: none; }
-                }
-            `}</style>
         </section>
     );
-};
+}

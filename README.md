@@ -21,7 +21,8 @@ npm run lint
 
 ## Assets
 
-- Fonts are self-hosted in `src/assets/fonts` (Onest, JetBrains Mono), one woff2 per script with `unicode-range`.
+- Fonts are self-hosted in `src/assets/fonts` (Geologica for display, Onest for text, JetBrains Mono), one woff2
+  per script with `unicode-range`; variable axes are trimmed to the weights in use, the mono face is subset.
 - The hero portrait ships as AVIF + WebP in 480/720/960/1200 widths (`src/content/portrait.ts`).
 - The dot wave behind the hero is plain WebGL (`src/lib/dot-wave.ts`), loaded when the browser is idle.
 
