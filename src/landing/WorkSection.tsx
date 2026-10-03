@@ -7,9 +7,9 @@ import { SectionHeader } from '../components/SectionHeader';
 import { CaseStage } from '../components/work/CaseStage';
 import { CaseStatus } from '../components/work/CaseStatus';
 
-// rendered widths (see CaseStage: browser 80cqw, phone 23cqw / 27cqw of the card or the visual column)
-const CARD_SIZES = { browser: '(min-width: 1024px) 440px, 80vw', phone: '(min-width: 1024px) 150px, 27vw' };
-const FEATURED_SIZES = { browser: '(min-width: 1024px) 520px, 80vw', phone: '(min-width: 1024px) 170px, 27vw' };
+// rendered widths (see CaseStage: browser 80cqw, phone 23–27cqw of the card; cards are 100vw − 40px on phones)
+const CARD_SIZES = { browser: '(min-width: 1024px) 440px, calc(80vw - 32px)', phone: '(min-width: 1024px) 150px, calc(27vw - 11px)' };
+const FEATURED_SIZES = { browser: '(min-width: 1024px) 520px, calc(80vw - 32px)', phone: '(min-width: 1024px) 170px, calc(27vw - 11px)' };
 
 export function WorkSection() {
     const { d } = useI18n();

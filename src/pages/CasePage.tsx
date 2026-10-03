@@ -13,7 +13,7 @@ import { BrowserFrame, DemoBadge, PhoneFrame } from '../components/work/Frames';
 import { Picture } from '../components/Picture';
 import { CtaBanner } from '../components/CtaBanner';
 
-const STAGE_SIZES = { browser: '(min-width: 1200px) 900px, 80vw', phone: '(min-width: 1200px) 300px, 27vw' };
+const STAGE_SIZES = { browser: '(min-width: 1200px) 900px, calc(80vw - 32px)', phone: '(min-width: 1200px) 300px, calc(27vw - 11px)' };
 
 export function CasePage({ slug }: { slug: CaseSlug }) {
     const { d, lang } = useI18n();
@@ -176,13 +176,14 @@ function CaseSection({ title, children }: { title: string; children: ReactNode }
 
 function ShotFigure({ shot, caption }: { shot: Shot; caption: string }) {
     const image = workImage(shot.image);
-    const sizes = shot.wide ? '(min-width: 1200px) 1000px, 90vw' : '(min-width: 1024px) 520px, 90vw';
+    // the figure's padding (p-5) comes off the page column (100vw − 40px)
+    const sizes = shot.wide ? '(min-width: 1200px) 1000px, calc(100vw - 80px)' : '(min-width: 1024px) 520px, calc(100vw - 80px)';
 
     return (
         <figure data-reveal className={`flex flex-col ${shot.wide ? 'lg:col-span-2' : ''}`}>
             <div className="@container relative grid flex-1 place-items-center overflow-hidden rounded-3xl border border-tint/10 bg-raised p-5 sm:p-8">
                 {shot.frame === 'browser' && <BrowserFrame url={shot.url ?? ''} image={image} sizes={sizes} alt={caption} w="100cqw" />}
-                {shot.frame === 'phone' && <PhoneFrame image={image} sizes="(min-width: 1024px) 260px, 50vw" alt={caption} w="min(52cqw, 300px)" />}
+                {shot.frame === 'phone' && <PhoneFrame image={image} sizes="(min-width: 1024px) 260px, calc(52vw - 42px)" alt={caption} w="min(52cqw, 300px)" />}
                 {shot.frame === 'plain' && (
                     <Picture
                         image={image}
