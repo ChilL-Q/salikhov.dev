@@ -1,0 +1,146 @@
+[
+  {
+    "file": "home-en",
+    "kind": "home",
+    "title": "If you can imagine it,",
+    "accent": "I can code it.",
+    "size": 78,
+    "sub": "<strong>Chingiz Salikhov</strong> — full-stack &amp; AI developer. Websites, web apps and AI agents for business.",
+    "foot": "salikhov.dev · Astana / remote"
+  },
+  {
+    "file": "home-ru",
+    "kind": "home",
+    "title": "Если вы можете это представить —",
+    "accent": "я могу это закодить.",
+    "size": 60,
+    "sub": "<strong>Чингиз Салихов</strong> — full-stack и AI-разработчик. Сайты, веб-приложения и AI-агенты для бизнеса.",
+    "foot": "salikhov.dev · Астана / удалённо"
+  },
+  {
+    "file": "case-qarau-en",
+    "kind": "case",
+    "path": "/work/qarau",
+    "eyebrow": "Own product · AI analytics for cafés",
+    "title": "Qarau AI",
+    "size": 76,
+    "sub": "AI analytics for cafés on iiko: checks every receipt of the day and reports to the owner’s Telegram.",
+    "foot": "Chingiz Salikhov · case study",
+    "image": "/src/assets/work/qarau/desktop-1200.webp",
+    "url": "qarau.kz"
+  },
+  {
+    "file": "case-ab-ai-en",
+    "kind": "case",
+    "path": "/work/ab-ai",
+    "eyebrow": "Own product · B2B SaaS",
+    "title": "AB AI",
+    "size": 76,
+    "sub": "An AI agent brings auto-service clients back via WhatsApp and Telegram and counts the returned revenue.",
+    "foot": "Chingiz Salikhov · case study",
+    "image": "/src/assets/work/ab-ai/desktop-1200.webp",
+    "url": "ab-ai.kz",
+    "demo": true
+  },
+  {
+    "file": "case-digital-menus-en",
+    "kind": "case",
+    "path": "/work/digital-menus",
+    "eyebrow": "Own approach · QR menus",
+    "title": "Digital menus for HoReCa",
+    "size": 60,
+    "sub": "Two venues in Astana, one approach: the owner runs the menu, stop-list, languages and promos.",
+    "foot": "Chingiz Salikhov · case study",
+    "phones": [
+      "/src/assets/work/digital-menus/thirdtime-400.webp",
+      "/src/assets/work/digital-menus/breakfast-400.webp"
+    ]
+  },
+  {
+    "file": "case-kassimova-design-en",
+    "kind": "case",
+    "path": "/work/kassimova-design",
+    "eyebrow": "Client · website",
+    "title": "Kassimova Design",
+    "size": 76,
+    "sub": "A portfolio website with services and prices for an interior designer.",
+    "foot": "Chingiz Salikhov · case study",
+    "image": "/src/assets/work/kassimova-design/desktop-1200.webp",
+    "url": "kassimova.design"
+  },
+  {
+    "file": "case-azhar-trading-en",
+    "kind": "case",
+    "path": "/work/azhar-trading",
+    "eyebrow": "Client · launch landing page",
+    "title": "Azhar Trading",
+    "size": 76,
+    "sub": "A RU/KZ landing page for the launch of a halal-investing webinar.",
+    "foot": "Chingiz Salikhov · case study",
+    "image": "/src/assets/work/azhar-trading/desktop-1200.webp",
+    "url": "azhar-trading.com"
+  },
+  {
+    "file": "case-qarau-ru",
+    "kind": "case",
+    "path": "/work/qarau",
+    "eyebrow": "Собственный продукт · AI-аналитика для кафе",
+    "title": "Qarau AI",
+    "size": 76,
+    "sub": "AI-аналитика для кафе на iiko: проверяет каждый чек за день и пишет владельцу в Telegram.",
+    "foot": "Чингиз Салихов · кейс",
+    "image": "/src/assets/work/qarau/desktop-1200.webp",
+    "url": "qarau.kz"
+  },
+  {
+    "file": "case-ab-ai-ru",
+    "kind": "case",
+    "path": "/work/ab-ai",
+    "eyebrow": "Собственный продукт · B2B SaaS",
+    "title": "AB AI",
+    "size": 76,
+    "sub": "AI-агент возвращает клиентов автосервиса через WhatsApp и Telegram и считает возвращённую выручку.",
+    "foot": "Чингиз Салихов · кейс",
+    "image": "/src/assets/work/ab-ai/desktop-1200.webp",
+    "url": "ab-ai.kz",
+    "demo": true
+  },
+  {
+    "file": "case-digital-menus-ru",
+    "kind": "case",
+    "path": "/work/digital-menus",
+    "eyebrow": "Собственный подход · QR-меню",
+    "title": "Цифровые меню для HoReCa",
+    "size": 60,
+    "sub": "Два заведения в Астане, один подход: владелец сам управляет меню, стоп-листом, языками и акциями.",
+    "foot": "Чингиз Салихов · кейс",
+    "phones": [
+      "/src/assets/work/digital-menus/thirdtime-400.webp",
+      "/src/assets/work/digital-menus/breakfast-400.webp"
+    ]
+  },
+  {
+    "file": "case-kassimova-design-ru",
+    "kind": "case",
+    "path": "/work/kassimova-design",
+    "eyebrow": "Клиент · сайт",
+    "title": "Kassimova Design",
+    "size": 76,
+    "sub": "Сайт-портфолио с услугами и ценами для дизайнера интерьеров.",
+    "foot": "Чингиз Салихов · кейс",
+    "image": "/src/assets/work/kassimova-design/desktop-1200.webp",
+    "url": "kassimova.design"
+  },
+  {
+    "file": "case-azhar-trading-ru",
+    "kind": "case",
+    "path": "/work/azhar-trading",
+    "eyebrow": "Клиент · лендинг под запуск",
+    "title": "Azhar Trading",
+    "size": 76,
+    "sub": "Лендинг на RU/KZ под запуск вебинара по халяль-инвестициям.",
+    "foot": "Чингиз Салихов · кейс",
+    "image": "/src/assets/work/azhar-trading/desktop-1200.webp",
+    "url": "azhar-trading.com"
+  }
+]

@@ -30,6 +30,14 @@ npm run lint
   menus are cropped so the guest Wi-Fi password never shows. Screens with made-up numbers are labelled as demo data.
 - The dot wave behind the hero is plain WebGL (`src/lib/dot-wave.ts`), loaded when the browser is idle.
 
+## SEO
+
+- `src/head.ts` (build time only): title, description, canonical on the apex domain, hreflang en/ru/x-default,
+  Open Graph + Twitter cards, JSON-LD (Person, Organization ×2, ProfessionalService with the services,
+  WebSite; CreativeWork + BreadcrumbList on case pages) and `sitemap.xml`. `public/robots.txt` points to it.
+- Open Graph cards are static JPEGs in `public/og/` (home + every case, EN/RU), rendered from
+  `scripts/og/template.html` with the texts in `scripts/og/specs.json` — re-render them when a title changes.
+
 ## Deploy
 
 Vercel, `vercel.json`: clean URLs without trailing slashes, immutable caching for `/assets/*`.

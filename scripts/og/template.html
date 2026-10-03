@@ -1,0 +1,77 @@
+<!doctype html>
+<!--
+  Open Graph card template (1200×630) for public/og/*.jpg.
+  Serve the repo root statically, open template.html?s=<url-encoded spec from specs.json> at 1200×630
+  and save a JPEG screenshot as public/og/<spec.file>.jpg (e.g. with Playwright page.screenshot).
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: 'Geologica'; font-weight: 500 800; src: url(/src/assets/fonts/geologica-lat.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+2000-206F, U+20AC, U+2122, U+2190-2199, U+2212; }
+  @font-face { font-family: 'Geologica'; font-weight: 500 800; src: url(/src/assets/fonts/geologica-cyr.woff2) format('woff2'); unicode-range: U+0400-045F, U+2116; }
+  @font-face { font-family: 'Onest'; font-weight: 400 700; src: url(/src/assets/fonts/onest-lat.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+2000-206F, U+20AC, U+2122, U+2190-2199, U+2212; }
+  @font-face { font-family: 'Onest'; font-weight: 400 700; src: url(/src/assets/fonts/onest-cyr.woff2) format('woff2'); unicode-range: U+0400-045F, U+2116; }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 400 600; src: url(/src/assets/fonts/jbmono-lat.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+2000-206F, U+20AC, U+2122, U+2190-2199, U+2212; }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 400 600; src: url(/src/assets/fonts/jbmono-cyr.woff2) format('woff2'); unicode-range: U+0400-045F, U+2116; }
+</style>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: rgb(14 10 7); }
+  body { font-family: Onest, sans-serif; color: #fbf3e8; -webkit-font-smoothing: antialiased; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background: radial-gradient(70% 90% at 78% 70%, rgb(214 120 52 / 0.22), transparent 65%), radial-gradient(60% 60% at 10% 0%, rgb(236 164 98 / 0.08), transparent 70%), rgb(14 10 7); }
+  .dots { position: absolute; inset: auto 0 0 0; height: 260px; opacity: .55;
+    background-image: radial-gradient(circle, rgb(236 164 98 / .55) 1.2px, transparent 1.6px); background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 90%), linear-gradient(90deg, #000 40%, transparent 85%); -webkit-mask-composite: source-in; }
+  .copy { position: absolute; left: 72px; top: 64px; bottom: 60px; width: 640px; display: flex; flex-direction: column; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .logo { font-size: 24px; font-weight: 600; }
+  .logo b { color: rgb(214 120 52); font-weight: 600; }
+  .eyebrow { margin-top: 44px; font-size: 18px; color: rgb(214 120 52); }
+  h1 { font-family: Geologica, sans-serif; font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; margin-top: 18px; }
+  .grad { background: linear-gradient(100deg, rgb(236 164 98), rgb(214 120 52) 55%, rgb(188 92 32)); -webkit-background-clip: text; background-clip: text; color: transparent; display: block; }
+  .sub { margin-top: 26px; font-size: 26px; line-height: 1.35; color: #c9baa6; }
+  .sub strong { color: #fbf3e8; font-weight: 600; }
+  .foot { margin-top: auto; font-size: 17px; color: #9c8b76; }
+  .portrait { position: absolute; right: 40px; bottom: 0; height: 600px; }
+  .browser { position: absolute; right: -90px; top: 120px; width: 560px; border-radius: 12px; overflow: hidden; background: #0b0806;
+    box-shadow: 0 40px 80px -20px rgb(0 0 0 / .8), 0 0 0 1px rgb(255 232 208 / .12); }
+  .bar { height: 30px; display: flex; align-items: center; gap: 7px; padding: 0 12px; background: #120d09; border-bottom: 1px solid rgb(255 232 208 / .07); }
+  .bar i { width: 9px; height: 9px; border-radius: 50%; background: rgb(255 232 208 / .2); }
+  .bar span { margin-left: 10px; font: 500 12px 'JetBrains Mono', monospace; color: #9c8b76; background: rgb(255 232 208 / .07); padding: 3px 10px; border-radius: 5px; }
+  .browser img { display: block; width: 100%; }
+  .phone { position: absolute; width: 190px; aspect-ratio: 390/844; border-radius: 28px; padding: 5px; background: #0b0806;
+    box-shadow: 0 30px 60px -18px rgb(0 0 0 / .85), 0 0 0 1px rgb(255 232 208 / .14); }
+  .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; display: block; }
+  .badge { position: absolute; display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgb(255 232 208 / .18);
+    background: rgb(14 10 7 / .9); font: 14px 'JetBrains Mono', monospace; color: #c9baa6; }
+  .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: rgb(214 120 52); }
+</style>
+</head>
+<body>
+<div class="card" id="card"></div>
+<script>
+  // spec arrives as JSON in the hash: {kind: 'home'|'case', ...}
+  const s = JSON.parse(new URLSearchParams(location.search).get('s'));
+  const card = document.getElementById('card');
+  const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  let visual = '';
+  if (s.kind === 'home') {
+    visual = '<img class="portrait" src="/src/assets/portrait/portrait-1200.webp">';
+  } else if (s.phones) {
+    visual = `<div class="phone" style="right:250px;top:96px"><img src="${s.phones[0]}"></div><div class="phone" style="right:44px;top:132px"><img src="${s.phones[1]}"></div>`;
+  } else {
+    visual = `<div class="browser"><div class="bar"><i></i><i></i><i></i><span>${esc(s.url)}</span></div><img src="${s.image}"></div>` + (s.demo ? '<span class="badge" style="right:40px;bottom:44px">demo data</span>' : '');
+  }
+  card.innerHTML = `<div class="dots"></div>${visual}
+    <div class="copy" style="width:${s.kind === 'home' ? 660 : 600}px">
+      <div class="mono logo">~/salikhov<b>.dev</b>${s.path ? `<span style="color:#9c8b76;font-weight:400">${esc(s.path)}</span>` : ''}</div>
+      ${s.eyebrow ? `<div class="mono eyebrow">${esc(s.eyebrow)}</div>` : ''}
+      <h1 style="font-size:${s.size}px">${esc(s.title)}${s.accent ? `<span class="grad">${esc(s.accent)}</span>` : ''}</h1>
+      <p class="sub">${s.sub}</p>
+      <div class="mono foot">${esc(s.foot)}</div>
+    </div>`;
+</script>
+</body>
+</html>

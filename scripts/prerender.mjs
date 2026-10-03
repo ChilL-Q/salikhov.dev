@@ -1,5 +1,5 @@
 /**
- * Static prerender: renders every route of the SSR bundle into dist/, so each page ships its
+ * Static prerender: renders every route of the SSR bundle into dist/ (plus sitemap.xml), so each page ships its
  * content, <head> and font preloads as plain HTML; the client bundle then hydrates it.
  * Runs after `vite build` (client → dist/) and `vite build --ssr` (→ dist-ssr/).
  */
@@ -11,11 +11,11 @@ const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
 const ssrDir = join(root, 'dist-ssr');
 
-const { render, PRERENDER_ROUTES, NOT_FOUND_ROUTE, pathFor } = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
+const { render, sitemapXml, PRERENDER_ROUTES, NOT_FOUND_ROUTE, pathFor } = await import(pathToFileURL(join(ssrDir, 'entry-server.js')).href);
 
 const assets = await readdir(join(dist, 'assets'));
 
-// The whole stylesheet is ~5 KB gzipped: inline it instead of a render-blocking request.
+// The whole stylesheet is ~9 KB gzipped: inline it instead of a render-blocking request.
 const stylesheet = /<link rel="stylesheet" crossorigin href="\/assets\/([\w.-]+\.css)">/;
 let template = await readFile(join(dist, 'index.html'), 'utf8');
 const cssFile = template.match(stylesheet)?.[1];
@@ -50,5 +50,6 @@ for (const route of PRERENDER_ROUTES) {
     await write(join(dist, path === '/' ? 'index.html' : `${path.slice(1)}/index.html`), page(route));
 }
 await write(join(dist, '404.html'), page(NOT_FOUND_ROUTE));
+await write(join(dist, 'sitemap.xml'), sitemapXml(new Date().toISOString().slice(0, 10)));
 
 await rm(ssrDir, { recursive: true, force: true });

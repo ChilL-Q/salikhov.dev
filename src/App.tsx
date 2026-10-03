@@ -4,7 +4,7 @@ import { observeReveals } from './lib/reveal';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CasePage } from './pages/CasePage';
-import { pageMeta } from './seo';
+import { pageMeta } from './meta';
 import type { Route } from './routes';
 
 export function App({ route }: { route: Route }) {
