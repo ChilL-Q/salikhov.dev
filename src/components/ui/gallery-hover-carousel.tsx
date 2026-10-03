@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import Autoplay from 'embla-carousel-autoplay';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import iffaLogo from '@/assets/projects-logos/iffatech.png';
@@ -47,16 +47,16 @@ export default function GalleryHoverCarousel() {
         Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
     ]);
 
-    // The carousel only runs on mobile. On wider screens every project fits
-    // into a static grid, so Embla is deactivated and CSS grid takes over.
+    // Looping carousel on every screen size: 3 cards per view on desktop (2 on
+    // tablets), one centred card on mobile. Slide spacing is done with padding,
+    // not flex `gap` — Embla's loop seam is only gap-free that way.
     const [emblaRef, emblaApi] = useEmblaCarousel(
         {
             loop: true,
-            align: 'center',
+            align: isMobile ? 'center' : 'start',
             slidesToScroll: 1,
             containScroll: false,
             dragFree: false,
-            active: isMobile,
         },
         plugins
     );
@@ -113,6 +113,7 @@ export default function GalleryHoverCarousel() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="project-card"
+                                        draggable={false}
                                     >
                                         {/* Card background container */}
                                         <div className="project-card-bg" style={{ background: project.bg }} />
@@ -123,8 +124,9 @@ export default function GalleryHoverCarousel() {
                                                 src={project.logo}
                                                 alt={t(`projects.items.${project.id}.title`)}
                                                 className="project-card-logo"
-                                                style={project.logoMaxWidth ? { maxWidth: project.logoMaxWidth } : undefined}
+                                                style={project.logoMaxWidth ? { '--logo-max': `${project.logoMaxWidth}px` } as React.CSSProperties : undefined}
                                                 loading="lazy"
+                                                draggable={false}
                                             />
                                         </div>
 
@@ -154,16 +156,24 @@ export default function GalleryHoverCarousel() {
                     </div>
                 </div>
 
-                <div className="projects-dots">
-                    {projects.map((project, index) => (
-                        <button
-                            key={project.id}
-                            onClick={() => emblaApi?.scrollTo(index)}
-                            className={`projects-dot ${selectedIndex === index ? 'active' : ''}`}
-                            aria-label={t(`projects.items.${project.id}.title`)}
-                            aria-current={selectedIndex === index ? 'true' : undefined}
-                        />
-                    ))}
+                <div className="projects-controls">
+                    <button className="projects-arrow" onClick={() => emblaApi?.scrollPrev()} aria-label="Previous">
+                        <ChevronLeft size={18} />
+                    </button>
+                    <div className="projects-dots">
+                        {projects.map((project, index) => (
+                            <button
+                                key={project.id}
+                                onClick={() => emblaApi?.scrollTo(index)}
+                                className={`projects-dot ${selectedIndex === index ? 'active' : ''}`}
+                                aria-label={t(`projects.items.${project.id}.title`)}
+                                aria-current={selectedIndex === index ? 'true' : undefined}
+                            />
+                        ))}
+                    </div>
+                    <button className="projects-arrow" onClick={() => emblaApi?.scrollNext()} aria-label="Next">
+                        <ChevronRight size={18} />
+                    </button>
                 </div>
             </motion.div>
 
@@ -180,17 +190,67 @@ export default function GalleryHoverCarousel() {
                     transition: margin-bottom 0.3s ease;
                 }
 
-                /* Desktop: static grid (3 columns, 2 on narrower screens). Mobile: Embla carousel (see below). */
+                /* Carousel. The viewport is 10px wider than the content column on each side so the
+                   slides' 10px side padding lines the outer cards up with the column; vertical
+                   padding leaves room for the hover lift and shadow inside overflow:hidden. */
                 .projects-viewport {
-                    overflow: visible;
+                    overflow: hidden;
+                    margin: -16px -10px -24px;
+                    padding: 16px 0 40px;
+                    cursor: grab;
                 }
+                .projects-viewport:active { cursor: grabbing; }
                 .projects-track {
-                    display: grid;
-                    grid-template-columns: repeat(3, minmax(0, 1fr));
-                    gap: 20px;
+                    display: flex;
+                    touch-action: pan-y pinch-zoom;
                 }
+                .embla-slide {
+                    flex: 0 0 33.3333%;
+                    min-width: 0;
+                    padding: 0 10px;
+                }
+                .projects-controls {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 20px;
+                    margin-top: 28px;
+                }
+                .projects-arrow {
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-primary);
+                    background: rgb(var(--tint-rgb) / 0.06);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.16);
+                    transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s;
+                }
+                .projects-arrow:hover {
+                    background: rgb(var(--accent-rgb) / 0.14);
+                    border-color: rgb(var(--accent-rgb) / 0.55);
+                    color: var(--accent-orange);
+                }
+                .projects-arrow:active { transform: scale(0.94); }
                 .projects-dots {
-                    display: none;
+                    display: flex;
+                    justify-content: center;
+                    gap: 8px;
+                }
+                .projects-dot {
+                    width: 8px;
+                    height: 8px;
+                    padding: 0;
+                    border: none;
+                    border-radius: 100px;
+                    background: rgb(var(--tint-rgb) / 0.2);
+                    transition: width 0.3s ease, background 0.3s ease;
+                }
+                .projects-dot.active {
+                    width: 24px;
+                    background: var(--accent-orange);
                 }
 
                 /* Project Card Layout */
@@ -234,7 +294,7 @@ export default function GalleryHoverCarousel() {
 
                 .project-card-logo {
                     width: 85%;
-                    max-width: 320px;
+                    max-width: var(--logo-max, 320px);
                     height: auto;
                     object-fit: contain;
                     margin: auto;
@@ -326,38 +386,18 @@ export default function GalleryHoverCarousel() {
                 /* Mobile/Touch screen fallback (pointer: coarse) or screen widths */
                 @media (max-width: 768px) {
                     .projects-viewport {
-                        overflow: hidden;
                         margin: 0 -24px;
-                    }
-                    .projects-track {
-                        display: flex;
-                        gap: 0;
+                        padding: 0;
                     }
                     .embla-slide {
                         flex: 0 0 78%;
-                        min-width: 0;
                         padding: 12px 8px;
                         transition: opacity 0.4s ease !important;
                     }
-                    .projects-dots {
-                        display: flex;
-                        justify-content: center;
-                        gap: 8px;
-                        margin-top: 16px;
-                    }
-                    .projects-dot {
-                        width: 8px;
-                        height: 8px;
-                        padding: 0;
-                        border: none;
-                        border-radius: 100px;
-                        background: rgb(var(--tint-rgb) / 0.2);
-                        transition: width 0.3s ease, background 0.3s ease;
-                    }
-                    .projects-dot.active {
-                        width: 24px;
-                        background: var(--accent-orange);
-                    }
+                    .projects-controls { margin-top: 16px; }
+                    /* the info panel is taller on mobile — keep tall emblems clear of it */
+                    .project-card-logo { max-width: calc(var(--logo-max, 320px) * 0.7); }
+                    .projects-arrow { display: none; } /* swipe on touch screens */
                     .embla-slide:not(.active-slide) {
                         opacity: 0.5 !important;
                     }
@@ -432,10 +472,8 @@ export default function GalleryHoverCarousel() {
                     }
                 }
 
-                @media (max-width: 1023px) {
-                    .projects-track {
-                        grid-template-columns: repeat(2, minmax(0, 1fr));
-                    }
+                @media (min-width: 769px) and (max-width: 1023px) {
+                    .embla-slide { flex-basis: 50%; }
                 }
                 @media (max-width: 900px) {
                     .projects-section {
