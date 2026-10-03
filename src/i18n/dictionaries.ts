@@ -48,6 +48,13 @@ export const translations = {
         footer: {
             copyright: 'Designed & Developed by Chingiz Salikhov © 2026',
         },
+        a11y: {
+            skip: 'Skip to content',
+            menu: 'Menu',
+            language: 'Language',
+            prev: 'Previous project',
+            next: 'Next project',
+        },
     },
     ru: {
         nav: {
@@ -96,6 +103,13 @@ export const translations = {
         footer: {
             copyright: 'Дизайн и разработка — Чингиз Салихов © 2026',
         },
+        a11y: {
+            skip: 'Перейти к содержимому',
+            menu: 'Меню',
+            language: 'Язык',
+            prev: 'Предыдущий проект',
+            next: 'Следующий проект',
+        },
     },
     kz: {
         nav: {
@@ -143,6 +157,13 @@ export const translations = {
         },
         footer: {
             copyright: 'Чингиз Салихов әзірлеген © 2026',
+        },
+        a11y: {
+            skip: 'Мазмұнға өту',
+            menu: 'Мәзір',
+            language: 'Тіл',
+            prev: 'Алдыңғы жоба',
+            next: 'Келесі жоба',
         },
     },
 };

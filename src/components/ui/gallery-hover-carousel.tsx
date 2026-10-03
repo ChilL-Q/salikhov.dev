@@ -5,6 +5,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
+import { prefersReducedMotion } from '@/lib/motion';
 import qarauLogo from '@/assets/projects-logos/qarau.svg';
 import kassimovaLogo from '@/assets/projects-logos/kassimova-design.webp';
 import abaiLogo from '@/assets/projects-logos/ab-ai.webp';
@@ -18,17 +19,19 @@ interface ProjectCard {
     logo: string;
     bg: string;
     tags: string[];
+    /** The logo file's own size, so the browser reserves its box before it loads */
+    logoSize: [number, number];
     /** Max logo width in px — for emblems that are taller than they are wide */
     logoMaxWidth?: number;
 }
 
 const projects: ProjectCard[] = [
-    { id: 'qarau', url: 'https://qarau.kz', logo: qarauLogo, bg: '#0f1820', tags: ['AI', 'iiko', 'Telegram'] },
-    { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
-    { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
-    { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
-    { id: 'thirdtime', url: 'https://3time.kz', logo: thirdTimeLogo, bg: '#0d2118', tags: ['QR Menu', 'React', 'Admin'], logoMaxWidth: 170 },
-    { id: 'breakfast', url: 'https://thebreakfast.kz', logo: breakfastLogo, bg: '#faf5ec', tags: ['QR Menu', 'HoReCa', 'Node.js'] },
+    { id: 'qarau', url: 'https://qarau.kz', logo: qarauLogo, logoSize: [3696, 1403], bg: '#0f1820', tags: ['AI', 'iiko', 'Telegram'] },
+    { id: 'abai', url: 'https://www.ab-ai.kz', logo: abaiLogo, logoSize: [376, 194], bg: '#121e36', tags: ['AI', 'WhatsApp', 'SaaS'] },
+    { id: 'kassimova', url: 'https://kassimova.design', logo: kassimovaLogo, logoSize: [720, 245], bg: '#fafaf9', tags: ['UI/UX', 'Branding', 'Design'] },
+    { id: 'azhar', url: 'https://azhar-trading.com', logo: azharLogo, logoSize: [410, 240], bg: '#020617', tags: ['EdTech', 'FinTech', 'Web'] },
+    { id: 'thirdtime', url: 'https://3time.kz', logo: thirdTimeLogo, logoSize: [400, 467], bg: '#0d2118', tags: ['QR Menu', 'React', 'Admin'], logoMaxWidth: 170 },
+    { id: 'breakfast', url: 'https://thebreakfast.kz', logo: breakfastLogo, logoSize: [1000, 320], bg: '#faf5ec', tags: ['QR Menu', 'HoReCa', 'Node.js'] },
 ];
 
 export default function GalleryHoverCarousel() {
@@ -44,9 +47,10 @@ export default function GalleryHoverCarousel() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // no autoplay for people who asked their system for less motion
     const [plugins] = useState(() => [
         WheelGesturesPlugin(),
-        Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
+        Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true, active: !prefersReducedMotion() }),
     ]);
 
     // Looping carousel on every screen size: 3 cards per view on desktop (2 on
@@ -125,6 +129,8 @@ export default function GalleryHoverCarousel() {
                                             <img
                                                 src={project.logo}
                                                 alt={t(`projects.items.${project.id}.title`)}
+                                                width={project.logoSize[0]}
+                                                height={project.logoSize[1]}
                                                 className="project-card-logo"
                                                 style={project.logoMaxWidth ? { '--logo-max': `${project.logoMaxWidth}px` } as React.CSSProperties : undefined}
                                                 loading="lazy"
@@ -159,7 +165,7 @@ export default function GalleryHoverCarousel() {
                 </div>
 
                 <div className="projects-controls">
-                    <button className="projects-arrow" onClick={() => emblaApi?.scrollPrev()} aria-label="Previous">
+                    <button className="projects-arrow" onClick={() => emblaApi?.scrollPrev()} aria-label={t('a11y.prev')}>
                         <ChevronLeft size={18} />
                     </button>
                     <div className="projects-dots">
@@ -173,7 +179,7 @@ export default function GalleryHoverCarousel() {
                             />
                         ))}
                     </div>
-                    <button className="projects-arrow" onClick={() => emblaApi?.scrollNext()} aria-label="Next">
+                    <button className="projects-arrow" onClick={() => emblaApi?.scrollNext()} aria-label={t('a11y.next')}>
                         <ChevronRight size={18} />
                     </button>
                 </div>
@@ -232,8 +238,9 @@ export default function GalleryHoverCarousel() {
                 }
                 .projects-arrow:hover {
                     background: rgb(var(--tint-rgb) / 0.1);
-                    border-color: rgb(var(--accent-rgb) / 0.7);
-                    color: var(--accent-orange);
+                }
+                @media (hover: hover) {
+                    .projects-arrow:hover { border-color: rgb(var(--accent-rgb)); color: var(--accent-orange); }
                 }
                 .projects-arrow:active { transform: scale(0.94); }
                 .projects-dots {
@@ -247,7 +254,7 @@ export default function GalleryHoverCarousel() {
                     padding: 0;
                     border: none;
                     border-radius: 100px;
-                    background: rgb(var(--tint-rgb) / 0.28);
+                    background: rgb(var(--tint-rgb) / 0.36); /* 3:1 on black */
                     transition: width 0.3s ease, background 0.3s ease;
                 }
                 .projects-dot.active {
@@ -265,14 +272,16 @@ export default function GalleryHoverCarousel() {
                     text-decoration: none;
                     color: inherit;
                     background: transparent;
-                    border: 1px solid rgb(var(--tint-rgb) / 0.16);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.13);
                     transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
                 .project-card:hover {
-                    border-color: rgb(var(--accent-rgb) / 0.65);
-                    box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.7), 0 0 60px -18px rgb(var(--accent-rgb) / 0.35);
+                    box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.7);
                     transform: translateY(-4px);
+                }
+                @media (hover: hover) {
+                    .project-card:hover { border-color: rgb(var(--accent-rgb)); }
                 }
 
                 .project-card-bg {
@@ -343,13 +352,13 @@ export default function GalleryHoverCarousel() {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
-                    border: 1px solid rgb(var(--accent-rgb) / 0.7);
-                    color: var(--accent-orange);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.22);
+                    color: var(--text-secondary);
                     flex-shrink: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, color 0.3s;
                 }
 
                 /* Hover Interaction on Desktop (Hover-capable devices) */
@@ -370,6 +379,8 @@ export default function GalleryHoverCarousel() {
                     }
                     .project-card:hover .project-card-arrow {
                         transform: translate(2px, -2px);
+                        border-color: rgb(var(--accent-rgb));
+                        color: var(--accent-orange);
                     }
                 }
 
@@ -453,7 +464,7 @@ export default function GalleryHoverCarousel() {
                         padding: 14px 16px !important;
                     }
                     .embla-slide.active-slide .project-card {
-                        border-color: rgb(var(--accent-rgb) / 0.7) !important;
+                        border-color: rgb(var(--accent-rgb)) !important;
                         box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8) !important;
                     }
                     

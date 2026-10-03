@@ -32,8 +32,9 @@ the HTML. Unknown addresses get `404.html` (the Russian page with a 404 status a
 - Inter is self-hosted in `src/assets/fonts` (the same variable files Google Fonts served: latin, latin-ext,
   cyrillic, cyrillic-ext for Kazakh letters), with an Arial fallback stretched to Inter's metrics.
 - The hero portrait ships as AVIF + WebP in 480–1200w (`src/content/portrait.ts`, `src/lib/responsive.ts`), built
-  by `scripts/portrait/build.py` from `scripts/portrait/portrait-master.png`, with its black point set to the
-  page's black.
+  by `scripts/portrait/build.py` from the original photo and its subject mask: cut-out, the shadow side lifted
+  where the file has data (`--shadows none|light|medium|strong`, medium ships), 4:5 crop with dissolving edges,
+  black point at the page's black.
 - Project logos are WebP or SVG in `src/assets/projects-logos/`.
 - The dot wave in the hero is three.js (`src/components/DottedSurface.tsx`), loaded as its own chunk after hydration.
 

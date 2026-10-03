@@ -40,9 +40,9 @@ function getMaxViewportHeight(): number {
     return height || window.innerHeight;
 }
 
-// Dots take their colour from the site palette (see --accent-light-rgb in index.css)
+// Dots take their colour from the site palette: the main orange (--accent-rgb in index.css)
 function getDotColor(): THREE.Color {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--accent-light-rgb');
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb');
     const [r, g, b] = raw.trim().split(/\s+/).map(Number);
     if ([r, g, b].some(Number.isNaN)) return new THREE.Color(1, 1, 1);
     return new THREE.Color(r / 255, g / 255, b / 255);
@@ -142,10 +142,12 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         let lastTime = performance.now();
         let animationId: number;
         let isRunning = true;
+        // with reduced motion the wave is drawn once, standing still
+        const stillOnly = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const animate = () => {
             if (!isRunning) return;
-            animationId = requestAnimationFrame(animate);
+            if (!stillOnly) animationId = requestAnimationFrame(animate);
 
             const now = performance.now();
             const delta = (now - lastTime) / 1000;
@@ -191,6 +193,7 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
             camera.updateProjectionMatrix();
             renderer.setSize(width, maxHeight);
             material.uniforms.uViewportHeight.value = maxHeight * window.devicePixelRatio;
+            if (stillOnly) renderer.render(scene, camera);
         };
 
         // Don't burn GPU/battery re-rendering the dots once the hero is

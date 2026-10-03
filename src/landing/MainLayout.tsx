@@ -4,13 +4,18 @@ import { BentoSection } from './BentoSection';
 import { ProjectsSection } from './ProjectsSection';
 import { ContactSection } from './ContactSection';
 import { Footer } from './Footer';
+import { useLanguage } from '../context/LanguageContext';
 
 export const MainLayout = () => {
+    const { t } = useLanguage();
+
     return (
         <>
+            {/* first stop for keyboard users, shown only while focused */}
+            <a href="#main" className="skip-link">{t('a11y.skip')}</a>
             <Navbar />
-            <HeroSection />
-            <main style={{ position: 'relative', zIndex: 1 }}>
+            <main id="main" style={{ position: 'relative', zIndex: 1 }}>
+                <HeroSection />
                 <BentoSection />
                 <ProjectsSection />
                 <ContactSection />

@@ -1,7 +1,8 @@
 import { useState, useEffect, useSyncExternalStore, lazy, Suspense } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { PORTRAIT } from '../content/portrait';
+import { prefersReducedMotion } from '../lib/motion';
 
 // three.js is ~500 kB — keep it out of the main bundle so the hero text paints first
 const DottedSurface = lazy(() => import('../components/DottedSurface').then(m => ({ default: m.DottedSurface })));
@@ -20,6 +21,9 @@ const fadeUp = (delay: number) => ({
 export const HeroSection = () => {
     const { t } = useLanguage();
     const [scrolled, setScrolled] = useState(false);
+    // the scroll hint bobs and blinks in a loop; with reduced motion it stands still
+    const reduceMotion = useReducedMotion();
+    const scrollHintLoop = reduceMotion ? { duration: 0 } : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' as const };
     // The wave is client-only: false in the prerendered HTML and while hydrating, true right after
     const mounted = useSyncExternalStore(noSubscribe, () => true, () => false);
 
@@ -40,7 +44,7 @@ export const HeroSection = () => {
     const portraitY = useTransform(springY, v => v * -6);
 
     const handlePointerMove = (e: React.PointerEvent) => {
-        if (e.pointerType !== 'mouse') return;
+        if (e.pointerType !== 'mouse' || prefersReducedMotion()) return;
         const rect = e.currentTarget.getBoundingClientRect();
         pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
         pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
@@ -113,12 +117,12 @@ export const HeroSection = () => {
                     >
                         <motion.div
                             animate={{ y: [0, 6, 0] }}
-                            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                            transition={scrollHintLoop}
                             style={{ width: '24px', height: '40px', border: '1.5px solid var(--text-tertiary)', borderRadius: '12px', position: 'relative' }}
                         >
                             <motion.div
                                 animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
-                                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                                transition={scrollHintLoop}
                                 style={{ width: '3px', height: '6px', background: 'var(--text-tertiary)', borderRadius: '2px', position: 'absolute', top: '6px', left: '50%', marginLeft: '-1.5px' }}
                             />
                         </motion.div>
@@ -199,7 +203,9 @@ export const HeroSection = () => {
                 .hero-btn-ghost:hover {
                     transform: translateY(-2px);
                     background: rgb(var(--tint-rgb) / 0.14);
-                    border-color: rgb(var(--accent-rgb) / 0.65);
+                }
+                @media (hover: hover) {
+                    .hero-btn-ghost:hover { border-color: rgb(var(--accent-rgb)); }
                 }
 
                 /* ── Portrait ── */

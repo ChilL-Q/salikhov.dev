@@ -1,0 +1,4 @@
+# versions the shipped portrait was built with (plus avifenc 1.0.4 with aom 3.10.0, cwebp 1.4.0)
+numpy==2.2.6
+opencv-python==4.13.0.92
+Pillow==12.3.0

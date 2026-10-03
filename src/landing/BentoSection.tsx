@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { prefersReducedMotion } from '../lib/motion';
 
 const techStack = ['React', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'Three.js', 'Tailwind', 'AI/LLM'];
 
@@ -64,7 +65,7 @@ function TiltCard({
     const [touch, setTouch] = useState({ x: 0, y: 0, active: false });
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (!ref.current) return;
+        if (!ref.current || prefersReducedMotion()) return;
         const rect = ref.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -221,9 +222,7 @@ export const BentoSection = () => {
                     className="bento-card bento-card-compact"
                     gridClassName="col-span-1 bento-grid-item"
                     style={{
-                        // neutral like the other cards: dim orange on black turns brown, so the orange is the frame and the label
                         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-                        border: '1px solid rgb(var(--accent-rgb) / 0.6)',
                     }}
                 >
                     <div style={{ fontSize: '14px', color: 'var(--accent-orange)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>{t('about.focusLabel')}</div>
@@ -282,7 +281,7 @@ export const BentoSection = () => {
                     gap: 32px;
                     margin-top: 32px;
                     flex-wrap: wrap;
-                    transition: all 0.3s ease;
+                    transition: gap 0.3s ease, margin-top 0.3s ease;
                 }
 
                 .bento-ioai {
@@ -308,14 +307,16 @@ export const BentoSection = () => {
                     font-size: 13px;
                     font-weight: 500;
                     color: var(--accent-orange);
-                    border: 1px solid rgb(var(--accent-rgb) / 0.6);
+                    border: 1px solid rgb(var(--tint-rgb) / 0.2);
                     transition: background 0.25s, border-color 0.25s;
                     position: relative;
                     z-index: 6; /* above the touch-glow overlay so it stays clickable */
                 }
                 .bento-ioai-link:hover {
                     background: rgb(var(--tint-rgb) / 0.08);
-                    border-color: rgb(var(--accent-rgb) / 0.85);
+                }
+                @media (hover: hover) {
+                    .bento-ioai-link:hover { border-color: rgb(var(--accent-rgb)); }
                 }
 
                 /* Haptic/Tactile Active Tap Feedback */

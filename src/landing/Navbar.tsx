@@ -88,7 +88,7 @@ export const Navbar = () => {
             <button
                 className="nav-mobile-btn"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Menu"
+                aria-label={t('a11y.menu')}
                 aria-expanded={mobileMenuOpen}
                 style={{ display: 'none', padding: '8px', color: 'var(--text-primary)' }}
             >

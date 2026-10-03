@@ -120,12 +120,28 @@
   h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.1; }
 
   ::selection {
-    background: rgb(var(--accent-rgb) / 0.8);
+    background: rgb(var(--accent-rgb));
     color: #000;
   }
 }
 
 @layer components {
+  /* "Skip to content": off screen until a keyboard user reaches it */
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 2000;
+    padding: 10px 18px;
+    border-radius: 100px;
+    background: rgb(var(--accent-rgb));
+    color: var(--on-accent);
+    font-size: 14px;
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus { transform: none; }
+
   /* Bento Card */
   .bento-card {
     background: var(--bg-card);
@@ -134,7 +150,7 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 24px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
   }
@@ -164,8 +180,11 @@
 
   .bento-card:hover {
     background: var(--bg-card-hover);
-    border-color: rgb(var(--accent-rgb) / 0.55);
-    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 50px -12px rgb(var(--accent-rgb) / 0.22);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+  }
+  /* orange edges only with a real pointer: on touch screens :hover sticks after a tap */
+  @media (hover: hover) {
+    .bento-card:hover { border-color: rgb(var(--accent-rgb)); }
   }
 
   .bento-card:hover::after { opacity: 1; }
@@ -206,16 +225,17 @@
     font-size: 12px;
     font-weight: 500;
     color: var(--text-secondary);
-    transition: all var(--transition-base);
+    transition: background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
     white-space: nowrap;
     letter-spacing: 0.02em;
   }
 
   .tech-tag:hover {
     background: rgb(var(--tint-rgb) / 0.1);
-    border-color: rgb(var(--accent-rgb) / 0.6);
-    color: var(--accent-orange);
     transform: translateY(-1px);
+  }
+  @media (hover: hover) {
+    .tech-tag:hover { border-color: rgb(var(--accent-rgb)); color: var(--accent-orange); }
   }
 
 }
