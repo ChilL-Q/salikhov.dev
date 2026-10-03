@@ -1,7 +1,7 @@
 import { Navbar } from '../landing/Navbar';
 import { HeroSection } from '../landing/HeroSection';
 import { BentoSection } from '../landing/BentoSection';
-import { ProjectsSection } from '../landing/ProjectsSection';
+import { WorkSection } from '../landing/WorkSection';
 import { ContactSection } from '../landing/ContactSection';
 import { Footer } from '../landing/Footer';
 
@@ -11,7 +11,7 @@ export function HomePage() {
             <Navbar />
             <main>
                 <HeroSection />
-                <ProjectsSection />
+                <WorkSection />
                 <BentoSection />
                 <ContactSection />
             </main>

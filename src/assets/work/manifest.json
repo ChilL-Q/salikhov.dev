@@ -1,0 +1,74 @@
+{
+  "ab-ai/desktop": [
+    1800,
+    1125
+  ],
+  "ab-ai/how": [
+    1800,
+    1640
+  ],
+  "ab-ai/mobile": [
+    600,
+    1298
+  ],
+  "azhar-trading/desktop": [
+    1800,
+    1125
+  ],
+  "azhar-trading/mobile": [
+    600,
+    1298
+  ],
+  "digital-menus/breakfast": [
+    600,
+    1298
+  ],
+  "digital-menus/breakfast-en": [
+    600,
+    1298
+  ],
+  "digital-menus/magazine": [
+    1100,
+    1563
+  ],
+  "digital-menus/print": [
+    1800,
+    1182
+  ],
+  "digital-menus/thirdtime": [
+    600,
+    1298
+  ],
+  "kassimova-design/desktop": [
+    1800,
+    1125
+  ],
+  "kassimova-design/mobile": [
+    600,
+    1298
+  ],
+  "kassimova-design/portfolio": [
+    1800,
+    1125
+  ],
+  "kassimova-design/services": [
+    1800,
+    1125
+  ],
+  "qarau/demo-chat": [
+    800,
+    1442
+  ],
+  "qarau/demo-dash": [
+    1440,
+    1380
+  ],
+  "qarau/desktop": [
+    1800,
+    1125
+  ],
+  "qarau/mobile": [
+    600,
+    1298
+  ]
+}

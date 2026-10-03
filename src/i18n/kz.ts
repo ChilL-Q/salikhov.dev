@@ -35,7 +35,6 @@ export const kz = {
         title: 'Жобалар',
         subtitle: 'Тәжірибе',
         items: {
-            iffa: { title: 'Iffa Tech', desc: 'Корпоративтік техникалық шешімдер мен БҚ.' },
             kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
             abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },
             azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' },

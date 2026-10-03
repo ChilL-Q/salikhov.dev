@@ -1,3 +1,5 @@
+import { work, cases } from './work.en';
+
 export const en = {
     meta: {
         title: 'Chingiz Salikhov — Full-stack & AI developer',
@@ -39,18 +41,8 @@ export const en = {
         ioaiLabel: 'Organizing team',
         ioaiDesc: '3rd International Olympiad in Artificial Intelligence, Astana, 2–8 Aug 2026.',
     },
-    projects: {
-        title: 'Projects',
-        subtitle: 'Experience',
-        items: {
-            abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
-            kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
-            iffa: { title: 'Iffa Tech', desc: 'Enterprise technical solutions & software.' },
-            azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' },
-            thirdtime: { title: '3rd Time', desc: 'QR menu for a sports bar with an admin panel and stop-list.' },
-            breakfast: { title: 'The Breakfast', desc: 'Digital menu for a café & kitchen in Astana.' },
-        },
-    },
+    work,
+    cases,
     contact: {
         getInTouch: 'Get in Touch',
         description: "Have a project in mind or just want to say hi? I'd love to hear from you.",

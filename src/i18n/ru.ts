@@ -1,4 +1,5 @@
 import type { Dictionary } from '.';
+import { work, cases } from './work.ru';
 
 export const ru: Dictionary = {
     meta: {
@@ -41,18 +42,8 @@ export const ru: Dictionary = {
         ioaiLabel: 'Оргкоманда',
         ioaiDesc: 'III Международная олимпиада по искусственному интеллекту, Астана, 2–8 августа 2026.',
     },
-    projects: {
-        title: 'Проекты',
-        subtitle: 'Опыт',
-        items: {
-            abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
-            kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
-            iffa: { title: 'Iffa Tech', desc: 'Корпоративные технические решения и ПО.' },
-            azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' },
-            thirdtime: { title: '3й Тайм', desc: 'QR-меню спорт-бара с админ-панелью и стоп-листом.' },
-            breakfast: { title: 'The Breakfast', desc: 'Электронное меню кафе в Астане.' },
-        },
-    },
+    work,
+    cases,
     contact: {
         getInTouch: 'Связаться со мной',
         description: 'Есть идея для проекта или просто хотите поздороваться? Буду рад пообщаться!',

@@ -47,6 +47,8 @@ export function Navbar() {
     }, [open]);
 
     const solid = scrolled || open;
+    // on a case page the "Work" section is where you are
+    const current = route.page === 'case' ? 'work' : active;
 
     return (
         <header
@@ -65,9 +67,9 @@ export function Navbar() {
                             <li key={id}>
                                 <a
                                     href={`${home}#${id}`}
-                                    aria-current={active === id ? 'true' : undefined}
+                                    aria-current={current === id ? 'true' : undefined}
                                     className={`relative py-2 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-300 ${
-                                        active === id ? 'text-ink after:scale-x-100' : 'text-ink-2 after:scale-x-0 hover:text-ink'
+                                        current === id ? 'text-ink after:scale-x-100' : 'text-ink-2 after:scale-x-0 hover:text-ink'
                                     }`}
                                 >
                                     {d.nav[id]}
@@ -101,7 +103,7 @@ export function Navbar() {
                                 <a
                                     href={`${home}#${id}`}
                                     onClick={() => setOpen(false)}
-                                    className={`block py-3 font-display text-3xl font-semibold tracking-[-0.03em] ${active === id ? 'text-accent' : 'text-ink'}`}
+                                    className={`block py-3 font-display text-3xl font-semibold tracking-[-0.03em] ${current === id ? 'text-accent' : 'text-ink'}`}
                                 >
                                     {d.nav[id]}
                                 </a>

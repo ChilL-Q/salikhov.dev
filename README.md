@@ -11,12 +11,14 @@ npm run lint
 
 ## How pages are built
 
-- `src/routes.ts` — every page and its URL. EN lives at `/`, RU at `/ru`.
+- `src/routes.ts` — every page and its URL. EN lives at `/`, RU at `/ru`; case studies at `/work/<slug>` and `/ru/work/<slug>`.
 - `src/entry-server.tsx` renders a route to HTML; `scripts/prerender.mjs` writes it into
   `dist/<path>/index.html` together with its `<head>` (`src/seo.ts`), font preloads and the inlined CSS,
   plus a single bilingual `dist/404.html`.
 - `src/entry-client.tsx` hydrates the prerendered markup (or renders from scratch under `vite dev`).
-- Texts: `src/i18n/en.ts` (source of the `Dictionary` type) and `ru.ts`. `kz.ts` is kept for later and not wired up.
+- Texts: `src/i18n/en.ts` (source of the `Dictionary` type) and `ru.ts`; work and case studies in `work.en.ts` / `work.ru.ts`.
+  `kz.ts` is kept for later and not wired up.
+- Case data that isn't text (links, stack from each project's repo, visuals): `src/content/cases.ts`.
 - Contacts and the canonical origin: `src/site.ts`.
 
 ## Assets
@@ -24,6 +26,8 @@ npm run lint
 - Fonts are self-hosted in `src/assets/fonts` (Geologica for display, Onest for text, JetBrains Mono), one woff2
   per script with `unicode-range`; variable axes are trimmed to the weights in use, the mono face is subset.
 - The hero portrait ships as AVIF + WebP in 480/720/960/1200 widths (`src/content/portrait.ts`).
+- Case visuals in `src/assets/work/<case>/` (AVIF + WebP, sizes in `manifest.json`) are captured from the live sites;
+  menus are cropped so the guest Wi-Fi password never shows. Screens with made-up numbers are labelled as demo data.
 - The dot wave behind the hero is plain WebGL (`src/lib/dot-wave.ts`), loaded when the browser is idle.
 
 ## Deploy

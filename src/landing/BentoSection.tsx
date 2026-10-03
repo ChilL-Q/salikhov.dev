@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '../i18n/useI18n';
-import { PROJECTS } from '../content/projects';
+import { CASES } from '../content/cases';
 
 const techStack = ['React', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'Three.js', 'Tailwind', 'AI/LLM'];
 
@@ -61,7 +61,7 @@ export const BentoSection = () => {
                             </div>
                             <div>
                                 <div style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-1px' }}>
-                                    <span className="gradient-text-accent">{PROJECTS.length}</span>
+                                    <span className="gradient-text-accent">{CASES.length}</span>
                                 </div>
                                 <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('about.statProjects')}</div>
                             </div>
