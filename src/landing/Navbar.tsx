@@ -58,8 +58,15 @@ export function Navbar() {
                 solid ? 'border-tint/10 bg-bg/95' : 'border-transparent'
             }`}
         >
+            {/* first stop for keyboard users: past the navigation straight to the page */}
+            <a
+                href="#main"
+                className="sr-only rounded-md bg-accent px-4 py-2 font-medium text-on-accent focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60]"
+            >
+                {d.nav.skip}
+            </a>
             <nav aria-label={d.nav.main} className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-5 lg:px-10">
-                <a href={home || '#top'} className="font-mono text-[15px] font-semibold tracking-tight">
+                <a href={home || '#top'} className="shrink-0 font-mono text-[14px] font-semibold tracking-tight min-[380px]:text-[15px]">
                     ~/salikhov<span className="text-accent">.dev</span>
                 </a>
 
@@ -95,12 +102,12 @@ export function Navbar() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-1 lg:hidden">
+                <div className="flex items-center gap-0.5 lg:hidden">
                     <button
                         type="button"
                         onClick={palette.show}
                         aria-label={d.palette.open}
-                        className="grid size-11 place-items-center font-mono text-sm text-ink-2 transition-colors hover:text-ink"
+                        className="grid h-11 w-9 place-items-center font-mono text-sm text-ink-2 transition-colors hover:text-ink min-[380px]:w-11"
                     >
                         <span aria-hidden="true">›_</span>
                     </button>

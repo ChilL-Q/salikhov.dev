@@ -26,7 +26,7 @@ export function CasePage({ slug }: { slug: CaseSlug }) {
     return (
         <>
             <Navbar />
-            <main>
+            <main id="main" tabIndex={-1} className="outline-none">
                 <article>
                     <header className="mx-auto max-w-[1200px] px-5 pt-28 lg:px-10 lg:pt-36">
                         <a href={`${home}#work`} className="inline-flex items-center gap-2 font-mono text-sm text-ink-3 transition-colors hover:text-ink">

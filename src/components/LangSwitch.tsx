@@ -14,7 +14,7 @@ export function LangSwitch() {
                     hrefLang={code}
                     lang={code}
                     aria-current={code === lang ? 'page' : undefined}
-                    className={`rounded-full px-2.5 py-1.5 uppercase transition-colors ${
+                    className={`rounded-full px-2 py-1.5 uppercase transition-colors min-[380px]:px-2.5 ${
                         code === lang ? 'bg-tint/10 text-ink' : 'text-ink-3 hover:text-ink'
                     }`}
                 >

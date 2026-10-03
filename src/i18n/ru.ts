@@ -13,6 +13,7 @@ export const ru: Dictionary = {
         about: 'Обо мне',
         contact: 'Контакты',
         main: 'Основная навигация',
+        skip: 'Перейти к содержимому',
         openMenu: 'Открыть меню',
         closeMenu: 'Закрыть меню',
         language: 'Язык',

@@ -12,6 +12,7 @@ export const en = {
         about: 'About',
         contact: 'Contact',
         main: 'Main',
+        skip: 'Skip to content',
         openMenu: 'Open menu',
         closeMenu: 'Close menu',
         language: 'Language',

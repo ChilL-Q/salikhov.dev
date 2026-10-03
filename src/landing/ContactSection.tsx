@@ -19,8 +19,8 @@ export function ContactSection() {
 
             <div data-reveal className="mt-10 flex flex-col gap-8 lg:mt-12 lg:flex-row lg:items-end lg:justify-between">
                 <p className="max-w-[44ch] text-lg leading-relaxed text-pretty text-ink-2">{c.text}</p>
-                <div className="flex flex-col items-start gap-2.5">
-                    <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-[60px] px-8 text-base">
+                <div className="flex flex-col items-stretch gap-2.5 sm:items-start">
+                    <a href={CONTACTS.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-[60px] px-6 text-base max-sm:whitespace-normal sm:px-8">
                         <TelegramIcon size={20} />
                         {c.telegram}
                         <ArrowUpRight size={18} aria-hidden="true" />
@@ -31,7 +31,7 @@ export function ContactSection() {
 
             <h3 className="sr-only">{c.other}</h3>
             {/* 1px gaps over a tinted background draw the dividers between the cells */}
-            <ul data-reveal className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-tint/10 bg-tint/10 sm:grid-cols-2 lg:mt-20">
+            <ul data-reveal className="mt-14 grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-3xl border border-tint/10 bg-tint/10 sm:grid-cols-[repeat(2,minmax(0,1fr))] lg:mt-20">
                 <li className="bg-bg">
                     <ContactLink href={CONTACTS.whatsapp} icon={WhatsAppIcon} label="WhatsApp" value={HANDLES.whatsapp} />
                 </li>
