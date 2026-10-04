@@ -85,15 +85,19 @@ function jsonLd(lang: LanguageCode): object {
     };
 }
 
-/** <head> tags of a prerendered page; the 404 page is the Russian page, kept out of the index. */
-export function headTags(lang: LanguageCode, { notFound = false } = {}): string {
+/**
+ * <head> tags of a prerendered page; the 404 page is the Russian page, kept out of the index.
+ * `ogImage` is the card's path with its content hash in the name (scripts/prerender.mjs), so a re-shot card
+ * gets a new URL and link previews (Telegram caches images by URL) pick it up.
+ */
+export function headTags(lang: LanguageCode, { notFound = false, ogImage = `/og/${lang}.jpg` } = {}): string {
     const title = PAGE_TITLES[lang];
     if (notFound) return [`<title>${escape(title)}</title>`, '<meta name="robots" content="noindex">'].join('\n    ');
 
     const canonical = url(LANGUAGE_PATHS[lang]);
     const description = DESCRIPTIONS[lang];
     const ogDescription = OG_DESCRIPTIONS[lang];
-    const image = `${SITE_URL}/og/${lang}.jpg`;
+    const image = url(ogImage);
     // "</" can't appear inside the script element
     const ld = JSON.stringify(jsonLd(lang)).replace(/</g, '\\u003c');
 

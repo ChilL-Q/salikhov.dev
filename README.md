@@ -45,7 +45,9 @@ the HTML. Unknown addresses get `404.html` (the Russian page with a 404 status a
   x-default → `/`), Open Graph and Twitter cards, JSON-LD (Person, Organization for own products, WebSite)
   and `sitemap.xml`. `public/robots.txt` points to the sitemap.
 - Open Graph cards `public/og/<lang>.jpg` are shots of the site's own hero; re-shoot them with
-  `scripts/og/shoot.js` (instructions inside) when the hero changes.
+  `scripts/og/shoot.js` (instructions inside) when the hero changes. The build publishes each as
+  `/og/<lang>.<content hash>.jpg` and points og:image / twitter:image there, so a re-shot card gets a new URL
+  and link previews that cache by URL (Telegram) update; nothing to rename by hand.
 
 ## Deploy
 

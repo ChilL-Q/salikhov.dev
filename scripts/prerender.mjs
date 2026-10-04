@@ -3,7 +3,8 @@
  * so every page ships its content, <head> and font preloads as plain HTML; the client bundle then hydrates it.
  * Runs after `vite build` (client → dist/) and `vite build --ssr` (→ dist-ssr/).
  */
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -32,11 +33,26 @@ function fontUrl(name) {
     return `/assets/${file}`;
 }
 
+/**
+ * Open Graph cards (public/og/<lang>.jpg, copied to dist/og/) get a copy named by their content hash,
+ * dist/og/<lang>.<hash>.jpg, and the pages point to that: every re-shoot changes the URL, so link previews
+ * that cache images by URL (Telegram) show the new card. The plain <lang>.jpg stays for old links.
+ */
+async function versionedOgImage(lang) {
+    const file = join(dist, 'og', `${lang}.jpg`);
+    const hash = createHash('sha256').update(await readFile(file)).digest('hex').slice(0, 10);
+    const name = `${lang}.${hash}.jpg`;
+    await copyFile(file, join(dist, 'og', name));
+    return `/og/${name}`;
+}
+
+const ogImages = Object.fromEntries(await Promise.all(LANGUAGES.map(async lang => [lang, await versionedOgImage(lang)])));
+
 function page(lang, options) {
     const preloads = fontPreloads(lang).map(name => `<link rel="preload" href="${fontUrl(name)}" as="font" type="font/woff2" crossorigin>`);
     return template
         .replace('<html lang="ru">', `<html lang="${HTML_LANG[lang]}">`)
-        .replace('<!--app-head-->', () => [headTags(lang, options), ...preloads].join('\n    '))
+        .replace('<!--app-head-->', () => [headTags(lang, { ogImage: ogImages[lang], ...options }), ...preloads].join('\n    '))
         .replace('<!--app-html-->', () => render(lang));
 }
 
