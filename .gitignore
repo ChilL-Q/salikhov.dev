@@ -31,3 +31,6 @@ dist-ssr
 
 # Python cache from scripts/portrait
 __pycache__/
+
+# local exports (WhatsApp cover/avatar), not part of the site
+exports/

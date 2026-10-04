@@ -49,6 +49,12 @@ the HTML. Unknown addresses get `404.html` (the Russian page with a 404 status a
   `/og/<lang>.<content hash>.jpg` and points og:image / twitter:image there, so a re-shot card gets a new URL
   and link previews that cache by URL (Telegram) update; nothing to rename by hand.
 
+## WhatsApp Business
+
+`scripts/whatsapp/`: the cover (`cover.js`, shot from the built site like the OG cards, two layouts), the profile
+photo (`avatar.py`, from the portrait pipeline) and phone previews with safe zones (`preview.py`). They write to
+`exports/whatsapp/`, which is git-ignored and not part of the site.
+
 ## Deploy
 
 Vercel, `vercel.json`: `npm run build` → `dist`, clean URLs without trailing slashes, immutable caching for `/assets/*`.
