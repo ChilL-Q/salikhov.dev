@@ -60,8 +60,9 @@ export const Navbar = () => {
                 transition: 'background 0.3s, border-color 0.3s, backdrop-filter 0.3s',
             }}
         >
-            <a href="#" style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.5px' }}>
-                <span className="gradient-text-accent">CS</span>
+            {/* the site's name as the logo: "salikhov" in white, ".dev" in the same gradient as the name in the hero */}
+            <a href="#" className="nav-logo">
+                salikhov<span className="shimmer-text">.dev</span>
             </a>
 
             <div className="nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
@@ -145,6 +146,14 @@ export const Navbar = () => {
             </AnimatePresence>
 
             <style>{`
+                .nav-logo {
+                    font-family: var(--font-display);
+                    font-size: 20px;
+                    font-weight: 800;
+                    letter-spacing: -0.5px;
+                    color: var(--text-primary);
+                    white-space: nowrap;
+                }
                 .nav-link { color: var(--text-secondary); position: relative; }
                 .nav-link:hover { color: var(--text-primary); }
                 .nav-link.active { color: var(--accent-orange); }
