@@ -1,10 +1,10 @@
 """
 Hero portrait, from the original photo to the files the site ships:
 
-    original.jpg + subject-mask.png → cut-out → shadow side lifted → 4:5 crop with dissolving edges
-    → src/assets/portrait/portrait-{480,720,960,1200}.{avif,webp}
+    original.jpg + subject-mask.png → cut-out → shadow side lifted → near arm's skin matched to the far
+    arm → 4:5 crop with dissolving edges → src/assets/portrait/portrait-{480,720,960,1200}.{avif,webp}
 
-    python3 scripts/portrait/build.py [--shadows none|light|medium|strong] [--out DIR]
+    python3 scripts/portrait/build.py [--shadows none|light|medium|strong] [--near-arm 0..1] [--out DIR]
 
 Needs the versions in requirements.txt, avifenc (built with aom) and cwebp; other versions can round differently. subject-mask.png is Apple Vision's subject lift
 for original.jpg (subject-mask.swift, macOS 14+); it's kept here so the build doesn't depend on the OS.
@@ -16,6 +16,12 @@ black. The skin of the upper arm (≈ 18, 9, 3) and the shirt's shadows next to 
 a monotone shadows curve on the smoothed illumination, so folds keep their contrast and nothing swaps
 light for dark. The lifted skin takes the hue of the lit forearm: at 2–3 of 255 in blue the shadow's own
 colour is noise. Outside the lift (face, neck, the lit side) pixels stay exactly as in the original.
+
+The near arm's skin (upper arm and forearm, where there is data) then takes the far arm's colour and
+lightness: its large-scale shading is mapped onto the far arm's by quantiles (monotone, so the arm keeps
+its form) as an offset in L*, which moves the level without amplifying noise. Black pixels are left
+alone. The bottom dissolve starts below the near forearm, and the maroon armchair under it, which
+Vision counts as part of the subject, is cut out.
 """
 import argparse
 import subprocess
@@ -35,7 +41,7 @@ SHADOWS = {'none': (0.0, 0.0), 'light': (0.8, 2.0), 'medium': (1.4, 3.0), 'stron
 
 # the 4:5 frame in source pixels: width, horizontal centre, air above the hair, row where the bottom
 # dissolve starts, share of the width faded at the side edges
-FRAME = dict(src_w=1411.0, center_x=692.0, air=0.09, fade_from=1800.0, side=0.04)
+FRAME = dict(src_w=1411.0, center_x=692.0, air=0.09, fade_from=2030.0, side=0.04)
 OUT_W, OUT_H = 1200, 1500
 
 # the lit forearm, the reference for lifted skin: median CIE L*a*b* of original.jpg at x 600–950, y 1950–2100,
@@ -72,6 +78,11 @@ CHAIR_CUT = [(0, 1340), (243, 1340), (226, 1420), (234, 1640), (252, 1700), (258
 # the shadow side, below the collar (face, neck and the lit right side stay out), and the upper arm's skin
 SHADOW_SIDE = [(0, 1240), (300, 1210), (470, 1250), (600, 1350), (720, 1390), (770, 1390), (770, 2576), (0, 2576)]
 UPPER_ARM = [(230, 1630), (520, 1630), (570, 1760), (610, 1890), (560, 1990), (400, 2000), (230, 1960)]
+# the near arm (upper arm to wrist) and the lit far arm, whose skin is the reference
+NEAR_ARM = [(230, 1630), (520, 1630), (600, 1840), (760, 1930), (1080, 2120), (1080, 2420), (880, 2420), (470, 2090), (230, 1960)]
+FAR_ARM = [(1020, 1500), (1180, 1480), (1500, 1880), (1600, 2200), (1350, 2200), (1060, 1800)]
+# where the maroon armchair shows inside Vision's mask: under the near forearm and behind the far arm
+CHAIR_AREAS = [[(470, 2030), (790, 2030), (790, 2300), (470, 2300)], [(1040, 1800), (1390, 1800), (1390, 2010), (1040, 2010)]]
 
 
 def soft_polygon(points, shape, feather):
@@ -95,7 +106,19 @@ def subject_alpha(rgb, mask):
     # cut before the lift and the edge clean-up, so both see the final silhouette of the arm
     cut = Image.new('L', (a.shape[1], a.shape[0]), 0)
     ImageDraw.Draw(cut).polygon(CHAIR_CUT, fill=255)
-    return a * (1 - np.asarray(cut.filter(ImageFilter.GaussianBlur(2))).astype(np.float32) / 255)
+    a = a * (1 - np.asarray(cut.filter(ImageFilter.GaussianBlur(2))).astype(np.float32) / 255)
+    # the maroon armchair: hue 10–30° against skin's ~50°, only where the chair actually is
+    lab = cv2.cvtColor(cv2.GaussianBlur(rgb / 255, (0, 0), 1.5), cv2.COLOR_RGB2Lab)
+    hue = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))
+    maroon = (np.hypot(lab[..., 1], lab[..., 2]) > 8) & (hue > -30) & (hue < 32) & (lab[..., 0] > 3) & (lab[..., 0] < 55)
+    area = Image.new('L', (a.shape[1], a.shape[0]), 0)
+    for points in CHAIR_AREAS:
+        ImageDraw.Draw(area).polygon(points, fill=255)
+    chair = (maroon & (np.asarray(area) > 0) & (a > 0.05)).astype(np.uint8) * 255
+    chair = cv2.morphologyEx(chair, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+    chair = cv2.morphologyEx(chair, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+    chair = cv2.GaussianBlur(cv2.dilate(chair, np.ones((3, 3), np.uint8)).astype(np.float32) / 255, (0, 0), 1.2)
+    return a * (1 - chair)
 
 
 def lift_shadows(src8, alpha, shirt_stops, skin_stops):
@@ -151,6 +174,45 @@ def lift_shadows(src8, alpha, shirt_stops, skin_stops):
     return src8.astype(np.float32) * (1 - touched) + lifted * touched
 
 
+def weighted_quantiles(values, weights, qs):
+    order = np.argsort(values)
+    cdf = np.cumsum(weights[order]) / weights.sum()
+    return np.interp(qs, cdf, values[order])
+
+
+def match_near_arm(rgb, alpha, amount):
+    """The near arm's skin in the far arm's colour and lightness (see the module notes)."""
+    if amount == 0:
+        return rgb
+    lab = cv2.cvtColor(np.clip(rgb, 0, 255).astype(np.float32) / 255, cv2.COLOR_RGB2Lab)
+    lin = to_linear(np.clip(rgb, 0, 255).astype(np.float32) / 255)
+    smooth = cv2.GaussianBlur(lin, (0, 0), 1.5)
+    warm = smoothstep(0.40, 0.52, smooth[..., 0] / (smooth.sum(axis=2) + 1e-5))
+    L = lab[..., 0]
+    # skin with data: warm and not black (the clipped sleeve above the arm stays out)
+    near = warm * smoothstep(1.0, 4.0, L) * soft_polygon(NEAR_ARM, alpha.shape, 8) * smoothstep(0.5, 0.95, alpha)
+    far = (warm > 0.6) & (soft_polygon(FAR_ARM, alpha.shape, 1) > 0.5) & (alpha > 0.95) & (L > 4)
+
+    def shading(weights):
+        return cv2.GaussianBlur(L * weights, (0, 0), 22) / (cv2.GaussianBlur(weights, (0, 0), 22) + 1e-4)
+
+    base = shading(near)
+    qs = np.linspace(0.02, 0.98, 49)
+    inside = near > 0.5
+    target = np.interp(base, weighted_quantiles(base[inside], near[inside], qs), np.quantile(shading(far.astype(np.float32))[far], qs))
+    w = near * amount
+    lab[..., 0] = L + (target - base) * w
+    # colour: the far arm's at this lightness, keeping the pixel's own fine variation
+    far_l, far_a, far_b = (np.median(lab[..., c][far]) for c in range(3))
+    k = np.clip(lab[..., 0] / far_l, 0, 1.2)
+    for c, ref in ((1, far_a), (2, far_b)):
+        lab[..., c] += (ref * k - cv2.GaussianBlur(lab[..., c], (0, 0), 3)) * w
+    matched = np.clip(cv2.cvtColor(lab, cv2.COLOR_Lab2RGB), 0, 1) * 255
+    # everything off the arm stays exactly as it was
+    touched = smoothstep(0.0, 0.01, w)[..., None]
+    return rgb * (1 - touched) + matched * touched
+
+
 def decontaminate(rgb, alpha):
     """Partly transparent edge pixels take the colour of the solid interior next to them."""
     solid = alpha > 0.97
@@ -201,13 +263,14 @@ def frame(rgb, alpha):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--shadows', choices=SHADOWS, default='medium')
+    parser.add_argument('--near-arm', type=float, default=1.0, help="how far the near arm's skin goes to the far arm's (0–1)")
     parser.add_argument('--out', type=Path, default=ROOT / 'src/assets/portrait')
     args = parser.parse_args()
 
     src8 = np.asarray(Image.open(HERE / 'original.jpg').convert('RGB'))
     mask = np.asarray(Image.open(HERE / 'subject-mask.png').convert('L'))
     alpha = subject_alpha(src8.astype(np.float32), mask)
-    rgb = lift_shadows(src8, alpha, *SHADOWS[args.shadows])
+    rgb = match_near_arm(lift_shadows(src8, alpha, *SHADOWS[args.shadows]), alpha, args.near_arm)
     portrait = frame(decontaminate(rgb, alpha), alpha)
 
     args.out.mkdir(parents=True, exist_ok=True)
@@ -220,7 +283,7 @@ def main():
             image.save(png)
             subprocess.run(['avifenc', '-c', 'aom', '-q', '60', '--qalpha', '80', '-s', '4', '-j', 'all', str(png), str(args.out / f'portrait-{width}.avif')], check=True, capture_output=True)
             subprocess.run(['cwebp', '-quiet', '-q', '80', '-m', '6', '-sharp_yuv', '-alpha_q', '90', str(png), '-o', str(args.out / f'portrait-{width}.webp')], check=True)
-    print(f'shadows: {args.shadows} → {args.out}')
+    print(f'shadows: {args.shadows}, near arm: {args.near_arm} → {args.out}')
 
 
 if __name__ == '__main__':

@@ -266,6 +266,12 @@ export const HeroSection = () => {
                         height: auto;
                         margin-bottom: calc(var(--portrait-w) * -0.22);
                     }
+                    /* the copy sits over the portrait's lower edge here: the forearm shows through at about half
+                       strength under the first line and is gone under the name, so the text keeps its contrast */
+                    .hero-portrait-img {
+                        -webkit-mask-image: linear-gradient(to bottom, #000 74%, rgb(0 0 0 / 0.55) 84%, transparent 100%);
+                        mask-image: linear-gradient(to bottom, #000 74%, rgb(0 0 0 / 0.55) 84%, transparent 100%);
+                    }
                     .hero-greeting { margin-bottom: 12px; }
                     .hero-name { margin-bottom: 16px; }
                     .hero-role { margin-bottom: 28px; }
