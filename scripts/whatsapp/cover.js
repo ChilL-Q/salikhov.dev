@@ -5,13 +5,13 @@
  *   npm run build && npx vite preview --port 4173
  *   playwright-cli run-code --filename=scripts/whatsapp/cover.js     (from the repo root; writes exports/whatsapp/)
  *
- * Safe zone (Meta publishes no spec, sources give 1211×681, 1125×600 or 1920×1080; designed for the strictest):
- * - sides: phones crop the edges, so nothing within 8 % of either side;
- * - top and bottom: a wider display (up to 2:1) trims ~5.5 % each, so nothing within 8 %;
- * - bottom centre: the round profile photo overlaps the cover's lower edge (≈31 % of the width across, centred on
- *   the edge), so nothing below y ≈ 700 in the middle third;
- * - bottom right: the camera button.
- * The text sits in y ≈ 180–560 (of 1080); the wave fills the bottom, where only decoration may be covered.
+ * Geometry measured on an iPhone in the WhatsApp Business app (profile edit screen), in 1920×1080 cover pixels:
+ * - the upload crop is 16:9, but the profile shows the banner at ~2.27:1, so only y 119–961 (11–89 %) is visible;
+ * - the round profile photo: centred, 32 % of the width across (radius 307), its top at y 456 (42 %);
+ * - the camera button: centred at x 1766, y 793 (92 % / 80 % of the visible banner).
+ * So all the text sits in y 130–400 (12–37 %), above the photo; the wave fills the lower part, where it shows on
+ * both sides of the photo. "Full Stack Developer & AI Enthusiast" is left out: on one line with the slogan it would
+ * be ~7 px tall on a phone.
  */
 async page => {
     const base = 'http://localhost:4173';
@@ -31,10 +31,12 @@ async page => {
             content: `
                 nav, .hero-copy, .hero-portrait, .hero-scroll, .skip-link { display: none !important; }
                 .hero-section { min-height: 540px !important; height: 540px; padding: 0 !important; }
-                .wa-cover { position: absolute; top: 92px; z-index: 2; display: flex; flex-direction: column; font-family: var(--font-display); }
-                .wa-logo { font-size: 82px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--text-primary); }
-                .wa-tag { margin-top: 16px; font-size: 30px; font-weight: 600; letter-spacing: -0.4px; line-height: 1.25; }
-                .wa-role { margin-top: 10px; font-size: 23px; color: var(--text-secondary); line-height: 1.4; }
+                /* the text block in y 65–200 of 540 (12–37 %), centred in that band */
+                .wa-cover { position: absolute; top: 69px; z-index: 2; display: flex; flex-direction: column; font-family: var(--font-display); }
+                .wa-logo { font-size: 72px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--text-primary); }
+                .wa-tag { margin-top: 12px; font-size: 30px; font-weight: 600; letter-spacing: -0.4px; line-height: 1.25; }
+                /* the wave a little lower: its horizon below the text, its dots on both sides of the photo */
+                .hero-dots { transform: translateY(22px); }
                 ${layout}
             `,
         });
@@ -42,8 +44,7 @@ async page => {
             const cover = document.createElement('div');
             cover.className = 'wa-cover';
             cover.innerHTML = '<div class="wa-logo">salikhov<span class="shimmer-text">.dev</span></div>'
-                + '<p class="wa-tag"><span class="gradient-text">If you can imagine it, I can code it.</span></p>'
-                + '<p class="wa-role">Full Stack Developer &amp; AI Enthusiast</p>';
+                + '<p class="wa-tag"><span class="gradient-text">If you can imagine it, I can code it.</span></p>';
             document.querySelector('.hero-section').appendChild(cover);
         });
         await shot.evaluate(() => document.fonts.ready);

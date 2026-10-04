@@ -6,8 +6,8 @@ Previews for the WhatsApp Business cover and avatar (exports/whatsapp/):
 
     python3 scripts/whatsapp/preview.py      (after cover.js and avatar.py)
 
-The profile's proportions are a schematic of the current app, not a spec (Meta publishes none): photo ≈ 31 % of
-the screen width, centred on the cover's lower edge; camera button 40 px, 12 px from the corner.
+Geometry measured on an iPhone in the WhatsApp Business app (profile edit screen, 1170 px wide screenshot), as
+shares of the 16:9 cover (the profile shows only its band 11–89 %, at ~2.27:1):
 """
 from pathlib import Path
 
@@ -21,6 +21,13 @@ S = 3                                   # render at 3× a 390 px phone
 W = 390 * S
 BG = (11, 20, 26)                       # WhatsApp dark background
 TEXT, MUTED = (233, 237, 239), (134, 150, 160)
+
+VISIBLE = (0.11, 0.89)          # the band of the cover's height the profile shows
+PHOTO_D = 0.32                  # the round photo's diameter, share of the width
+PHOTO_TOP = 0.42                # its top, share of the cover's height (40 % of the visible band)
+CAMERA = (0.92, 0.80)           # the camera button's centre: share of the width, of the visible band's height
+CAMERA_D = 0.104                # its diameter, share of the width
+TEXT_BAND = (0.12, 0.37)        # where cover.js puts all the text
 
 
 def font(size, weight=400):
@@ -39,8 +46,7 @@ def circle(image, d):
     return image, mask.resize((d, d), Image.LANCZOS)
 
 
-def camera_button(canvas, cx, cy):
-    r = 20 * S
+def camera_button(canvas, cx, cy, r=20 * S):
     d = ImageDraw.Draw(canvas)
     d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(32, 44, 51), outline=(60, 75, 84), width=S)
     # a small camera glyph
@@ -51,43 +57,38 @@ def camera_button(canvas, cx, cy):
 
 
 def profile(cover, avatar, label):
-    cover_h = round(W * 9 / 16)
-    status_h = 44 * S
-    H = status_h + cover_h + 420 * S
+    cover = cover.convert('RGB')
+    cw, ch = cover.size
+    band = cover.crop((0, round(ch * VISIBLE[0]), cw, round(ch * VISIBLE[1])))
+    banner_h = round(W * band.height / band.width)              # ~2.27:1
+    status_h, bar_h = 44 * S, 56 * S
+    H = status_h + bar_h + banner_h + 420 * S
     canvas = Image.new('RGB', (W, H), BG)
     d = ImageDraw.Draw(canvas)
     d.text((20 * S, 14 * S), '9:41', fill=TEXT, font=font(15, 600))
-    canvas.paste(cover.convert('RGB').resize((W, cover_h), Image.LANCZOS), (0, status_h))
-    # back arrow over the cover, as the app draws it
-    ax, ay = 22 * S, status_h + 22 * S
+    # the edit screen's top bar
+    ax, ay = 26 * S, status_h + bar_h // 2
     d.line((ax, ay, ax + 16 * S, ay), fill=TEXT, width=2 * S)
     d.line((ax, ay, ax + 7 * S, ay - 7 * S), fill=TEXT, width=2 * S)
     d.line((ax, ay, ax + 7 * S, ay + 7 * S), fill=TEXT, width=2 * S)
-    cover_bottom = status_h + cover_h
-    camera_button(canvas, W - 32 * S, cover_bottom - 32 * S)
-    # the round photo, centred on the cover's lower edge, with a ring in the page colour
-    dia = round(W * 0.31)
-    ring = 4 * S
-    d.ellipse((W // 2 - dia // 2 - ring, cover_bottom - dia // 2 - ring, W // 2 + dia // 2 + ring, cover_bottom + dia // 2 + ring), fill=BG)
+    d.text((56 * S, ay - 11 * S), 'Edit profile', fill=TEXT, font=font(18, 600))
+    top = status_h + bar_h
+    canvas.paste(band.resize((W, banner_h), Image.LANCZOS), (0, top))
+    # the camera button, where the app puts it
+    camera_button(canvas, round(W * CAMERA[0]), top + round(banner_h * CAMERA[1]), round(W * CAMERA_D / 2))
+    # the round photo: centred, its top at 42 % of the cover's height, i.e. 40 % of the visible banner
+    dia = round(W * PHOTO_D)
+    photo_top = top + round(banner_h * (PHOTO_TOP - VISIBLE[0]) / (VISIBLE[1] - VISIBLE[0]))
+    ring = 3 * S
+    d.ellipse((W // 2 - dia // 2 - ring, photo_top - ring, W // 2 + dia // 2 + ring, photo_top + dia + ring), fill=BG)
     photo, mask = circle(avatar, dia)
-    canvas.paste(photo, (W // 2 - dia // 2, cover_bottom - dia // 2), mask)
-    y = cover_bottom + dia // 2 + 16 * S
-    for text, size, weight, colour in (('Chingiz Salikhov', 22, 600, TEXT), ('Business account', 14, 400, MUTED)):
+    canvas.paste(photo, (W // 2 - dia // 2, photo_top), mask)
+    y = photo_top + dia + 18 * S
+    for text, size, weight, colour in (('Edit', 15, 500, (37, 211, 102)), ('salikhov.dev', 22, 500, TEXT)):
         f = font(size, weight)
-        tw = d.textlength(text, font=f)
-        d.text(((W - tw) / 2, y), text, fill=colour, font=f)
-        y += (size + 10) * S
-    # action buttons row
-    y += 14 * S
-    for i, name in enumerate(('Message', 'Audio', 'Video', 'Search')):
-        bw, gap = 80 * S, 10 * S
-        x = (W - (4 * bw + 3 * gap)) // 2 + i * (bw + gap)
-        d.rounded_rectangle((x, y, x + bw, y + 64 * S), radius=14 * S, outline=(42, 57, 66), width=S)
-        f = font(12, 500)
-        d.text((x + (bw - d.textlength(name, font=f)) / 2, y + 40 * S), name, fill=TEXT, font=f)
-    y += 90 * S
-    d.text((20 * S, y), 'salikhov.dev', fill=(83, 189, 235), font=font(15, 500))
-    d.text((20 * S, y + 26 * S), 'Website', fill=MUTED, font=font(13))
+        d.text(((W - d.textlength(text, font=f)) / 2, y), text, fill=colour, font=f)
+        y += (size + 18) * S
+    d.text((20 * S, y + 6 * S), 'Business info', fill=TEXT, font=font(19, 700))
     # caption above the phone
     sheet = Image.new('RGB', (W + 40 * S, H + 60 * S), (40, 40, 40))
     ImageDraw.Draw(sheet).text((20 * S, 14 * S), label, fill=(255, 255, 255), font=ImageFont.truetype(CAPTION, 15 * S))
@@ -96,28 +97,28 @@ def profile(cover, avatar, label):
 
 
 def safe_zones(cover):
-    img = cover.convert('RGB').copy()
+    img = cover.convert('RGBA')
     w, h = img.size
     over = Image.new('RGBA', img.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(over)
-    red = (255, 70, 70, 90)
-    # edges a phone may crop (8 %), top and bottom a 2:1 display may trim (8 %)
-    m_x, m_y = round(w * 0.08), round(h * 0.08)
-    for box in ((0, 0, m_x, h), (w - m_x, 0, w, h), (0, 0, w, m_y), (0, h - m_y, w, h)):
-        d.rectangle(box, fill=red)
-    # the round photo over the lower edge (≈31 % of the width), with a margin
-    r = round(w * 0.31 / 2 * 1.12)
-    d.ellipse((w // 2 - r, h - r, w // 2 + r, h + r), fill=(255, 70, 70, 130))
-    # the camera button
-    c = round(w * 40 / 390)
-    off = round(w * 12 / 390)
-    d.ellipse((w - off - c, h - off - c, w - off, h - off), fill=(255, 70, 70, 130))
-    # 2:1 display: what's left visible
-    trim = round((h - w / 2) / 2)
-    d.line((0, trim, w, trim), fill=(255, 255, 255, 160), width=3)
-    d.line((0, h - trim, w, h - trim), fill=(255, 255, 255, 160), width=3)
-    out = Image.alpha_composite(img.convert('RGBA'), over)
-    ImageDraw.Draw(out).text((m_x + 10, trim + 12), 'красное — может обрезаться или закрываться; белые линии — что остаётся при экране 2:1', fill=(255, 255, 255, 230), font=ImageFont.truetype(CAPTION, 30))
+    red, red_strong, green = (255, 70, 70, 95), (255, 70, 70, 140), (60, 220, 120, 70)
+    # cut off in the profile: above 11 % and below 89 %
+    d.rectangle((0, 0, w, round(h * VISIBLE[0])), fill=red)
+    d.rectangle((0, round(h * VISIBLE[1]), w, h), fill=red)
+    # the band for the text
+    d.rectangle((0, round(h * TEXT_BAND[0]), w, round(h * TEXT_BAND[1])), outline=(60, 220, 120, 230), width=4, fill=green)
+    # the round photo and the camera button, measured on the phone
+    r = round(w * PHOTO_D / 2)
+    top = round(h * PHOTO_TOP)
+    d.ellipse((w // 2 - r, top, w // 2 + r, top + 2 * r), fill=red_strong, outline=(255, 255, 255, 200), width=3)
+    visible_h = h * (VISIBLE[1] - VISIBLE[0])
+    cx, cy, cr = round(w * CAMERA[0]), round(h * VISIBLE[0] + visible_h * CAMERA[1]), round(w * CAMERA_D / 2)
+    d.ellipse((cx - cr, cy - cr, cx + cr, cy + cr), fill=red_strong, outline=(255, 255, 255, 200), width=3)
+    out = Image.alpha_composite(img, over)
+    f = ImageFont.truetype(CAPTION, 28)
+    dd = ImageDraw.Draw(out)
+    dd.text((24, round(h * VISIBLE[0]) + 8), 'видимая полоса профиля: 11–89 %', fill=(255, 255, 255, 230), font=f)
+    dd.text((24, round(h * TEXT_BAND[1]) - 40), 'текст: 12–37 %', fill=(160, 255, 190, 255), font=f)
     return out.convert('RGB')
 
 
