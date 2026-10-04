@@ -25,11 +25,8 @@ const fragmentShader = `
     }
 `;
 
-// Mobile browsers show the address bar on load and hide it once the user
-// starts scrolling, growing window.innerHeight. Measuring against `100lvh`
-// (the viewport size with browser UI collapsed) upfront lets us size the
-// canvas correctly from the very first frame, so it never has to jump when
-// the address bar hides for the first time.
+// Sized once against `100lvh` (the viewport with browser UI collapsed), so the canvas covers the hero from
+// the first frame. Its height also sets the camera's aspect, so resizing it re-projects the whole wave.
 function getMaxViewportHeight(): number {
     if (typeof document === 'undefined') return window.innerHeight;
     const probe = document.createElement('div');
@@ -173,26 +170,24 @@ export function DottedSurface({ ...props }: DottedSurfaceProps) {
         };
 
         let lastWidth = initialWidth;
-        let maxHeight = initialHeight;
+        let lastHeight = initialHeight;
+        // Phones and in-app browsers (Safari, Telegram) change only the viewport's height while scrolling, as
+        // their toolbars collapse. Resizing the canvas then changes the camera's aspect and the whole wave jumps,
+        // so on touch screens a height-only change is ignored; the canvas follows a real resize (rotation, or a
+        // desktop window being resized).
+        const touchScreen = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
         const handleResize = () => {
-            // On mobile browsers, scrolling shows/hides the address bar,
-            // shrinking and growing innerHeight repeatedly. Only grow the
-            // canvas to the tallest height seen (address bar hidden) and
-            // never shrink it back down, so the animation keeps filling the
-            // full screen without jumping while scrolling.
             const width = getViewportWidth();
-            const widthChanged = width !== lastWidth;
-            const grew = window.innerHeight > maxHeight;
-            if (!widthChanged && !grew) return;
+            const height = getMaxViewportHeight();
+            if (width === lastWidth && (touchScreen || height === lastHeight)) return;
 
             lastWidth = width;
-            maxHeight = Math.max(maxHeight, window.innerHeight);
-
-            camera.aspect = width / maxHeight;
+            lastHeight = height;
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(width, maxHeight);
-            material.uniforms.uViewportHeight.value = maxHeight * window.devicePixelRatio;
+            renderer.setSize(width, height);
+            material.uniforms.uViewportHeight.value = height * window.devicePixelRatio;
             if (stillOnly) renderer.render(scene, camera);
         };
 

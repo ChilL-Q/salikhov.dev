@@ -28,6 +28,9 @@ export const translations = {
             focusDesc: 'Building the future of the web',
             ioaiLabel: 'Organizer',
             ioaiDesc: 'International Olympiad in Artificial Intelligence — member of the organizing team.',
+            badgeAlt: 'Accreditation badge — Chingiz Salikhov, Organizer, IOAI Astana 2026',
+            badgeOpen: 'Open the accreditation badge',
+            close: 'Close',
         },
         projects: {
             title: 'Projects',
@@ -83,6 +86,9 @@ export const translations = {
             focusDesc: 'Создаю будущее веба',
             ioaiLabel: 'Организатор',
             ioaiDesc: 'Международная олимпиада по искусственному интеллекту — был в команде организаторов.',
+            badgeAlt: 'Аккредитационный бейдж — Чингиз Салихов, организатор, IOAI Astana 2026',
+            badgeOpen: 'Открыть бейдж крупнее',
+            close: 'Закрыть',
         },
         projects: {
             title: 'Проекты',
@@ -138,6 +144,9 @@ export const translations = {
             focusDesc: 'Вебтің болашағын құрамын',
             ioaiLabel: 'Ұйымдастырушы',
             ioaiDesc: 'Жасанды интеллект бойынша халықаралық олимпиада — ұйымдастыру тобында болдым.',
+            badgeAlt: 'Аккредитациялық бейдж — Чингиз Салихов, ұйымдастырушы, IOAI Astana 2026',
+            badgeOpen: 'Бейджді үлкейтіп ашу',
+            close: 'Жабу',
         },
         projects: {
             title: 'Жобалар',

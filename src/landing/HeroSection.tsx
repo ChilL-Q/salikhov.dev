@@ -133,7 +133,10 @@ export const HeroSection = () => {
 
             <style>{`
                 .hero-section {
+                    /* svh: the viewport with the toolbars shown, which doesn't change as they collapse; on touch
+                       screens --hero-h (index.html) holds the first height for browsers that resize the viewport */
                     min-height: 100svh;
+                    min-height: var(--hero-h, 100svh);
                     position: relative;
                     display: flex;
                     padding: 88px 24px 0;

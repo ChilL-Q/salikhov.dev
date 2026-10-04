@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { prefersReducedMotion } from '../lib/motion';
+import { BADGE } from '../content/badge';
 
 const techStack = ['React', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'Three.js', 'Tailwind', 'AI/LLM'];
 
@@ -141,8 +142,13 @@ function TiltCard({
     );
 }
 
+/** The badge's rendered width (.bento-ioai-badge below), for its srcset. */
+const BADGE_SIZES = '(max-width: 768px) 150px, 140px';
+
 export const BentoSection = () => {
     const { t } = useLanguage();
+    const badgeDialog = useRef<HTMLDialogElement>(null);
+    const badgeButton = useRef<HTMLButtonElement>(null);
 
     return (
         <section id="about" className="bento-section">
@@ -251,9 +257,59 @@ export const BentoSection = () => {
                         >
                             ioai-official.org <ArrowUpRight size={14} />
                         </a>
+                        <button
+                            ref={badgeButton}
+                            type="button"
+                            className="bento-ioai-badge"
+                            onClick={() => badgeDialog.current?.showModal()}
+                            aria-haspopup="dialog"
+                            aria-label={t('about.badgeOpen')}
+                        >
+                            <picture>
+                                <source type="image/avif" srcSet={BADGE.avif} sizes={BADGE_SIZES} />
+                                <img
+                                    src={BADGE.fallback}
+                                    srcSet={BADGE.webp}
+                                    sizes={BADGE_SIZES}
+                                    alt={t('about.badgeAlt')}
+                                    width={BADGE.width}
+                                    height={BADGE.height}
+                                    loading="lazy"
+                                    decoding="async"
+                                    draggable={false}
+                                />
+                            </picture>
+                        </button>
                     </div>
                 </TiltCard>
             </div>
+
+            {/* The badge, larger: a native modal (Esc closes it, so does a click on the backdrop); focus goes back to the badge */}
+            <dialog
+                ref={badgeDialog}
+                className="badge-dialog"
+                aria-label={t('about.badgeAlt')}
+                onClick={e => e.target === e.currentTarget && badgeDialog.current?.close()}
+                onClose={() => badgeButton.current?.focus()}
+            >
+                <picture>
+                    <source type="image/avif" srcSet={BADGE.avif} sizes="min(92vw, 560px)" />
+                    <img
+                        src={BADGE.fallback}
+                        srcSet={BADGE.webp}
+                        sizes="min(92vw, 560px)"
+                        alt={t('about.badgeAlt')}
+                        width={BADGE.width}
+                        height={BADGE.height}
+                        loading="lazy"
+                        decoding="async"
+                        className="badge-dialog-img"
+                    />
+                </picture>
+                <button type="button" className="badge-dialog-close" onClick={() => badgeDialog.current?.close()} aria-label={t('about.close')}>
+                    <X size={20} aria-hidden="true" />
+                </button>
+            </dialog>
 
             <style>{`
                 .bento-section {
@@ -269,6 +325,13 @@ export const BentoSection = () => {
                 }
                 .bento-grid {
                     grid-auto-rows: 1fr;
+                }
+                /* the IOAI row takes the badge's height; the rows above stay equal, as before */
+                @media (min-width: 769px) and (max-width: 1023px) {
+                    .bento-grid { grid-template-rows: repeat(4, 1fr) auto; }
+                }
+                @media (min-width: 1024px) {
+                    .bento-grid { grid-template-rows: repeat(2, 1fr) auto; }
                 }
                 .bento-bio-container {
                     display: flex;
@@ -314,6 +377,68 @@ export const BentoSection = () => {
                 }
                 .bento-ioai-link:hover {
                     background: rgb(var(--tint-rgb) / 0.08);
+                }
+                /* the accreditation badge: on the right, a little tilted, as if pinned to the card */
+                .bento-ioai-badge {
+                    position: relative;
+                    z-index: 6; /* above the touch-glow overlay so it stays clickable */
+                    flex-shrink: 0;
+                    width: 140px;
+                    padding: 0;
+                    border: none;
+                    background: none;
+                    border-radius: 12px;
+                    cursor: zoom-in;
+                    transform: rotate(-3.5deg);
+                    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .bento-ioai-badge img {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    filter: drop-shadow(0 16px 22px rgb(0 0 0 / 0.55));
+                    user-select: none;
+                }
+                @media (hover: hover) {
+                    .bento-ioai-badge:hover { transform: rotate(-1.5deg) scale(1.03); }
+                }
+                .badge-dialog {
+                    margin: auto;
+                    padding: 0;
+                    border: none;
+                    background: transparent;
+                    overflow: visible;
+                    max-width: none;
+                    max-height: none;
+                    overscroll-behavior: contain;
+                }
+                .badge-dialog::backdrop { background: rgb(0 0 0 / 0.88); }
+                .badge-dialog-img {
+                    display: block;
+                    width: auto;
+                    height: auto;
+                    max-width: 92vw;
+                    max-height: 86svh;
+                }
+                .badge-dialog-close {
+                    position: absolute;
+                    top: -16px;
+                    right: -16px;
+                    width: 44px;
+                    height: 44px;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 50%;
+                    color: var(--text-primary);
+                    background: rgb(var(--bg-raised-rgb));
+                    border: 1px solid rgb(var(--tint-rgb) / 0.2);
+                    transition: border-color 0.25s;
+                }
+                @media (hover: hover) {
+                    .badge-dialog-close:hover { border-color: rgb(var(--tint-rgb) / 0.45); }
+                }
+                @media (max-width: 600px) {
+                    .badge-dialog-close { top: 8px; right: 8px; }
                 }
                 @media (hover: hover) {
                     .bento-ioai-link:hover { border-color: rgb(var(--accent-rgb)); }
@@ -377,6 +502,8 @@ export const BentoSection = () => {
                         align-items: flex-start;
                         gap: 16px;
                     }
+                    /* under the text on phones, straight */
+                    .bento-ioai-badge { width: 150px; transform: none; }
                 }
             `}</style>
         </section>
