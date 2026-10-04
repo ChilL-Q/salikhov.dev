@@ -19,9 +19,10 @@ colour is noise. Outside the lift (face, neck, the lit side) pixels stay exactly
 
 The near arm's skin then takes the far arm's colour and lightness: its large-scale shading is mapped
 onto the far arm's by quantiles (monotone, so the arm keeps its form) as an offset in L*, which moves the
-level without amplifying noise. Only the lit forearm keeps that: the upper arm goes back to the
-original's shadow (upper_arm_in_shadow), lifted it looked painted. The bottom dissolve starts below the
-near forearm, and the maroon armchair under it, which Vision counts as part of the subject, is cut out.
+level without amplifying noise. The upper arm, which has tone but almost no texture in the file, gets a
+soft inward contour and grain with the lit forearm's spectrum (upper_arm_finish). The bottom dissolve
+starts below the near forearm, and the maroon armchair under it, which Vision counts as part of the
+subject, is cut out.
 """
 import argparse
 import subprocess
@@ -213,32 +214,41 @@ def match_near_arm(rgb, alpha, amount):
     return rgb * (1 - touched) + matched * touched
 
 
-def upper_arm_in_shadow(rgb, src8, alpha):
-    """The upper arm goes back to the original's shadow; only the lit forearm keeps the lift and the match.
+def upper_arm_finish(rgb, src8, alpha, seed=7):
+    """The upper arm keeps the far arm's colour and lightness, without the cut-out look.
 
-    Lifted to the far arm's level the upper arm read as a flat painted patch: the file has its tone but no
-    skin texture there. The hand-over follows the original's own light (dark → original, lit → as built),
-    not a drawn line, so there's no step: both images rise with the light, and so does the blend.
+    The file has the upper arm's tone but almost no skin texture, so matched it read as a flat fill with a
+    hard edge. Two fixes, neither changes its level or colour:
+    - its contour fades over ~12 px into the original's own shadow, inward only: outside the arm (the black
+      sleeve, the shirt band the skin lift had lit at the hem) the original comes back, so no rim or halo;
+    - light zero-mean grain, scaled with lightness, is added to L* inside the arm: mostly the finest band, as on
+      the lit forearm, where the texture is fine detail on smooth skin (stronger or coarser noise reads as
+      blotches, not skin).
     """
     src = src8.astype(np.float32)
-    lab = cv2.cvtColor(src / 255, cv2.COLOR_RGB2Lab)
-    lin = to_linear(src / 255)
+    lab = cv2.cvtColor(np.clip(rgb, 0, 255).astype(np.float32) / 255, cv2.COLOR_RGB2Lab)
+    smooth = cv2.GaussianBlur(to_linear(np.clip(rgb, 0, 255) / 255), (0, 0), 1.5)
+    warm = smoothstep(0.40, 0.52, smooth[..., 0] / (smooth.sum(axis=2) + 1e-5))
+    skin = (warm * smoothstep(1.0, 4.0, lab[..., 0]) * smoothstep(0.5, 0.95, alpha) > 0.5).astype(np.uint8)
+    core = cv2.erode(skin, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)))
+    core = cv2.GaussianBlur(core.astype(np.float32), (0, 0), 4.5) * skin
+    upper = soft_polygon(UPPER_ARM, alpha.shape, 20)
+    keep = (1 - upper * (1 - core))[..., None]
+    out = src + (rgb - src) * keep
 
-    def warm(sigma, lo, hi):
-        smooth = cv2.GaussianBlur(lin, (0, 0), sigma)
-        return smoothstep(lo, hi, smooth[..., 0] / (smooth.sum(axis=2) + 1e-5))
-
-    skin = warm(1.5, 0.40, 0.52) * soft_polygon(NEAR_ARM, alpha.shape, 8) * smoothstep(0.5, 0.95, alpha)
-    # all of the upper arm the lift touched: its skin weight (lift_shadows) bled 5–10 px onto the shirt at the
-    # sleeve hem and lit that band; the shirt around the upper arm is clipped black, so taking it back is safe
-    lifted = (warm(4, 0.42, 0.55) * soft_polygon(UPPER_ARM, alpha.shape, 20) > 0.01).astype(np.uint8)
-    lifted = cv2.GaussianBlur(cv2.dilate(lifted, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))).astype(np.float32), (0, 0), 2)
-    reach = np.maximum(skin, lifted)
-    # by the original's own light over a few px: what was in shadow comes back, the lit forearm stays; the
-    # 1–2 px rim light on the arm's contour averages out with the dark arm and comes back too
-    dark = 1 - smoothstep(10.0, 25.0, cv2.GaussianBlur(lab[..., 0], (0, 0), 6))
-    back = (np.clip(reach, 0, 1) * dark)[..., None]
-    return rgb * (1 - back) + src * back
+    rng = np.random.default_rng(seed)
+    noise = rng.standard_normal(alpha.shape).astype(np.float32)
+    b1, b3 = (cv2.GaussianBlur(noise, (0, 0), s) for s in (1.0, 3.0))
+    grain = 0.0
+    for band, level in ((noise - b1, 0.75), (b1 - b3, 0.3)):   # light: the forearm's look is fine detail on smooth skin
+        grain = grain + band / band.std() * level
+    lab = cv2.cvtColor(np.clip(out, 0, 255).astype(np.float32) / 255, cv2.COLOR_RGB2Lab)
+    inside = upper * core
+    lab[..., 0] += grain * inside * np.clip(lab[..., 0] / 35.0, 0, 1.5)
+    finished = np.clip(cv2.cvtColor(lab, cv2.COLOR_Lab2RGB), 0, 1) * 255
+    # off the upper arm everything stays as it was
+    touched = smoothstep(0.0, 0.01, upper)[..., None]
+    return rgb * (1 - touched) + finished * touched
 
 
 def decontaminate(rgb, alpha):
@@ -299,7 +309,7 @@ def main():
     mask = np.asarray(Image.open(HERE / 'subject-mask.png').convert('L'))
     alpha = subject_alpha(src8.astype(np.float32), mask)
     rgb = match_near_arm(lift_shadows(src8, alpha, *SHADOWS[args.shadows]), alpha, args.near_arm)
-    rgb = upper_arm_in_shadow(rgb, src8, alpha)
+    rgb = upper_arm_finish(rgb, src8, alpha)
     portrait = frame(decontaminate(rgb, alpha), alpha)
 
     args.out.mkdir(parents=True, exist_ok=True)

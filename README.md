@@ -33,9 +33,9 @@ the HTML. Unknown addresses get `404.html` (the Russian page with a 404 status a
   cyrillic, cyrillic-ext for Kazakh letters), with an Arial fallback stretched to Inter's metrics.
 - The hero portrait ships as AVIF + WebP in 480–1200w (`src/content/portrait.ts`, `src/lib/responsive.ts`), built
   by `scripts/portrait/build.py` from the original photo and its subject mask: cut-out, the shadow side lifted
-  where the file has data (`--shadows none|light|medium|strong`, medium ships), the near forearm's skin matched to
-  the lit far arm (`--near-arm`, 1 ships; the upper arm stays in the original's shadow), 4:5 crop with the
-  dissolve below the forearm, black point at the
+  where the file has data (`--shadows none|light|medium|strong`, medium ships), the near arm's skin matched to
+  the lit far arm (`--near-arm`, 1 ships; the upper arm gets a soft inward contour and light grain, since the
+  file has its tone but no texture), 4:5 crop with the dissolve below the forearm, black point at the
   page's black. On phones a CSS mask fades the lower edge under the hero text.
 - Project logos are WebP or SVG in `src/assets/projects-logos/`.
 - The dot wave in the hero is three.js (`src/components/DottedSurface.tsx`), loaded as its own chunk after hydration.
