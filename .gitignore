@@ -28,3 +28,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Python cache from scripts/portrait
+__pycache__/
