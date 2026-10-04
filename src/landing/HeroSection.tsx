@@ -52,8 +52,8 @@ export const HeroSection = () => {
 
     return (
         <section className="hero-section" onPointerMove={handlePointerMove}>
-            {/* Layering: portrait (z0) → particle canvas (z1) → copy (z2).
-                The dots drift over the shirt, so the figure sits *in* the wave. */}
+            {/* Layering: dot wave (z0) → portrait (z1) → copy (z2). The wave stays behind the figure:
+                it shows around it and through the portrait's dissolving edges, never on it. */}
             {mounted && (
                 <Suspense fallback={null}>
                     <DottedSurface className="hero-dots" />
@@ -139,7 +139,7 @@ export const HeroSection = () => {
                     padding: 88px 24px 0;
                     overflow: hidden;
                 }
-                .hero-dots { z-index: 1; }
+                .hero-dots { z-index: 0; }
                 .hero-inner {
                     width: 100%;
                     max-width: 1120px; /* the navbar's column: the name lines up with the logo */
@@ -211,7 +211,7 @@ export const HeroSection = () => {
                 /* ── Portrait ── */
                 .hero-portrait {
                     position: relative;
-                    z-index: 0;
+                    z-index: 1;
                     align-self: end;
                     justify-self: end;
                     /* sized by height, so the whole figure fits short laptop screens too */
