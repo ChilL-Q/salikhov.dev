@@ -1,6 +1,6 @@
 /**
  * Open Graph cards (public/og/<lang>.jpg, 1200×630): the site's own hero, shot from the built pages.
- * Navigation links, buttons and the scroll hint are hidden; the CS logo, copy, portrait and dot wave stay.
+ * Navigation links, buttons and the scroll hint are hidden; the salikhov.dev logo, copy, portrait and dot wave stay.
  *
  *   npm run build && npx vite preview --port 4173
  *   playwright-cli run-code --filename=scripts/og/shoot.js   (from the repo root)
@@ -27,7 +27,7 @@ async page => {
             `,
         });
         await page.evaluate(() => document.fonts.ready);
-        await page.waitForFunction(() => document.querySelector('canvas') && [...document.images].every(i => i.complete));
+        await page.waitForFunction(() => document.querySelector('canvas') && [...document.images].every(i => i.complete || i.loading === 'lazy'));
         // entrance animations done, the wave a little way into its motion
         await page.waitForTimeout(3200);
         await page.screenshot({ path: `public/og/${lang}.jpg`, type: 'jpeg', quality: 88 });

@@ -71,7 +71,8 @@ export const HeroSection = () => {
                     </motion.h1>
 
                     <motion.p {...fadeUp(0.4)} className="hero-role">
-                        {t('about.role')}
+                        <a href="#qarau" className="hero-founder">{t('hero.founder')}</a>{' · '}
+                        <span className="hero-role-part">{t('hero.role')}</span>
                     </motion.p>
 
                     <motion.div {...fadeUp(0.5)} className="hero-actions">
@@ -177,6 +178,15 @@ export const HeroSection = () => {
                     line-height: 1.6;
                     margin-bottom: 36px;
                 }
+                .hero-founder {
+                    color: var(--text-primary);
+                    text-decoration: underline;
+                    text-decoration-color: rgb(var(--accent-rgb) / 0.6);
+                    text-underline-offset: 4px;
+                    transition: text-decoration-color 0.25s;
+                }
+                .hero-founder, .hero-role-part { white-space: nowrap; }
+                .hero-founder:hover { text-decoration-color: rgb(var(--accent-rgb)); }
                 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
                 .hero-btn {
                     display: inline-flex;
@@ -279,6 +289,10 @@ export const HeroSection = () => {
                     .hero-name { margin-bottom: 16px; }
                     .hero-role { margin-bottom: 28px; }
                     .hero-scroll { display: none; }
+                }
+                /* the role wraps to two lines on the narrowest phones: take the extra line out of the gap below */
+                @media (max-width: 360px) {
+                    .hero-role { margin-bottom: 16px; }
                 }
             `}</style>
         </section>

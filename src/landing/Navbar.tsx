@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { LanguageSelector } from '../components/LanguageSelector';
 
 const navLinks = [
+    { key: 'qarau', href: '#qarau' },
     { key: 'about', href: '#about' },
     { key: 'projects', href: '#projects' },
     { key: 'contact', href: '#contact' },

@@ -16,9 +16,9 @@ const CONTACTS = {
 };
 
 const DESCRIPTIONS: Record<LanguageCode, string> = {
-    ru: 'Чингиз Салихов — Full Stack разработчик и AI-энтузиаст из Астаны. Веб-продукты, AI-агенты и дизайн: Qarau AI, AB AI, Kassimova Design, Azhar Trading.',
-    en: 'Chingiz Salikhov — Full Stack developer and AI enthusiast from Astana. Web products, AI agents and design: Qarau AI, AB AI, Kassimova Design, Azhar Trading.',
-    kz: 'Чингиз Салихов — Астанадағы Full Stack әзірлеуші және ИИ әуесқойы. Веб-өнімдер, ИИ-агенттер және дизайн: Qarau AI, AB AI, Kassimova Design, Azhar Trading.',
+    ru: 'Чингиз Салихов — Founder & CEO Qarau AI, ИИ-аналитики для кафе на iiko, и Full Stack разработчик из Астаны. Проекты: AB AI, Kassimova Design, Azhar Trading.',
+    en: 'Chingiz Salikhov — Founder & CEO of Qarau AI, AI analytics for cafés on iiko, and a Full Stack developer from Astana. Projects: AB AI, Kassimova Design, Azhar Trading.',
+    kz: 'Чингиз Салихов — Qarau AI негізін қалаушы және CEO (iiko-дағы кафелерге ИИ-аналитика), Астанадағы Full Stack әзірлеуші. Жобалар: AB AI, Kassimova Design, Azhar Trading.',
 };
 
 /** the card text under the title: the hero line, then what I do */
@@ -30,10 +30,10 @@ const OG_DESCRIPTIONS: Record<LanguageCode, string> = {
 
 const OG_LOCALE: Record<LanguageCode, string> = { ru: 'ru_RU', en: 'en_US', kz: 'kk_KZ' };
 
-/** Projects that are my own products, for the Person's "founder of" links. */
+/** Projects that are my own products, for the Person's "founder of" links; the first is where I work now. */
 const OWN_PRODUCTS = [
-    { name: 'Qarau AI', url: 'https://qarau.kz' },
-    { name: 'AB AI', url: 'https://www.ab-ai.kz' },
+    { name: 'Qarau AI', url: 'https://qarau.kz', id: `https://qarau.kz/#organization` },
+    { name: 'AB AI', url: 'https://www.ab-ai.kz', id: `https://www.ab-ai.kz/#organization` },
 ];
 
 const KNOWS_ABOUT = ['React', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Docker', 'Three.js', 'Tailwind CSS', 'AI agents', 'LLM'];
@@ -65,14 +65,15 @@ function jsonLd(lang: LanguageCode): object {
                 alternateName: translations.ru.hero.name,
                 url: `${SITE_URL}/`,
                 image: url(PORTRAIT.fallback),
-                jobTitle: t.about.role,
+                jobTitle: ['Founder & CEO', t.hero.role],
+                worksFor: { '@id': OWN_PRODUCTS[0].id },
                 description: DESCRIPTIONS[lang],
                 email: `mailto:${CONTACTS.email}`,
                 address: { '@type': 'PostalAddress', addressLocality: lang === 'en' ? 'Astana' : 'Астана', addressCountry: 'KZ' },
                 sameAs: [CONTACTS.telegram, CONTACTS.instagram, CONTACTS.github],
                 knowsAbout: KNOWS_ABOUT,
             },
-            ...OWN_PRODUCTS.map(p => ({ '@type': 'Organization', name: p.name, url: p.url, founder: { '@id': PERSON_ID } })),
+            ...OWN_PRODUCTS.map(p => ({ '@type': 'Organization', '@id': p.id, name: p.name, url: p.url, founder: { '@id': PERSON_ID } })),
             {
                 '@type': 'WebSite',
                 '@id': `${SITE_URL}/#website`,

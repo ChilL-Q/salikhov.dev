@@ -3,6 +3,7 @@ export type LanguageCode = 'en' | 'ru' | 'kz';
 export const translations = {
     en: {
         nav: {
+            qarau: 'Qarau AI',
             about: 'About Me',
             projects: 'Projects',
             contact: 'Contact',
@@ -10,12 +11,29 @@ export const translations = {
         hero: {
             greeting: 'If you can imagine it, I can code it.',
             name: 'Chingiz Salikhov',
+            founder: 'Founder & CEO Qarau AI',
+            role: 'Full Stack Developer',
             scroll: 'Scroll',
+        },
+        qarau: {
+            eyebrow: 'My startup',
+            lead: 'AI analytics for cafés and restaurants running iiko. Every night it checks all of the day\'s receipts and sends the owner a summary in Telegram.',
+            story: 'Owners usually see what went wrong only at the end of the month, in reports nobody has time to read. Qarau flags those operations the next morning: double discounts, dishes voided after cooking, unpaid receipts.',
+            roleLabel: 'Role',
+            stageLabel: 'Stage',
+            stage: 'Pilot',
+            forLabel: 'For',
+            forValue: 'Cafés and restaurants on iiko',
+            points: {
+                readonly: { title: 'Read-only', desc: 'Connects to iiko through its API and never changes anything at the till.' },
+                numbers: { title: 'Numbers come from code', desc: 'The system does the maths; the AI only explains it in plain words.' },
+                telegram: { title: 'Reports in Telegram', desc: 'A nightly summary, anything urgent within 15 minutes. Quiet overnight.' },
+            },
+            site: 'Qarau AI website',
         },
         about: {
             title: 'About Me',
             heading: 'Turning ideas into products',
-            role: 'Full Stack Developer & AI Enthusiast',
             location: 'Astana, Kazakhstan',
             bio: 'My focus lies at the intersection of cutting-edge AI and robust full-stack development. I build clean, scalable, and intuitive ecosystems using the latest industry tools, constantly evolving my stack to ensure every project is future-proof.',
             bioTitle: 'Bio',
@@ -36,7 +54,7 @@ export const translations = {
             title: 'Projects',
             subtitle: 'Experience',
             items: {
-                qarau: { title: 'Qarau AI', desc: 'AI analytics for cafés on iiko: checks every receipt and reports to the owner in Telegram.' },
+                qarau: { title: 'Qarau AI', desc: 'My startup. AI analytics for cafés on iiko: checks every receipt and reports to the owner in Telegram.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Architecture and interior design portfolio.' },
                 abai: { title: 'AB AI', desc: 'AI-powered client retention for auto services via WhatsApp.' },
                 azhar: { title: 'Azhar Trading', desc: 'Halal investment education and stock market training.' },
@@ -61,6 +79,7 @@ export const translations = {
     },
     ru: {
         nav: {
+            qarau: 'Qarau AI',
             about: 'Обо мне',
             projects: 'Проекты',
             contact: 'Контакты',
@@ -68,12 +87,29 @@ export const translations = {
         hero: {
             greeting: 'Если вы можете это представить, я могу это закодить.',
             name: 'Чингиз Салихов',
+            founder: 'Founder & CEO Qarau AI',
+            role: 'Full Stack разработчик',
             scroll: 'Листайте',
+        },
+        qarau: {
+            eyebrow: 'Мой стартап',
+            lead: 'ИИ-аналитика для кафе и ресторанов на iiko. Каждую ночь проверяет все чеки за день и присылает владельцу сводку в Telegram.',
+            story: 'Владелец обычно видит, что пошло не так, только в конце месяца — в отчётах, до которых не доходят руки. Qarau подсвечивает такие операции на следующее утро: двойные скидки, удаления блюд после готовки, неоплаченные чеки.',
+            roleLabel: 'Роль',
+            stageLabel: 'Стадия',
+            stage: 'Пилот',
+            forLabel: 'Для кого',
+            forValue: 'Кафе и рестораны на iiko',
+            points: {
+                readonly: { title: 'Только чтение', desc: 'Подключается к iiko по API и ничего не меняет в кассе.' },
+                numbers: { title: 'Цифры считает код', desc: 'Суммы считает система, ИИ только объясняет их человеческим языком.' },
+                telegram: { title: 'Отчёт в Telegram', desc: 'Ночная сводка, срочное — в течение 15 минут. Ночью — тишина.' },
+            },
+            site: 'Сайт Qarau AI',
         },
         about: {
             title: 'Обо мне',
             heading: 'Превращаю идеи в продукты',
-            role: 'Full Stack Разработчик & AI Энтузиаст',
             location: 'Астана, Казахстан',
             bio: 'Моя работа — это синтез передового ИИ и надежной Full Stack архитектуры. Я создаю чистые, эффективные и интуитивно понятные веб-системы, используя только актуальные инструменты. Постоянно расширяю свой стек, чтобы каждое решение было современным и готовым к вызовам будущего.',
             bioTitle: 'Био',
@@ -94,7 +130,7 @@ export const translations = {
             title: 'Проекты',
             subtitle: 'Опыт',
             items: {
-                qarau: { title: 'Qarau AI', desc: 'ИИ-аналитика для кафе на iiko: проверяет каждый чек и пишет владельцу в Telegram.' },
+                qarau: { title: 'Qarau AI', desc: 'Мой стартап. ИИ-аналитика для кафе на iiko: проверяет каждый чек и пишет владельцу в Telegram.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Портфолио архитектуры и дизайна интерьеров.' },
                 abai: { title: 'AB AI', desc: 'ИИ-агент возврата клиентов автосервиса через WhatsApp.' },
                 azhar: { title: 'Azhar Trading', desc: 'Обучение халяль-инвестициям и работе на фондовой бирже.' },
@@ -119,6 +155,7 @@ export const translations = {
     },
     kz: {
         nav: {
+            qarau: 'Qarau AI',
             about: 'Мен туралы',
             projects: 'Жобалар',
             contact: 'Байланыс',
@@ -126,12 +163,29 @@ export const translations = {
         hero: {
             greeting: 'Егер сіз оны елестете алсаңыз, мен оны жүзеге асыра аламын.',
             name: 'Чингиз Салихов',
+            founder: 'Founder & CEO Qarau AI',
+            role: 'Full Stack әзірлеуші',
             scroll: 'Төмен',
+        },
+        qarau: {
+            eyebrow: 'Менің стартапым',
+            lead: 'iiko жүйесіндегі кафе мен мейрамханаларға арналған ИИ-аналитика. Әр түні күндізгі барлық чекті тексеріп, иесіне Telegram-ға қысқаша есеп жібереді.',
+            story: 'Әдетте иесі не дұрыс болмағанын ай соңында ғана біледі — оқуға уақыт жетпейтін есептерден. Qarau мұндай операцияларды келесі күні таңертең көрсетеді: қос жеңілдіктер, дайындалғаннан кейін өшірілген тағамдар, төленбеген чектер.',
+            roleLabel: 'Рөлі',
+            stageLabel: 'Кезеңі',
+            stage: 'Пилот',
+            forLabel: 'Кімге',
+            forValue: 'iiko-дағы кафе мен мейрамханалар',
+            points: {
+                readonly: { title: 'Тек оқу', desc: 'iiko-ға API арқылы қосылады және кассада ештеңені өзгертпейді.' },
+                numbers: { title: 'Сандарды код есептейді', desc: 'Соманы жүйе есептейді, ИИ тек оны түсінікті тілмен түсіндіреді.' },
+                telegram: { title: 'Есеп Telegram-да', desc: 'Түнгі шолу, шұғыл жағдай — 15 минут ішінде. Түнде — тыныштық.' },
+            },
+            site: 'Qarau AI сайты',
         },
         about: {
             title: 'Мен туралы',
             heading: 'Идеяларды өнімге айналдырамын',
-            role: 'Full Stack Әзірлеуші & ИИ Әуесқойы',
             location: 'Астана, Қазақстан',
             bio: 'Менің жұмысым — озық ИИ мен сенімді Full Stack архитектурасының синтезі. Мен тек өзекті құралдарды пайдалана отырып, таза, тиімді және интуитивті түсінікті веб-жүйелерді жасаймын. Әрбір шешім заманауи және болашаққа дайын болуы үшін өз стегімді үнемі кеңейтіп отырамын.',
             bioTitle: 'Био',
@@ -152,7 +206,7 @@ export const translations = {
             title: 'Жобалар',
             subtitle: 'Тәжірибе',
             items: {
-                qarau: { title: 'Qarau AI', desc: 'iiko жүйесіндегі кафелерге арналған ИИ-аналитика: әр чекті тексеріп, иесіне Telegram-ға есеп жібереді.' },
+                qarau: { title: 'Qarau AI', desc: 'Менің стартапым. iiko жүйесіндегі кафелерге арналған ИИ-аналитика: әр чекті тексеріп, иесіне Telegram-ға есеп жібереді.' },
                 kassimova: { title: 'Kassimova Design', desc: 'Сәулет және интерьер дизайны портфолиосы.' },
                 abai: { title: 'AB AI', desc: 'Автосервис клиенттерін WhatsApp арқылы ИИ-агентпен қайтару.' },
                 azhar: { title: 'Azhar Trading', desc: 'Халяль инвестиция және қор биржасында оқыту.' },
