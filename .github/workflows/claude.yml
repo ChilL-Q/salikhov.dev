@@ -1,0 +1,50 @@
+# Исполнитель задач из Telegram: Claude Code GitHub Action.
+# Положить в репозиторий как .github/workflows/claude.yml (см. docs/github/README.md).
+# Бот создаёт issue с меткой claude и упоминанием @claude; Action делает ветку claude/issue-N-...
+# и pull request, бот присылает «PR готов» в Telegram. Смерж только кнопкой в боте.
+name: Claude
+
+on:
+  # Только метка: issue, созданный сразу с меткой, присылает и opened, и labeled, а запуск
+  # нужен один.
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+# Одна задача за раз на issue или PR: повторные упоминания не запускают параллельные прогоны.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    # Запускает только владелец (ChilL-Q): посторонний не может
+    # вызвать Claude через публичный issue или комментарий.
+    if: >-
+      github.actor == 'ChilL-Q' && (
+        (github.event_name == 'issues' && github.event.label.name == 'claude') ||
+        (github.event_name != 'issues' && contains(github.event.comment.body, '@claude'))
+      )
+    runs-on: ubuntu-latest
+    # Потолок по времени: зависший прогон не съедает минуты и бюджет.
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          label_trigger: claude
+          trigger_phrase: "@claude"
+          # Модель и потолок ходов, чтобы одна задача не съела бюджет.
+          claude_args: "--model claude-sonnet-5-5 --max-turns 30"
