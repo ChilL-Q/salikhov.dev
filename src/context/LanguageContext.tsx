@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { FC, ReactNode } from 'react';
 import { translations } from '../i18n/dictionaries';
 import type { LanguageCode } from '../i18n/dictionaries';
 import { HTML_LANG, LANGUAGE_PATHS, PAGE_TITLES } from '../i18n/langs';
@@ -17,7 +17,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
  * The page's language comes from its address (src/i18n/langs.ts), so the prerendered HTML and the
  * hydrating app agree. A saved choice still wins on the root page: index.html redirects before paint.
  */
-export const LanguageProvider: React.FC<{ initialLanguage: LanguageCode; children: ReactNode }> = ({ initialLanguage, children }) => {
+export const LanguageProvider: FC<{ initialLanguage: LanguageCode; children: ReactNode }> = ({ initialLanguage, children }) => {
     const [language, setLanguageState] = useState<LanguageCode>(initialLanguage);
 
     const setLanguage = (lang: LanguageCode) => {
