@@ -2,12 +2,27 @@
 
 Personal site of Chingiz Salikhov. React 19 + Vite + TypeScript + Tailwind v4, prerendered to static HTML.
 
+## Run locally
+
+Needs Node.js `^20.19.0` or `>=22.12.0` (required by Vite 7) and npm. Install the dependencies from
+`package-lock.json` once:
+
 ```bash
 npm install
-npm run dev       # http://localhost:5173 (also on the LAN)
-npm run build     # type-check, client build, SSR build, prerender → dist/
-npm run lint
 ```
+
+The scripts from `package.json`:
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server with hot reload at http://localhost:5173. It also listens on the LAN, so the site opens from a phone at the Network address Vite prints. Another port: `PORT=3000 npm run dev`. |
+| `npm run build` | Production build into `dist/`: type-check (`tsc -b`), client build, SSR build into `dist-ssr/`, then `scripts/prerender.mjs` writes the static pages. Details in [Build](#build). |
+| `npm run preview` | Serves the built `dist/` at http://localhost:4173 (also on the LAN). Run `npm run build` first. |
+| `npm run lint` | ESLint over the whole project. |
+
+In `npm run preview` the language pages open with a trailing slash: `/en/` and `/kz/`. Without it, and on
+unknown addresses, Vite falls back to the Russian page with status 200. Clean URLs and the 404 page only work
+on Vercel (see [Deploy](#deploy)).
 
 ## Structure
 
