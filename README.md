@@ -2,6 +2,22 @@
 
 Personal site of Chingiz Salikhov. React 19 + Vite + TypeScript + Tailwind v4, prerendered to static HTML.
 
+## Tech stack
+
+Versions are the ranges from `package.json`; the exact installed ones are pinned in `package-lock.json`.
+
+| Technology | Version | Used for |
+| --- | --- | --- |
+| React, React DOM | `^19.2.0` | UI, hydration of the prerendered pages |
+| TypeScript | `~5.9.3` | types, checked by `tsc -b` in the build |
+| Vite, `@vitejs/plugin-react` | `^7.3.1`, `^5.1.1` | dev server, client and SSR builds |
+| Tailwind CSS, `@tailwindcss/vite` | `^4.3.0` | styles |
+| Framer Motion | `^12.34.0` | animations |
+| Embla Carousel (`embla-carousel-react`, `-autoplay`, `-wheel-gestures`) | `^8.6.0`, `^8.6.0`, `^8.1.0` | projects carousel |
+| three.js | `^0.184.0` | dot wave in the hero |
+| Lucide React | `^0.563.0` | icons |
+| ESLint, `typescript-eslint` | `^9.39.1`, `^8.48.0` | linting |
+
 ## Run locally
 
 Needs Node.js `^20.19.0` or `>=22.12.0` (required by Vite 7) and npm. Install the dependencies from
