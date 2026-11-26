@@ -73,3 +73,8 @@ photo (`avatar.py`, from the portrait pipeline) and phone previews with safe zon
 ## Deploy
 
 Vercel, `vercel.json`: `npm run build` → `dist`, clean URLs without trailing slashes, immutable caching for `/assets/*`.
+
+## Contacts
+
+- Site: [salikhov.dev](https://salikhov.dev)
+- Telegram: [@mr_vibecoder](https://t.me/mr_vibecoder)
